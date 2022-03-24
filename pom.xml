@@ -19,6 +19,7 @@
     <modules>
         <module>mall-tiny-product</module>
         <module>mall-common</module>
+        <module>mall-tiny-search</module>
     </modules>
 
     <properties>

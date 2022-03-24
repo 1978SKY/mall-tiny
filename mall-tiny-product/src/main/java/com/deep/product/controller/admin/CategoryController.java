@@ -1,4 +1,4 @@
-package com.deep.product.controller;
+package com.deep.product.controller.admin;
 
 import com.deep.common.utils.R;
 import com.deep.product.model.entity.CategoryEntity;

@@ -1,7 +1,6 @@
 package com.deep.product.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.deep.product.dao.CategoryDao;
 import com.deep.product.model.entity.CategoryEntity;
@@ -13,12 +12,10 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -64,6 +61,26 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         relationService.removeRelationsByCatIds(catIds);
     }
 
+    @Override
+    public Long[] findCategoryPath(Long catId) {
+        Assert.notNull(catId, "分类id不能为空!");
+        List<Long> path = new ArrayList<>();
+        findCategoryPath(path, catId);
+        Collections.reverse(path);
+
+        Long[] pathArray = new Long[path.size()];
+        return path.toArray(pathArray);
+    }
+
+
+    @Cacheable(value = {"product:category"}, key = "#root.methodName")
+    @Override
+    public List<CategoryEntity> getLevel(int level) {
+        if (level <= 0) {
+            throw new IllegalArgumentException("Level must greater than 0,but it's:" + level);
+        }
+        return list(new QueryWrapper<CategoryEntity>().eq("cat_level", level));
+    }
 
     /**
      * 从数据库中获取商品分类
@@ -93,5 +110,19 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
             }
         }
         return result;
+    }
+
+    /**
+     * 递归查找父节点
+     *
+     * @param path  收集父节点的集合
+     * @param catId 当前节点
+     */
+    private void findCategoryPath(List<Long> path, Long catId) {
+        path.add(catId);
+        CategoryEntity entity = getById(catId);
+        if (entity.getParentCid() > 0) {     // 有父节点
+            findCategoryPath(path, entity.getParentCid());
+        }
     }
 }

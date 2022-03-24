@@ -2,6 +2,7 @@ package com.deep.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.deep.product.model.entity.CategoryEntity;
+import org.springframework.lang.NonNull;
 
 import java.util.List;
 
@@ -26,4 +27,14 @@ public interface CategoryService extends IService<CategoryEntity> {
      * 删除（展示状态置0）
      */
     void logicDelete(List<Long> catIds);
+
+    /**
+     * 获取分类所在路径
+     */
+    Long[] findCategoryPath(@NonNull Long catId);
+
+    /**
+     * 获取level层级的分类
+     */
+    List<CategoryEntity> getLevel(int level);
 }

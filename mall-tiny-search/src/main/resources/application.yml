@@ -1,0 +1,16 @@
+server:
+  port: 10002
+
+spring:
+#  redis:
+#    port: 6379
+#    host: 124.222.56.141
+#    password: Yi1Ge2Ren3Redis.
+
+es:
+  host: 124.222.56.141
+  port: 9200
+
+logging:
+  level:
+    com.deep.product: info

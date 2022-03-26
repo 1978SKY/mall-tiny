@@ -1,5 +1,7 @@
 package com.deep.product.model.params;
 
+import com.deep.common.convert.InputConverter;
+import com.deep.product.model.entity.AttrAttrgroupRelationEntity;
 import lombok.Data;
 
 /**
@@ -9,7 +11,7 @@ import lombok.Data;
  * @date 2022/3/19
  */
 @Data
-public class AttrGroupRelationParam {
+public class AttrGroupRelationParam implements InputConverter<AttrAttrgroupRelationEntity> {
     /**
      * 品牌id
      */

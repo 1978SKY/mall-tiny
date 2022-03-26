@@ -20,6 +20,7 @@
         <module>mall-tiny-product</module>
         <module>mall-common</module>
         <module>mall-tiny-search</module>
+        <module>mall-tiny-third-party</module>
     </modules>
 
     <properties>

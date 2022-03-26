@@ -1,7 +1,11 @@
 package com.deep.product.controller.web;
 
+import com.deep.product.model.vo.SkuItemVO;
+import com.deep.product.service.SkuInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,16 +18,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Deep
  * @date 2022/3/24
  */
-//@Api(value = "商品信息")
-//@Controller
-//@RequestMapping("/api/product/item")
-//public class ItemController {
-//
-//    @GetMapping({"/{skuId}.html"})
-//    @ApiOperation("获取商品详情")
-//    public String skuItem(@PathVariable("skuId") Long skuId, Model model) {
-//        SkuItemVO result = skuInfoService.queryItem(skuId);
-//        model.addAttribute("item", result);
-//        return "item";
-//    }
-//}
+@Slf4j
+@Api(value = "商品信息")
+@Controller
+@RequestMapping("/api/product/item")
+public class ItemController {
+
+    @Autowired
+    private SkuInfoService skuInfoService;
+
+    @GetMapping({"/{skuId}.html"})
+    @ApiOperation("获取商品详情")
+    public String skuItem(@PathVariable("skuId") Long skuId, Model model) {
+        long start = System.currentTimeMillis();
+        SkuItemVO result = skuInfoService.queryItem(skuId);
+        long end = System.currentTimeMillis();
+        log.info("消耗时间：{}ms", (end - start));
+        model.addAttribute("item", result);
+        return "item";
+    }
+}

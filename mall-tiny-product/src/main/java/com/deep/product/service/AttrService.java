@@ -6,6 +6,7 @@ import com.deep.product.model.entity.AttrEntity;
 import com.deep.product.model.vo.AttrVO;
 import org.springframework.lang.NonNull;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,4 +39,5 @@ public interface AttrService extends IService<AttrEntity> {
      * @return 属性
      */
     AttrVO getAttrInfo(@NonNull Long attrId);
+
 }

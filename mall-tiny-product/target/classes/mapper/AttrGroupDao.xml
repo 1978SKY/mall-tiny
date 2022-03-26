@@ -12,29 +12,23 @@
         <result property="icon" column="icon"/>
         <result property="catelogId" column="catelog_id"/>
     </resultMap>
-
-    <!--    &lt;!&ndash;只要有嵌套属性就要封装自定义结果集&ndash;&gt;-->
-    <!--    <resultMap id="spuAttrGroup" type="com.deep.product.model.vo.SpuItemAttrGroupVO">-->
-    <!--        <result property="groupName" column="attr_group_name"/>-->
-    <!--        <collection property="attrs" ofType="com.deep.product.model.vo.SpuBaseAttrVO">-->
-    <!--            <result property="attrName" column="attr_name"></result>-->
-    <!--            <result property="attrValue" column="attr_value"></result>-->
-    <!--        </collection>-->
-    <!--    </resultMap>-->
-
-    <!--    <select id="getAttrGroupWithAttrsBySpuId" resultMap="spuAttrGroup">-->
-    <!--        SELECT pav.spu_id,-->
-    <!--               pag.attr_group_id,-->
-    <!--               pag.attr_group_name,-->
-    <!--               pav.attr_id,-->
-    <!--               pav.attr_name,-->
-    <!--               pav.attr_value-->
-    <!--        FROM pms_product_attr_value pav-->
-    <!--                 LEFT JOIN pms_attr_attrgroup_relation pagr ON pav.attr_id = pagr.attr_id-->
-    <!--                 LEFT JOIN pms_attr_group pag ON pagr.attr_group_id = pag.attr_group_id-->
-    <!--        WHERE pav.spu_id = #{spuId}-->
-    <!--          AND pag.catelog_id = #{catalogId}-->
-    <!--    </select>-->
-
+    <!--只要有嵌套属性就要封装自定义结果集-->
+    <resultMap id="spuAttrGroup" type="com.deep.product.model.vo.SpuItemAttrGroupVO">
+        <result property="groupName" column="attr_group_name"/>
+        <collection property="attrs" ofType="com.deep.product.model.vo.SpuItemAttrGroupVO$SpuBaseAttrVO">
+            <result property="attrName" column="attr_name"></result>
+            <result property="attrValue" column="attr_value"></result>
+        </collection>
+    </resultMap>
+    <select id="getAttrGroupWithAttrs" resultMap="spuAttrGroup">
+        select pag.attr_group_name,
+               pav.attr_name,
+               pav.attr_value
+        from pms_product_attr_value pav
+                 left join pms_attr_attrgroup_relation pagr on pav.attr_id = pagr.attr_id
+                 left join pms_attr_group pag on pagr.attr_group_id = pag.attr_group_id
+        where pav.spu_id = #{spuId}
+          and pag.catelog_id = #{catId}
+    </select>
 
 </mapper>

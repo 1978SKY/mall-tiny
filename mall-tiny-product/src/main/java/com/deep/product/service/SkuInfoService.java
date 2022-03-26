@@ -3,6 +3,8 @@ package com.deep.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.deep.common.utils.PageUtils;
 import com.deep.product.model.entity.SkuInfoEntity;
+import com.deep.product.model.vo.SkuItemVO;
+import org.springframework.lang.NonNull;
 
 import java.util.Map;
 
@@ -17,4 +19,9 @@ public interface SkuInfoService extends IService<SkuInfoEntity> {
      * 分页查询
      */
     PageUtils queryPage(Map<String, Object> params);
+
+    /**
+     * 商品查询
+     */
+    SkuItemVO queryItem(@NonNull Long skuId);
 }

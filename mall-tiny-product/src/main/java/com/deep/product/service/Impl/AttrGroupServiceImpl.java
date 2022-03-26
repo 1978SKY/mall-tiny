@@ -11,6 +11,7 @@ import com.deep.product.model.entity.AttrAttrgroupRelationEntity;
 import com.deep.product.model.entity.AttrGroupEntity;
 import com.deep.product.model.vo.AttrGroupWithAttrsVO;
 import com.deep.product.model.vo.AttrVO;
+import com.deep.product.model.vo.SpuItemAttrGroupVO;
 import com.deep.product.service.AttrAttrgroupRelationService;
 import com.deep.product.service.AttrGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ import java.util.stream.Collectors;
  */
 @Service("attrGroupService")
 public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEntity> implements AttrGroupService {
+
+    @Autowired
+    private AttrGroupDao attrGroupDao;
 
     @Autowired
     private AttrAttrgroupRelationService relationService;
@@ -81,6 +85,14 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
             item.setAttrs(attrs);
         });
         return groupWithAttrsVOS;
+    }
+
+    @Override
+    public List<SpuItemAttrGroupVO> getAttrGroupWithAttrs(Long spuId, Long catId) {
+        Assert.notNull(spuId, "spuId不能为空!");
+        Assert.notNull(catId, "catId不能为空!");
+
+        return attrGroupDao.getAttrGroupWithAttrs(spuId, catId);
     }
 
 }

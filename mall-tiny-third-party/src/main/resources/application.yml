@@ -1,0 +1,11 @@
+server:
+  port: 10003
+
+spring:
+  cloud:
+    alicloud:
+      access-key: LTAI5tKrLm3zoumj82QTNAQB
+      secret-key: OQZidcslSbRQOqLcs8UAVGDjME8hEn
+      oss:
+        endpoint: oss-cn-shanghai.aliyuncs.com
+        bucket: deepmall

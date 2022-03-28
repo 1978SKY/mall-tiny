@@ -19,8 +19,14 @@ public interface SpuInfoService extends IService<SpuInfoEntity> {
      * 分页查询
      */
     PageUtils queryPage(Map<String, Object> params);
+
     /**
      * 新增商品
      */
     void saveSpuDetail(SpuSaveParam spuSaveParam);
+
+    /**
+     * 商品上架
+     */
+    void up(@NonNull Long spuId);
 }

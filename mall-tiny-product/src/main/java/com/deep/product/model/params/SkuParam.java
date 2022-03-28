@@ -1,5 +1,7 @@
 package com.deep.product.model.params;
 
+import com.deep.common.convert.InputConverter;
+import com.deep.product.model.entity.SkuInfoEntity;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -12,7 +14,7 @@ import java.util.List;
  * @date 2022/3/25
  */
 @Data
-public class SkuParam {
+public class SkuParam implements InputConverter<SkuInfoEntity> {
     /**
      * 销售属性
      */

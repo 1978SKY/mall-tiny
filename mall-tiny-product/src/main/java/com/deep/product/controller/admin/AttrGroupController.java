@@ -52,7 +52,7 @@ public class AttrGroupController {
         return R.ok();
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     @ApiOperation("修改")
     public R update(@RequestBody AttrGroupParam param) {
         AttrGroupEntity entity = param.convertTo();
@@ -61,7 +61,7 @@ public class AttrGroupController {
         return R.ok();
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     @ApiOperation("删除")
     public R delete(@RequestBody Long[] attrGroupIds) {
         attrGroupService.deleteBatch(Arrays.asList(attrGroupIds));

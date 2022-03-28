@@ -86,4 +86,11 @@ public class AttrAttrgroupRelationServiceImpl
     public void deleteRelations(List<AttrGroupRelationParam> params) {
         relationDao.deleteRelations(params);
     }
+
+    @Override
+    public void removeByAttrIds(List<Long> attrIds) {
+        Assert.notEmpty(attrIds, "属性id集合不能为空!");
+
+        relationDao.deleteByAttrIds(attrIds);
+    }
 }

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -28,6 +29,8 @@ public class CategoryBrandRelationServiceImpl
         implements CategoryBrandRelationService {
 
     @Autowired
+    private CategoryBrandRelationDao relationDao;
+    @Autowired
     private BrandService brandService;
 
     @Autowired
@@ -35,6 +38,7 @@ public class CategoryBrandRelationServiceImpl
 
     @Override
     public void updateCategory(Long catId, String name) {
+        Assert.notNull(catId, "catId不能为空!");
         this.update(new UpdateWrapper<CategoryBrandRelationEntity>()
                 .eq("catelog_id", catId)
                 .set("catelog_name", name));
@@ -69,18 +73,34 @@ public class CategoryBrandRelationServiceImpl
     }
 
     @Override
-    public void save(Long catId, Long brandId) {
+    public void saveRelation(Long catId, Long brandId) {
         Assert.notNull(catId, "分类Id不能为空!");
         Assert.notNull(brandId, "品牌Id不能为空!");
-        CategoryBrandRelationEntity relationEntity = new CategoryBrandRelationEntity();
 
+        CategoryBrandRelationEntity relationEntity = new CategoryBrandRelationEntity();
         CategoryEntity categoryEntity = categoryService.getById(catId);
         BrandEntity brandEntity = brandService.getById(brandId);
-        relationEntity.setCatId(catId);
+        relationEntity.setCatelogId(catId);
         relationEntity.setBrandId(brandId);
-        relationEntity.setCatName(categoryEntity.getName());
+        relationEntity.setCatelogName(categoryEntity.getName());
         relationEntity.setBrandName(brandEntity.getName());
 
         this.save(relationEntity);
+    }
+
+    @Override
+    public List<CategoryBrandRelationEntity> hadRelations(Long brandId) {
+        Assert.notNull(brandId, "品牌id不能为空!");
+        QueryWrapper<CategoryBrandRelationEntity> wrapper = new QueryWrapper<>();
+
+        return list(wrapper.eq("brand_id", brandId));
+    }
+
+    @Override
+    public List<CategoryBrandRelationEntity> getBrandByCatId(Long catId) {
+        Assert.notNull(catId, "分类id不能为空!");
+        QueryWrapper<CategoryBrandRelationEntity> wrapper = new QueryWrapper<>();
+
+        return list(wrapper.eq("catelog_id", catId));
     }
 }

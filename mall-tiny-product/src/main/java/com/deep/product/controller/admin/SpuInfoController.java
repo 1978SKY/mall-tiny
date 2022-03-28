@@ -24,7 +24,7 @@ public class SpuInfoController {
     @Autowired
     private SpuInfoService spuInfoService;
 
-    @RequestMapping("/list")
+    @GetMapping("/list")
     @ApiOperation("获取spu页面")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = spuInfoService.queryPage(params);
@@ -40,5 +40,12 @@ public class SpuInfoController {
         return R.ok();
     }
 
+    @PostMapping("/{spuId}/up")
+    @ApiOperation("商品上架")
+    public R up(@PathVariable("spuId") Long spuId) {
+        spuInfoService.up(spuId);
+
+        return R.ok();
+    }
 
 }

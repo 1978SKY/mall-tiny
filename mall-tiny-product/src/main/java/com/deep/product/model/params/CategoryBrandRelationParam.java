@@ -19,5 +19,5 @@ public class CategoryBrandRelationParam implements InputConverter<CategoryBrandR
     /**
      * 分类id
      */
-    private Long catId;
+    private Long catelogId;
 }

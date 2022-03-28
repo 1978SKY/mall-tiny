@@ -1,5 +1,7 @@
 package com.deep.product.model.params;
 
+import com.deep.common.convert.InputConverter;
+import com.deep.product.model.entity.SkuSaleAttrValueEntity;
 import lombok.Data;
 
 /**
@@ -9,7 +11,7 @@ import lombok.Data;
  * @date 2022/3/25
  */
 @Data
-public class SaleAttrParam {
+public class SaleAttrParam implements InputConverter<SkuSaleAttrValueEntity> {
     /**
      * 属性id
      */

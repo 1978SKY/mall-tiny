@@ -30,7 +30,8 @@ public class CategoryController {
     @GetMapping("/list/tree")
     @ApiOperation("返回所有分类数据")
     public R list() {
-        List<CategoryEntity> categoryTree = categoryService.getCategoryTree();
+        List<CategoryEntity> categoryTree
+                = categoryService.getCategoryTree();
 
         return R.ok().put("data", categoryTree);
     }
@@ -44,7 +45,7 @@ public class CategoryController {
         return R.ok();
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     @ApiOperation("修改分类")
     public R update(@RequestBody CategoryParam category) {
         CategoryEntity entity = category.convertTo();
@@ -53,7 +54,7 @@ public class CategoryController {
         return R.ok();
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     @ApiOperation("删除分类")
     public R delete(@RequestBody Long[] catIds) {
         categoryService.logicDelete(Arrays.asList(catIds));

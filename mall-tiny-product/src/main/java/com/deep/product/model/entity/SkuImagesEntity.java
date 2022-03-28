@@ -32,7 +32,7 @@ public class SkuImagesEntity implements Serializable {
     /**
      * 排序
      */
-    private Integer imgSort;
+    private Integer imgSort = 0;
     /**
      * 默认图[0 - 不是默认图，1 - 是默认图]
      */

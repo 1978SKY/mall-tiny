@@ -38,4 +38,5 @@ public interface BrandService extends IService<BrandEntity> {
      * @param brandEntity 品牌实体
      */
     void update(BrandEntity brandEntity);
+
 }

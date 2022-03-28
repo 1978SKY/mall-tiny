@@ -31,7 +31,7 @@ public class UploadController {
 
     @PostMapping("/product")
     @ApiOperation("上架商品")
-    public R productStatusUp(@RequestBody List<SkuEsDTO> skuEsDTOs) {
+    public R uploadProduct(@RequestBody List<SkuEsDTO> skuEsDTOs) {
         boolean status;
         try {
             status = uploadService.upload(skuEsDTOs);

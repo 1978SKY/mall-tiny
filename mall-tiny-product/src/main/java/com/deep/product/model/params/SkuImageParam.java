@@ -1,5 +1,7 @@
 package com.deep.product.model.params;
 
+import com.deep.common.convert.InputConverter;
+import com.deep.product.model.entity.SkuImagesEntity;
 import lombok.Data;
 
 /**
@@ -9,7 +11,7 @@ import lombok.Data;
  * @date 2022/3/25
  */
 @Data
-public class SkuImageParam {
+public class SkuImageParam implements InputConverter<SkuImagesEntity> {
     /**
      * 图片url
      */

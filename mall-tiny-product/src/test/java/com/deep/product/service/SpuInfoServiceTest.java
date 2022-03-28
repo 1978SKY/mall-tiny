@@ -1,6 +1,5 @@
 package com.deep.product.service;
 
-import com.deep.product.model.params.SpuSaveParam;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,10 +17,6 @@ class SpuInfoServiceTest {
 
     @Test
     void saveSpuDetail() {
-        SpuSaveParam spuSaveParam = new SpuSaveParam();
-//        entity.setSpuName("xxx");
-        spuSaveParam.setSpuName("xxx");
-        skuInfoService.saveSpuDetail(spuSaveParam);
     }
 
 }

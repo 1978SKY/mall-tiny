@@ -31,4 +31,9 @@ public interface AttrAttrgroupRelationDao extends BaseMapper<AttrAttrgroupRelati
      * 移除关联关系
      */
     void deleteRelations(@Param("params") List<AttrGroupRelationParam> params);
+
+    /**
+     * 按照属性id集合删除关联关系
+     */
+    void deleteByAttrIds(@Param("attrIds") List<Long> attrIds);
 }

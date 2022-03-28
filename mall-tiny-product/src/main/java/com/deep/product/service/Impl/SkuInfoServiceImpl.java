@@ -3,18 +3,25 @@ package com.deep.product.service.Impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.deep.common.utils.BeanUtils;
 import com.deep.common.utils.PageUtils;
 import com.deep.common.utils.Query;
 import com.deep.product.dao.SkuInfoDao;
 import com.deep.product.model.entity.SkuImagesEntity;
 import com.deep.product.model.entity.SkuInfoEntity;
+import com.deep.product.model.entity.SkuSaleAttrValueEntity;
 import com.deep.product.model.entity.SpuInfoDescEntity;
+import com.deep.product.model.params.SaleAttrParam;
+import com.deep.product.model.params.SkuImageParam;
+import com.deep.product.model.params.SkuParam;
+import com.deep.product.model.params.SpuSaveParam;
 import com.deep.product.model.vo.SkuItemSaleAttrVO;
 import com.deep.product.model.vo.SkuItemVO;
 import com.deep.product.model.vo.SpuItemAttrGroupVO;
 import com.deep.product.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -22,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.stream.Collectors;
 
 /**
  * sku信息
@@ -76,5 +84,45 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
                 attrGroupService.getAttrGroupWithAttrs(infoEntity.getSpuId(), infoEntity.getCatalogId());
         skuItemVO.setGroupAttrs(attrGroups);
         return skuItemVO;
+    }
+
+    @Transactional
+    @Override
+    public void savSkuParams(Long spuId, SpuSaveParam spuSaveParam) {
+        Assert.notNull(spuId, "spuId不能为空!");
+        Assert.notNull(spuSaveParam, "商品参数不能为空!");
+        spuSaveParam.getSkus().parallelStream().forEach(item -> {
+            // 1、保存sku的基本信息   pms_sku_info
+            SkuInfoEntity skuEntity = item.convertTo();
+            skuEntity.setSpuId(spuId);
+            skuEntity.setBrandId(spuSaveParam.getBrandId());
+            skuEntity.setCatalogId(spuSaveParam.getCatalogId());
+            skuEntity.setSkuDefaultImg(getDefaultImag(item.getImages()));
+            skuEntity.setSaleCount((long) (Math.random() * 2870));
+            this.save(skuEntity);
+
+            // 2、保存sku的图片信息   pms_sku_images
+            List<SkuImagesEntity> images = BeanUtils.transformFromInBatch(item.getImages(), SkuImagesEntity.class);
+            images.forEach(img -> img.setSkuId(skuEntity.getSkuId()));
+            skuImagesService.saveBatch(images);
+
+            // 3.保存sku的销售属性   pms_sku_sale_attr_value
+            List<SkuSaleAttrValueEntity> saleAttrs = BeanUtils.transformFromInBatch(item.getAttr(), SkuSaleAttrValueEntity.class);
+            saleAttrs.forEach(attr -> attr.setSkuId(skuEntity.getSkuId()));
+            skuSaleAttrValueService.saveBatch(saleAttrs);
+
+            // 4、保存sku的优惠信息   gulimall_sms/sms_sku_ladder、sms_sku_full_reduction、sms_member_price
+            List<SkuParam.MemberPriceParam> memberPrice = item.getMemberPrice();
+        });
+    }
+
+    private String getDefaultImag(List<SkuImageParam> images) {
+        Assert.notEmpty(images, "图片集合不能为空!");
+        for (SkuImageParam image : images) {
+            if (image.getDefaultImg() == 1) {
+                return image.getImgUrl();
+            }
+        }
+        return "";
     }
 }

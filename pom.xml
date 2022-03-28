@@ -20,7 +20,9 @@
         <module>mall-tiny-product</module>
         <module>mall-common</module>
         <module>mall-tiny-search</module>
-        <module>mall-tiny-third-party</module>
+        <module>renren-fast</module>
+        <module>mall-tiny-gateway</module>
+        <module>mall-tiny-ware</module>
     </modules>
 
     <properties>
@@ -31,6 +33,7 @@
         <druid.version>1.1.14</druid.version>
         <springfox.version>3.0.0</springfox.version>
         <commons-lang.version>2.6</commons-lang.version>
+        <oss.version>2.2.0.RELEASE</oss.version>
     </properties>
 
     <dependencyManagement>
@@ -68,6 +71,11 @@
                 <groupId>commons-lang</groupId>
                 <artifactId>commons-lang</artifactId>
                 <version>${commons-lang.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alicloud-oss</artifactId>
+                <version>${oss.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

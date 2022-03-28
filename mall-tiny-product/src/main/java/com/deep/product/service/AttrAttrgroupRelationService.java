@@ -45,4 +45,9 @@ public interface AttrAttrgroupRelationService extends IService<AttrAttrgroupRela
      * 移除关联
      */
     void deleteRelations(List<AttrGroupRelationParam> params);
+
+    /**
+     * 按照属性id集合删除关联关系
+     */
+    void removeByAttrIds(@NonNull List<Long> attrIds);
 }

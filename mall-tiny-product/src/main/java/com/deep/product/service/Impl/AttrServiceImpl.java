@@ -1,13 +1,16 @@
 package com.deep.product.service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.deep.common.utils.PageUtils;
 import com.deep.common.utils.Query;
 import com.deep.product.dao.AttrDao;
+import com.deep.product.model.entity.AttrAttrgroupRelationEntity;
 import com.deep.product.model.entity.AttrEntity;
 import com.deep.product.model.enume.AttrEnum;
+import com.deep.product.model.params.AttrParam;
 import com.deep.product.model.vo.AttrRespVO;
 import com.deep.product.model.vo.AttrVO;
 import com.deep.product.service.AttrAttrgroupRelationService;
@@ -16,6 +19,7 @@ import com.deep.product.service.CategoryService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -98,5 +102,50 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
 
         return attrVO;
     }
+
+    @Transactional
+    @Override
+    public void saveAttr(AttrParam attrParam) {
+        AttrEntity attrEntity = attrParam.convertTo();
+        this.save(attrEntity);
+        // 保存关联关系表
+        Long groupId = attrParam.getAttrGroupId();
+        if (groupId != null) {   // 不为空时为基础属性，需要保存关联关系表
+            saveRelation(attrEntity.getAttrId(), groupId);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void deleteAttrs(List<Long> ids) {
+        removeByIds(ids);
+        relationService.removeByAttrIds(ids);
+        Assert.notEmpty(ids, "属性id集合不能为空!");
+    }
+
+    @Transactional
+    @Override
+    public void updateAttr(AttrParam attrParam) {
+        AttrEntity attrEntity = attrParam.convertTo();
+        this.updateById(attrEntity);
+        Long groupId = attrParam.getAttrGroupId();
+        if (groupId != null) {
+            // 更新关联分类(由于前端没有传来原来的属性分组id且，只有属性id无法确定分组关联id。因此只能进行插入后再进行手动删除)
+            saveRelation(attrEntity.getAttrId(), groupId);
+        }
+    }
+
+    /**
+     * 保存属性分类关联表
+     */
+    private void saveRelation(Long attrId, Long groupId) {
+        Assert.notNull(attrId, "属性id不能为空!");
+        Assert.notNull(groupId, "分组id不能为空!");
+        AttrAttrgroupRelationEntity relationEntity = new AttrAttrgroupRelationEntity();
+        relationEntity.setAttrId(attrId);
+        relationEntity.setAttrGroupId(groupId);
+        relationService.save(relationEntity);
+    }
+
 
 }

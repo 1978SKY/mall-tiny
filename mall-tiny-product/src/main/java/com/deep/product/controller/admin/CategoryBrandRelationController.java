@@ -1,7 +1,12 @@
 package com.deep.product.controller.admin;
 
+import com.deep.common.utils.BeanUtils;
 import com.deep.common.utils.R;
+import com.deep.product.model.entity.BrandEntity;
+import com.deep.product.model.entity.CategoryBrandRelationEntity;
 import com.deep.product.model.params.CategoryBrandRelationParam;
+import com.deep.product.model.vo.BrandVO;
+import com.deep.product.service.BrandService;
 import com.deep.product.service.CategoryBrandRelationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -9,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 分类品牌关联关系
@@ -23,15 +30,32 @@ public class CategoryBrandRelationController {
     @Autowired
     private CategoryBrandRelationService relationService;
 
+    @GetMapping("/brands/list")
+    public R relationBrandsList(@RequestParam(value = "catId") Long catId) {
+        List<CategoryBrandRelationEntity> brands = relationService.getBrandByCatId(catId);
+        List<BrandVO> brandVOS = BeanUtils.transformFromInBatch(brands, BrandVO.class);
+
+        return R.ok().put("data", brandVOS);
+    }
+
+    @GetMapping("/catelog/list")
+    @ApiOperation("获取品牌已关联的分类")
+    public R categoryBrandRelationList(@RequestParam Long brandId) {
+        List<CategoryBrandRelationEntity> list =
+                relationService.hadRelations(brandId);
+
+        return R.ok().put("data", list);
+    }
+
     @PostMapping("/save")
     @ApiOperation("新增管理关系")
     public R save(@RequestBody CategoryBrandRelationParam relationParam) {
-        relationService.save(relationParam.getCatId(), relationParam.getBrandId());
+        relationService.saveRelation(relationParam.getCatelogId(), relationParam.getBrandId());
 
         return R.ok();
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     @ApiOperation("删除关联关系")
     public R delete(@RequestBody Long[] ids) {
         relationService.removeByIds(Arrays.asList(ids));

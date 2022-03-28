@@ -2,8 +2,9 @@ package com.deep.product.model.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -31,7 +32,7 @@ public class CategoryBrandRelationEntity implements Serializable {
     /**
      * 分类id
      */
-    private Long catId;
+    private Long catelogId;
     /**
      * 品牌名
      */
@@ -39,5 +40,5 @@ public class CategoryBrandRelationEntity implements Serializable {
     /**
      * 分类名
      */
-    private String catName;
+    private String catelogName;
 }

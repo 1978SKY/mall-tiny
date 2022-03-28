@@ -1,6 +1,6 @@
 package com.deep.search.config;
 
-import com.deep.search.model.properties.ESProperties;
+import com.deep.search.config.properties.ESProperties;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;

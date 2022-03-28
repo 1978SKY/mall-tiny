@@ -69,16 +69,16 @@ public class SkuEsDTO implements Serializable {
      */
     private String catalogName;
     /**
-     * 属性
+     * 基础属性
      */
-    private List<Attrs> attrs;
+    private List<BaseAttr> attrs;
 
     /**
-     * 属性
+     * 基础属性
      */
     @AllArgsConstructor
     @Data
-    public static class Attrs implements Serializable {
+    public static class BaseAttr implements Serializable {
         /**
          * 属性id
          */

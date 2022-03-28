@@ -5,6 +5,7 @@ import com.deep.common.utils.R;
 import com.deep.product.service.SkuInfoService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +25,7 @@ public class SkuInfoController {
     @Autowired
     private SkuInfoService skuInfoService;
 
-    @RequestMapping("/list")
+    @GetMapping("/list")
     @ApiOperation("获取sku页面")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = skuInfoService.queryPage(params);

@@ -35,7 +35,7 @@ public class BrandController {
         return R.ok().put("page", page);
     }
 
-    @PutMapping("/update/status")
+    @PostMapping("/update/status")
     @ApiOperation("修改状态")
     public R updateStatus(@RequestBody BrandParam brand) {
         brandService.updateStatus(brand.getBrandId(), brand.getShowStatus());
@@ -43,7 +43,7 @@ public class BrandController {
         return R.ok();
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     @ApiOperation("更新品牌")
     public R update(@RequestBody BrandParam brand) {
         BrandEntity entity = brand.convertTo();
@@ -61,7 +61,7 @@ public class BrandController {
         return R.ok();
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     @ApiOperation("删除品牌")
     public R delete(@RequestBody Long[] brandIds) {
         List<Long> Ids = Arrays.asList(brandIds);

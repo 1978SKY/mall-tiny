@@ -1,0 +1,31 @@
+server:
+  port: 11000
+
+spring:
+  application:
+    name: mall-tiny-ware
+  # MySQL配置
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/gulimall_wms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  cloud:
+    nacos:
+      discovery: # 注册中心
+        server-addr: 124.222.56.141:8848
+        namespace: 4f3b5226-066e-48e2-b7a6-d71f99290479
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*.xml   # mapper扫描路径  mapper.product
+  global-config:
+    db-config:
+      id-type: auto
+
+logging:
+  level:
+    com.deep.product: info

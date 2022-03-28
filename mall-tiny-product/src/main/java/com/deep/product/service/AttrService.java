@@ -3,6 +3,7 @@ package com.deep.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.deep.common.utils.PageUtils;
 import com.deep.product.model.entity.AttrEntity;
+import com.deep.product.model.params.AttrParam;
 import com.deep.product.model.vo.AttrVO;
 import org.springframework.lang.NonNull;
 
@@ -40,4 +41,18 @@ public interface AttrService extends IService<AttrEntity> {
      */
     AttrVO getAttrInfo(@NonNull Long attrId);
 
+    /**
+     * 保存属性规格
+     */
+    void saveAttr(AttrParam attrParam);
+
+    /**
+     * 删除属性规格
+     */
+    void deleteAttrs(List<Long> ids);
+
+    /**
+     * 更新属性规格
+     */
+    void updateAttr(AttrParam attrParam);
 }

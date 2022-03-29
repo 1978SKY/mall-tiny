@@ -23,6 +23,9 @@
         <module>renren-fast</module>
         <module>mall-tiny-gateway</module>
         <module>mall-tiny-ware</module>
+        <module>mall-tiny-order</module>
+        <module>mall-tiny-cart</module>
+        <module>mall-tiny-auth</module>
     </modules>
 
     <properties>

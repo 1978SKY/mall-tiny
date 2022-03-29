@@ -29,5 +29,5 @@ public interface PurchaseDemandService extends IService<PurchaseDemandEntity> {
     /**
      * 通过采购单更新采购需求状态
      */
-    void updateStatusByPurId(@NonNull Long purchaseId);
+    void finishDemand(@NonNull Long purchaseId);
 }

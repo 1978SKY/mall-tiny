@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class SpuInfoServiceTest {
     @Autowired
-    private SpuInfoService skuInfoService;
+    private SpuInfoService spuInfoService;
 
     @Test
     void saveSpuDetail() {

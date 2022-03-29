@@ -7,9 +7,10 @@
         <groupId>com.deep.mall</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
+    <description>订单支付模块</description>
     <modelVersion>4.0.0</modelVersion>
-    <description>商品模块</description>
-    <artifactId>mall-tiny-product</artifactId>
+
+    <artifactId>mall-tiny-order</artifactId>
 
     <properties>
         <maven.compiler.source>14</maven.compiler.source>
@@ -29,23 +30,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alicloud-oss</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
-        </dependency>
     </dependencies>
 
     <build>
@@ -57,5 +41,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

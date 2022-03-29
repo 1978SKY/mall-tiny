@@ -40,6 +40,11 @@ spring:
           predicates:
             - Path=/api/ware/**
 
+        - id: product_route
+          uri: lb://mall-tiny-order
+          predicates:
+            - Path=/api/order/**
+
         - id: admin_route
           uri: lb://renren-fast
           predicates:

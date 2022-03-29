@@ -1,0 +1,18 @@
+server:
+  port: 15000
+
+spring:
+  application:
+    name: mall-tiny-cart
+  cloud:
+    nacos:
+      discovery: # 注册中心
+        server-addr: 124.222.56.141:8848
+        namespace: 4f3b5226-066e-48e2-b7a6-d71f99290479
+
+  thymeleaf:
+    cache: false
+
+logging:
+  level:
+    com.deep.cart: info

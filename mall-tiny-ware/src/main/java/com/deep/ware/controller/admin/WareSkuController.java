@@ -1,14 +1,14 @@
-package com.deep.ware.controller;
+package com.deep.ware.controller.admin;
 
 import com.deep.common.utils.PageUtils;
 import com.deep.common.utils.R;
 import com.deep.ware.service.WareSkuService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,11 +23,19 @@ public class WareSkuController {
     @Autowired
     private WareSkuService wareSkuService;
 
-    @RequestMapping("/list")
+    @GetMapping("/list")
     @ApiOperation("商品库存列表")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = wareSkuService.queryPage(params);
 
         return R.ok().put("page", page);
+    }
+
+    @PostMapping("/hasStock")
+    @ApiOperation("判断是否有商品库存")
+    R isHasStock(@RequestBody List<Long> skuIds) {
+        Map<Long, Boolean> stockMap = wareSkuService.skuIdsHasStock(skuIds);
+
+        return R.ok().put("data", stockMap);
     }
 }

@@ -1,7 +1,8 @@
-package com.deep.ware.controller;
+package com.deep.ware.controller.admin;
 
 import com.deep.common.utils.PageUtils;
 import com.deep.common.utils.R;
+import com.deep.ware.model.entity.PurchaseEntity;
 import com.deep.ware.model.params.FinishParam;
 import com.deep.ware.model.params.MergeParam;
 import com.deep.ware.model.params.PurchaseParam;
@@ -68,7 +69,6 @@ public class PurchaseController {
 
     @PostMapping("/done")
     public R finishPurchase(@RequestBody FinishParam finishParam) {
-
         purchaseService.finishPurchase(Arrays.asList(finishParam.getId()));
         return R.ok();
     }

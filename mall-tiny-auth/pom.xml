@@ -7,9 +7,10 @@
         <groupId>com.deep.mall</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
+    <description>认证服务模块</description>
     <modelVersion>4.0.0</modelVersion>
-    <description>商品模块</description>
-    <artifactId>mall-tiny-product</artifactId>
+
+    <artifactId>mall-tiny-auth</artifactId>
 
     <properties>
         <maven.compiler.source>14</maven.compiler.source>
@@ -35,14 +36,6 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alicloud-oss</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
@@ -57,5 +50,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

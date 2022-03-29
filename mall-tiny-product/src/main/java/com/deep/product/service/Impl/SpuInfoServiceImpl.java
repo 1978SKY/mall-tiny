@@ -1,18 +1,20 @@
 package com.deep.product.service.Impl;
 
+import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.deep.common.exception.FeignRequestException;
 import com.deep.common.utils.BeanUtils;
 import com.deep.common.utils.PageUtils;
 import com.deep.common.utils.Query;
 import com.deep.common.utils.R;
 import com.deep.product.dao.SpuInfoDao;
 import com.deep.product.feign.SearchFeignService;
+import com.deep.product.feign.WareFeignService;
 import com.deep.product.model.dto.SkuEsDTO;
 import com.deep.product.model.entity.*;
-import com.deep.product.model.params.SkuParam;
 import com.deep.product.model.params.SpuSaveParam;
 import com.deep.product.service.*;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -41,8 +43,6 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
     @Autowired
     private BrandService brandService;
     @Autowired
-    private SearchFeignService searchFeignService;
-    @Autowired
     private SkuInfoService skuInfoService;
     @Autowired
     private SpuInfoDescService spuInfoDescService;
@@ -50,6 +50,10 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
     private SpuImagesService spuImagesService;
     @Autowired
     private ProductAttrValueService productAttrValueService;
+    @Autowired
+    private SearchFeignService searchFeignService;
+    @Autowired
+    private WareFeignService wareFeignService;
 
     @Override
 
@@ -134,6 +138,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         List<SkuInfoEntity> skuInfoEntities = skuInfoService
                 .list(new QueryWrapper<SkuInfoEntity>().eq("spu_id", spuId));
         List<Long> skuIds = skuInfoEntities.stream().map(SkuInfoEntity::getSkuId).collect(Collectors.toList());
+        // 获取库存
         Map<Long, Boolean> stockMap = hasStock(skuIds);
         List<SkuEsDTO> skuEsDTOList = skuInfoEntities.stream().map(item -> {
             SkuEsDTO skuEsDTO = BeanUtils.transformFrom(item, SkuEsDTO.class);
@@ -169,18 +174,13 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
      */
     private Map<Long, Boolean> hasStock(List<Long> skuIds) {
         Assert.notEmpty(skuIds, "商品id集合不能为空!");
-//        List<SkuHasStockTO> skuHasStockTOS = wareFeignService.getSkusHasStock(skuIdList);
-//        if (skuHasStockTOS.size() <= 0) {
-//            throw new FeignRequestException("仓库存储远程服务调用失败!");
-//        }
-        Map<Long, Boolean> stockMap = new HashMap<>();
-//        for (SkuHasStockTO skStockTO : skuHasStockTOS) {
-//            stockMap.put(skStockTO.getSkuId(), skStockTO.getHasStock());
-//        }
-        for (Long skuId : skuIds) {
-            stockMap.put(skuId, true);
+
+        R r = wareFeignService.isHasStock(skuIds);
+        if (r.getCode() != 0) {
+            throw new FeignRequestException("仓库系统远程服务调用失败!");
         }
-        return stockMap;
+        return r.getData("data", new TypeReference<>() {
+        });
     }
 
 }

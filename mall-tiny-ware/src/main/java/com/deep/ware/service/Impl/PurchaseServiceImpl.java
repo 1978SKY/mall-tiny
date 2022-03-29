@@ -12,6 +12,7 @@ import com.deep.ware.model.entity.PurchaseDemandEntity;
 import com.deep.ware.model.entity.PurchaseEntity;
 import com.deep.ware.service.PurchaseDemandService;
 import com.deep.ware.service.PurchaseService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 采购单
@@ -27,6 +29,7 @@ import java.util.Map;
  * @author Deep
  * @date 2022/3/28
  */
+@Slf4j
 @Service("purchaseService")
 public class PurchaseServiceImpl extends ServiceImpl<PurchaseDao, PurchaseEntity> implements PurchaseService {
     @Autowired
@@ -65,14 +68,15 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseDao, PurchaseEntity
     public void merge(Long purchaseId, List<Long> items) {
         Assert.notEmpty(items, "采购项不能为空!");
         if (purchaseId == null) {
-            // create purchase order and receive
+            // create purchase order
             PurchaseEntity purchaseEntity = new PurchaseEntity();
-            purchaseEntity.setStatus(WareConstant.PurchaseStatusEnum.RECEIVE.getCode());
+            purchaseEntity.setStatus(WareConstant.PurchaseStatusEnum.CREATED.getCode());
             this.save(purchaseEntity);
             purchaseId = purchaseEntity.getId();
         } else {
             this.update(new UpdateWrapper<PurchaseEntity>()
-                    .eq("status", WareConstant.PurchaseStatusEnum.RECEIVE.getCode()));
+                    .eq("id", purchaseId)
+                    .set("status", WareConstant.PurchaseStatusEnum.RECEIVE.getCode()));
         }
         demandService.updatePurchaseId(purchaseId, items);
     }
@@ -81,11 +85,18 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseDao, PurchaseEntity
     @Override
     public void finishPurchase(List<Long> ids) {
         Assert.notEmpty(ids, "订单id集合不能为空!");
-        List<PurchaseEntity> purchaseEntities = this.listByIds(ids);
-        purchaseEntities.stream().forEach(item -> {
-            demandService.updateStatusByPurId(item.getId());
+        // get purchase order ids
+        ids = listByIds(ids).stream()
+                .filter(item -> item.getStatus() < WareConstant.PurchaseStatusEnum.FINISH.getCode()
+                        || item.getStatus() == WareConstant.PurchaseStatusEnum.HASERROR.getCode())
+                .map(item -> item.getId())
+                .collect(Collectors.toList());
+
+        ids.forEach(purId -> {
+            demandService.finishDemand(purId);
+            // update purchase order status
             this.update(new UpdateWrapper<PurchaseEntity>()
-                    .eq("id", item.getId())
+                    .eq("id", purId)
                     .set("status", WareConstant.PurchaseStatusEnum.FINISH.getCode()));
         });
     }

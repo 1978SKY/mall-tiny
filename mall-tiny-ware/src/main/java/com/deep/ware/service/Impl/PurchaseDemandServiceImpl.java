@@ -4,14 +4,21 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.deep.common.utils.BeanUtils;
 import com.deep.common.utils.PageUtils;
 import com.deep.common.utils.Query;
 import com.deep.ware.dao.PurchaseDemandDao;
 import com.deep.ware.model.constant.WareConstant;
 import com.deep.ware.model.entity.PurchaseDemandEntity;
+import com.deep.ware.model.entity.WareInfoEntity;
+import com.deep.ware.model.entity.WareSkuEntity;
 import com.deep.ware.service.PurchaseDemandService;
+import com.deep.ware.service.WareSkuService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -26,9 +33,13 @@ import java.util.stream.Collectors;
  * @author Deep
  * @date 2022/3/28
  */
+@Slf4j
 @Service("purchaseDetailService")
 public class PurchaseDemandServiceImpl extends ServiceImpl<PurchaseDemandDao, PurchaseDemandEntity>
         implements PurchaseDemandService {
+
+    @Autowired
+    private WareSkuService wareSkuService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -64,9 +75,17 @@ public class PurchaseDemandServiceImpl extends ServiceImpl<PurchaseDemandDao, Pu
         this.updateBatchById(demandEntities);
     }
 
+    @Transactional
     @Override
-    public void updateStatusByPurId(Long purchaseId) {
+    public void finishDemand(Long purchaseId) {
         Assert.notNull(purchaseId, "采购单id不能为空!");
+
+        // query demand
+        List<PurchaseDemandEntity> demandEntities =
+                list(new QueryWrapper<PurchaseDemandEntity>().eq("purchase_id", purchaseId));
+        // finish purchase
+        wareSkuService.finishPurchase(demandEntities);
+        // update demand status
         this.update(new UpdateWrapper<PurchaseDemandEntity>()
                 .eq("purchase_id", purchaseId)
                 .set("status", WareConstant.PurchaseDemandStatusEnum.FINISH.getCode()));

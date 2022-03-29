@@ -1,4 +1,4 @@
-package com.deep.ware.controller;
+package com.deep.ware.controller.admin;
 
 import com.deep.common.utils.PageUtils;
 import com.deep.common.utils.R;

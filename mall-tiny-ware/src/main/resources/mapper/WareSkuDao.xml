@@ -12,5 +12,12 @@
         <result property="skuName" column="sku_name"/>
         <result property="stockLocked" column="stock_locked"/>
     </resultMap>
+    <select id="getBySkuIds" resultMap="wareSkuMap">
+        select * from `wms_ware_sku`
+        where
+        <foreach collection="skuIds" item="item" separator="or">
+            sku_id = #{item}
+        </foreach>
+    </select>
 
 </mapper>

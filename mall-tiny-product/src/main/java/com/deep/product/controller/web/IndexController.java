@@ -21,7 +21,7 @@ import java.util.List;
  */
 @Api(value = "商城首页")
 @Controller
-//@RequestMapping("/api/product")
+@RequestMapping("/api/product")
 public class IndexController {
     @Autowired
     private CategoryService categoryService;
@@ -35,7 +35,7 @@ public class IndexController {
         return categoryService.getCategoryTree();
     }
 
-    @GetMapping({"/", "index.html"})
+    @GetMapping({"/", "index"})
     @ApiOperation("获取首页")
     public String indexPage(Model model) {
         List<CategoryEntity> entities = categoryService.getLevel(1);

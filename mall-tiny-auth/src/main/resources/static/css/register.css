@@ -1,0 +1,118 @@
+
+.head{
+    height: 110px;
+    background: url(../reg-imgs/headbg.jpg) repeat-x left bottom;
+}
+.head-pc{
+    width: 1200px;
+    margin: 0 auto;
+    background: forestgreen;
+}
+.head-left img{
+    width: 160px;
+    height: 50px;
+    float: left;
+    margin-top: 24px;
+} 
+.head-left span{
+    float: left;
+    height: 34px;
+    line-height: 34px;
+    font-size: 24px;
+    color: #333;
+    margin: 34px 20px 0;
+}
+.head-right{    
+    font-size: 16px;
+    float: right;
+    margin-top: 55px;
+    color: #999;
+}
+.head-right a{
+    color: #e22;
+}
+.main{
+    height: 500px;
+}
+.main-pc{
+    width: 1200px;
+    height: 500px;
+    margin:60px auto 180px;
+}
+
+.form-box{
+    width: 400px;height: 500px;
+    margin: 0 auto;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.form-input{
+    width: 400px;height: 52px;
+    background: white;
+    border: #999 1px solid;
+}
+.form-input label{
+    float: left;
+    width: 87px;
+    height: 50px;
+    line-height: 50px;
+    padding-left: 20px;
+}
+
+.head-input{
+    border: 0 none;
+    font-size: 14px;
+    width: 212px;
+    height: 19px;
+    padding: 16px 016px;
+    border: 0 none ;outline:none;cursor: pointer;
+}
+.head-btn{
+    width: 400px;
+    height: 54px;
+    line-height: 54px;
+    text-align: center;
+    color: #fff;
+    background: #e2231a;
+    border: 0;
+    font-size: 16px;
+    font-family: "Microsoft YaHei","Hiragino Sans GB";
+    cursor: pointer;
+} 
+.other-reg {
+    margin-top: 28px;
+}
+.other-reg a{color: #000;}
+.other-reg a{margin:0 30px;}
+
+.form-footer{
+    margin-top: 180px;
+    height: 120px;
+}
+.footer-pc{
+    width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+.footer-links{
+    color: #999;
+    font-size: 12px;
+}
+.footer-ge{
+    margin: 0 10px;
+    color: #ccc;
+}
+.links{
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 12px;color: #999;
+}
+
+/* erorr */
+.error{
+    margin-left: 240px;
+}

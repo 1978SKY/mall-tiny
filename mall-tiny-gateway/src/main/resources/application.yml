@@ -30,6 +30,11 @@ spring:
             maxAge: 360000          # 这次跨域检测的有效期
       # 路由配置
       routes:
+        - id: auth_route
+          uri: lb://mall-tiny-auth
+          predicates:
+            - Path=/api/auth/**
+
         - id: product_route
           uri: lb://mall-tiny-product
           predicates:
@@ -40,7 +45,7 @@ spring:
           predicates:
             - Path=/api/ware/**
 
-        - id: product_route
+        - id: order_route
           uri: lb://mall-tiny-order
           predicates:
             - Path=/api/order/**

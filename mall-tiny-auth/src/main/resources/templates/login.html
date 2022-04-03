@@ -55,7 +55,10 @@
             </div>
             <div class="coagent" style="width: 100%;height: 45px;">
                 <ul>
-                    <li>QQ<span class="footer-ge">|</span></li>
+                    <li>
+                        <a href="https://gitee.com/oauth/authorize?client_id=672b6b1a905b8d2395e045349531e5384bfe81423359460142e9d2f388573795&redirect_uri=http://localhost:8000/api/auth/oauth2.0/gitee/doLogin&response_type=code" style="color: #2E2D3C">Gitee</a>
+                        <span class="footer-ge">|</span>
+                    </li>
                     <li>微信</li>
                     <li id="rBtn" class="coagent-right">>立即注册</li>
                 </ul>
@@ -118,10 +121,15 @@
         };
         user.username = document.getElementById('username').value;
         user.password = document.getElementById('password').value;
-        if (user.username === "")
+        if (user.username === "") {
             alert("请输入用户名");
-        if (user.password === "")
+            return;
+        }
+
+        if (user.password === "") {
             alert("请输入密码");
+            return;
+        }
 
         $.ajax({
             type: 'POST',
@@ -131,7 +139,7 @@
             data: JSON.stringify(user),
             success: function (data) {
                 alert("success:" + data);
-                window.location.href = "http://localhost:88/api/auth/login";
+                window.location.href = "http://localhost:88/api/product/";
             },
             error: function (data) {
                 alert(data + "服务器异常!");

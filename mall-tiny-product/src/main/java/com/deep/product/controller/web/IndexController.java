@@ -39,7 +39,7 @@ public class IndexController {
     @ApiOperation("获取首页")
     public String indexPage(Model model) {
         List<CategoryEntity> entities = categoryService.getLevel(1);
-        model.addAttribute("categorys", entities);
+        model.addAttribute("catalogs", entities);
         model.addAttribute("items", null);
         return "index";
     }

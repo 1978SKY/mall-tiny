@@ -2,6 +2,12 @@ server:
   port: 10002
 
 spring:
+  application:
+    name: mall-tiny-search
+  redis:
+    port: 6379
+    host: 124.222.56.141
+    password: Yi1Ge2Ren3Redis.
   cloud:
     # nacos配置
     nacos:

@@ -30,10 +30,10 @@ public class ItemController {
     @GetMapping({"/{skuId}.html"})
     @ApiOperation("获取商品详情")
     public String skuItem(@PathVariable("skuId") Long skuId, Model model) {
-        long start = System.currentTimeMillis();
+//        long start = System.currentTimeMillis();
         SkuItemVO result = skuInfoService.queryItem(skuId);
-        long end = System.currentTimeMillis();
-        log.info("消耗时间：{}ms", (end - start));
+//        long end = System.currentTimeMillis();
+//        log.info("消耗时间：{}ms", (end - start));
         model.addAttribute("item", result);
         return "item";
     }

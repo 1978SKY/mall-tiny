@@ -11,7 +11,7 @@ package com.deep.common.utils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.deep.common.constant.PageConstant;
+import com.deep.common.model.constant.PageConstant;
 import com.deep.common.xss.SQLFilter;
 import org.apache.commons.lang.StringUtils;
 

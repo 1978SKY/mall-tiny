@@ -27,12 +27,13 @@
             <!--商城logo-->
             <a href="/static/#" class="img"><img src="/static/index/img/logo.jpg"/></a>
             <ul>
-                <li>
-                    <a th:if="${session.loginUser != null}">欢迎, [[${session.loginUser.nickname}]]</a>
-                    <a th:if="${session.loginUser == null}" href="http://auth.mall.com/api/auth/login.html">你好，请登录</a>
+                <li th:if="${session.loginUser == null}">
+                    <a href="http://localhost:8000/api/auth/login">你好，请登录</a>
+                    <a href="http://localhost:8000/api/auth/register" class="li_2">免费注册</a>
                 </li>
-                <li>
-                    <a th:if="${session.loginUser == null}" href="http://auth.mall.com/api/auth/reg.html" class="li_2">免费注册</a>
+                <li th:if="${session.loginUser != null}">
+                    <a>欢迎, [[${session.loginUser.nickname}]]</a>
+                    <a href="http://localhost:8000/api/auth/login/logout">|&nbsp;&nbsp;退出</a>
                 </li>
                 <span>|</span>
                 <li><a href="http://order.mall.com/api/order/listWithItem">我的订单</a></li>
@@ -43,7 +44,7 @@
     <div class="header_sous">
         <div class="header_form">
             <input id="searchText" type="text" placeholder=""/>
-            <span style="background: url('/static/index/img/img_12.png') 0 -1px;"></span>
+            <span style="background: url('http://124.222.56.141/static/index/img/img_12.png') 0 -1px;"></span>
             <a href="javascript:search()"><img src="/static/index/img/img_09.png" onclick="search()"/></a>
         </div>
         <div class="header_ico">
@@ -79,9 +80,9 @@
         <div class="header_banner">
             <div class="header_main_left">
                 <ul>
-                    <li th:each="category : ${categorys}">
-                        <a href="http://search.mall.com/api/search/" class="header_main_left_a"
-                           th:attr="ctg-data=${category.catId}"><b th:text="${category.name}">家用电器</b></a>
+                    <li th:each="catalog : ${catalogs}">
+                        <a href="http://localhost:88/api/search/" class="header_main_left_a"
+                           th:attr="ctg-data=${catalog.catId}"><b th:text="${catalog.name}">家用电器</b></a>
                     </li>
                 </ul>
 
@@ -92,11 +93,9 @@
                         <div class="swiper-slide">
                             <a href="/static/#"><img src="/static/index/img/lunbo.png"/></a>
                         </div>
-
                         <div class="swiper-slide">
                             <a href="/static/#"><img src="/static/index/img/lunbo3.png"/></a>
                         </div>
-
                         <div class="swiper-slide">
                             <a href="/static/#"><img src="/static/index/img/lunbo6.png"/></a>
                         </div>
@@ -121,9 +120,9 @@
                         </div>
                         <div class="user_info_show">
                             <p class="">Hi, 欢迎来到!</p>
-                            <p>
-                                <a href="/static/#" class="">登录</a>
-                                <a href="/static/#" class="">注册</a>
+                            <p th:if="${session.loginUser == null}">
+                                <a href="http://localhost:8000/api/auth/login">登录</a>
+                                <a href="http://localhost:8000/api/auth/register">注册</a>
                             </p>
                         </div>
                     </div>
@@ -313,7 +312,7 @@
 <script type="text/javascript">
     function search() {
         var keyword = $("#searchText").val()
-        window.location.href = "http://search.mall.com/api/search/search.html?keyword=" + keyword;
+        window.location.href = "http://localhost:88/api/search/?keyword=" + keyword;
     }
 
     function toDetail(skuId) {

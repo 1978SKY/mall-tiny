@@ -11,7 +11,7 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
- * 缓存配置
+ * Redis缓存配置
  *
  * @author Deep
  * @date 2022/3/13

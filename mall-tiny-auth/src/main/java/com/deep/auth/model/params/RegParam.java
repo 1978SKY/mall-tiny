@@ -1,4 +1,4 @@
-package com.deep.mall.model.params;
+package com.deep.auth.model.params;
 
 import lombok.Data;
 

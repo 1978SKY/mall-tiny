@@ -50,6 +50,11 @@ spring:
           predicates:
             - Path=/api/order/**
 
+        - id: search_route
+          uri: lb://mall-tiny-search
+          predicates:
+            - Path=/api/search/**
+
         - id: admin_route
           uri: lb://renren-fast
           predicates:

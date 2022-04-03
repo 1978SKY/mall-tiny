@@ -6,7 +6,7 @@
  * 版权所有，侵权必究！
  */
 
-package com.deep.common.constant;
+package com.deep.common.model.constant;
 
 /**
  * 分页常量

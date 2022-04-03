@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * 检索页面
@@ -18,13 +19,14 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @date 2022/3/20
  */
 @Slf4j
+@Api(value = "检索控制器")
 @Controller
-@Api(value = "检索控制器", tags = "searchController")
+@RequestMapping("/api/search")
 public class SearchController {
     @Autowired
     private SearchService searchService;
 
-    @GetMapping({"/", "/search", "search.html"})
+    @GetMapping({"/", "/search"})
     @ApiOperation("检索")
     public String getPage(SearchParam searchParam, Model model) {
         SearchResultVO result = searchService.search(searchParam);

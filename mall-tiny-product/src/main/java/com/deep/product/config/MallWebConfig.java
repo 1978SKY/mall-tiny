@@ -1,4 +1,4 @@
-package com.deep.mall.config;
+package com.deep.product.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -13,14 +13,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class MallWebConfig implements WebMvcConfigurer {
-    /**
-     * 视图控制器（试图映射可以方便页面跳转（省略controller里面的方法））
-     */
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/api/auth/login").setViewName("login");
-        registry.addViewController("/api/auth/register").setViewName("register");
-    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

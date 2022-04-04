@@ -1,6 +1,6 @@
 package com.deep.auth.controller.web;
 
-import com.deep.auth.model.constant.AuthConstant;
+import com.deep.common.model.constant.AuthConstant;
 import com.deep.auth.model.entity.MemberEntity;
 import com.deep.auth.model.params.LoginParam;
 import com.deep.auth.model.params.RegParam;

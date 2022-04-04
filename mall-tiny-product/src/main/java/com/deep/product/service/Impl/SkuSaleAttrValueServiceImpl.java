@@ -1,5 +1,6 @@
 package com.deep.product.service.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.deep.product.dao.SkuSaleAttrValueDao;
 import com.deep.product.model.entity.SkuSaleAttrValueEntity;
@@ -27,5 +28,12 @@ public class SkuSaleAttrValueServiceImpl extends ServiceImpl<SkuSaleAttrValueDao
         Assert.notNull(spuId, "spuId不能为空!");
 
         return skuSaleAttrValueDao.getSaleAttrBySpuId(spuId);
+    }
+
+    @Override
+    public List<SkuSaleAttrValueEntity> getSaleAttrsBySkuId(Long skuId) {
+        Assert.notNull(skuId, "商品id不能为空!");
+        QueryWrapper<SkuSaleAttrValueEntity> wrapper = new QueryWrapper<>();
+        return list(wrapper.eq("sku_id", skuId));
     }
 }

@@ -86,10 +86,6 @@ public class MemberDTO implements Serializable {
      */
     private Integer status;
     /**
-     * 注册时间
-     */
-    private Date createTime;
-    /**
      * 社交登录uid
      */
     private String socialUid;

@@ -411,7 +411,7 @@
     $(".addToCart").click(function () {
         let skuId = $(this).attr("skuId");
         let num = $("#productNum").val();
-        location.href = "http://cart.mall.com/api/cart/addCartItem?skuId=" + skuId + "&num=" + num;
+        location.href = "http://localhost:88/api/cart/addToCart?skuId=" + skuId + "&num=" + num;
         return false;
     });
 
@@ -447,6 +447,7 @@
             $("#cartBtn").attr("class", "box-btns-two-off");
         }
     }*/
+
     // 切换商品
     $(".sku_attr_value").click(function () {
         var skus = new Array();

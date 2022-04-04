@@ -11,7 +11,6 @@ import com.deep.product.model.entity.SkuImagesEntity;
 import com.deep.product.model.entity.SkuInfoEntity;
 import com.deep.product.model.entity.SkuSaleAttrValueEntity;
 import com.deep.product.model.entity.SpuInfoDescEntity;
-import com.deep.product.model.params.SaleAttrParam;
 import com.deep.product.model.params.SkuImageParam;
 import com.deep.product.model.params.SkuParam;
 import com.deep.product.model.params.SpuSaveParam;
@@ -27,8 +26,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 
 /**
@@ -86,7 +83,7 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
         return skuItemVO;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void savSkuParams(Long spuId, SpuSaveParam spuSaveParam) {
         Assert.notNull(spuId, "spuId不能为空!");
@@ -116,6 +113,19 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
         });
     }
 
+    @Override
+    public List<String> getSkuSaleAttr(Long skuId) {
+        Assert.notNull(skuId, "商品id不能为空!");
+
+        List<SkuSaleAttrValueEntity> saleAttrs = skuSaleAttrValueService.getSaleAttrsBySkuId(skuId);
+        return saleAttrs.stream()
+                .map(item -> item.getAttrName() + ":" + item.getAttrValue())
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 获取默认图片
+     */
     private String getDefaultImag(List<SkuImageParam> images) {
         Assert.notEmpty(images, "图片集合不能为空!");
         for (SkuImageParam image : images) {

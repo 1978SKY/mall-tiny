@@ -1,17 +1,15 @@
 package com.deep.auth.controller.web;
 
 import com.alibaba.fastjson.JSON;
-import com.deep.auth.model.constant.AuthConstant;
+import com.deep.common.model.constant.AuthConstant;
 import com.deep.auth.model.entity.MemberEntity;
 import com.deep.auth.model.params.SocialParam;
 import com.deep.auth.service.LoginService;
-import com.deep.auth.service.MemberService;
 import com.deep.common.model.dto.MemberDTO;
 import com.deep.common.utils.BeanUtils;
 import com.deep.common.utils.HttpUtils;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;

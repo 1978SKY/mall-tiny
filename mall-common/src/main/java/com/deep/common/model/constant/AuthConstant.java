@@ -1,4 +1,4 @@
-package com.deep.auth.model.constant;
+package com.deep.common.model.constant;
 
 /**
  * @author Deep

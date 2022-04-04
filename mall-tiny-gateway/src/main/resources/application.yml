@@ -35,6 +35,11 @@ spring:
           predicates:
             - Path=/api/auth/**
 
+        - id: cart_route
+          uri: lb://mall-tiny-cart
+          predicates:
+            - Path=/api/cart/**
+
         - id: product_route
           uri: lb://mall-tiny-product
           predicates:

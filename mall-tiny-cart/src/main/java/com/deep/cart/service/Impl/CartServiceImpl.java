@@ -38,9 +38,8 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartVO getCartDetail() {
-        BoundHashOperations<String, Object, Object> ops = getCartOps();
         // 获取购物项数据
-        List<CartItemVO> items = getCartItems(ops);
+        List<CartItemVO> items = getCartItems();
         // 保存到购物车
         CartVO cart = new CartVO();
         cart.setItems(items);
@@ -73,6 +72,19 @@ public class CartServiceImpl implements CartService {
 
         return JSON.parseObject(json, CartItemVO.class);
     }
+
+    @Override
+    public void updateCheckStatus(Long skuId, Integer checked) {
+        Assert.notNull(skuId, "商品id不能为空!");
+        BoundHashOperations<String, Object, Object> ops = getCartOps();
+        String json = (String) ops.get(skuId.toString());
+        CartItemVO itemVO = JSON.parseObject(json, CartItemVO.class);
+        assert itemVO != null;
+        itemVO.setCheck(checked == 1);
+
+        ops.put(skuId.toString(), JSON.toJSONString(itemVO));
+    }
+
 
     /**
      * 创建并添加到redis
@@ -112,10 +124,9 @@ public class CartServiceImpl implements CartService {
     }
 
 
-    /**
-     * 获取购物车里面的所有商品
-     */
-    private List<CartItemVO> getCartItems(BoundHashOperations<String, Object, Object> ops) {
+    @Override
+    public List<CartItemVO> getCartItems() {
+        BoundHashOperations<String, Object, Object> ops = getCartOps();
         // Get items from redis
         List<Object> values = ops.values();
         if (!CollectionUtils.isEmpty(values)) {

@@ -5,106 +5,102 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="http://at.alicdn.com/t/font_2887659_qlwlmykrhnq.css">
-    <link rel="stylesheet" th:href="@{/css/register.css}">
-    <link rel="stylesheet" th:href="@{/css/reset.css}">
-    <title>京东注册</title>
+    <script th:src="@{/js/jQuery/jquery-3.6.0.min.js}"></script>
+    <title>注册</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+        }
+
+        .container {
+            height: 100%;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(200deg, #0c3483, #a2b6df);
+        }
+
+        .Register-wrapper {
+            background-color: #fff;
+            width: 358px;
+            height: 588px;
+            border-radius: 15px;
+            padding: 0 50px;
+            position: relative;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .header {
+            font-size: 38px;
+            font-weight: bold;
+            text-align: center;
+            line-height: 200px;
+        }
+
+        .input-item {
+            display: block;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 0;
+            padding: 10px;
+            border-bottom: 1px solid rgb(128, 125, 125);
+            font-size: 15px;
+            outline: none;
+        }
+
+        .input-item placeholder {
+            text-transform: uppercase;
+        }
+
+        .btn {
+            text-align: center;
+            padding: 14px;
+            width: 105%;
+            margin-top: 20px;
+            background-image: linear-gradient(to right, #a6c1ee, #fbc2eb);
+            color: #fff;
+            border: none;
+        }
+    </style>
 </head>
+
 <body>
-<div class="head">
-    <div class="head-pc">
-        <div class="head-left">
-            <img th:src="@{/reg-imgs/jd-logo.png}" alt="">
-            <span>欢迎注册</span>
-        </div>
-        <div class="head-right" style="cursor: default;">已有账号？
-            <a id="loginBtn">请登录></a>
-        </div>
-    </div>
-</div>
-<div class="main">
-    <div class="main-pc">
-        <div class="head-form">
-            <form action="">
-                <div class="form-box">
-                    <div class="form-input">
-                        <label>用 户 名</label>
-                        <input type="text" placeholder="您的账户和登录名" class="head-input" id="username" name='username'>
-                    </div>
-                    <div class="error erroruser" style="width:400px;height: 30px;color: red;font-size: 12px;">
-                        <span id="username-error"></span>
-                    </div>
-                    <div class="form-input">
-                        <label>设置密码</label>
-                        <input type="text" placeholder="建议使用两种或两种以上字符组合" class="head-input" id="paw" name='password'>
-                    </div>
-                    <div class="error errorpaw" style="width:400px;height: 30px;color: red;font-size: 12px;">
-                        <span></span>
-                    </div>
-                    <div class="form-input">
-                        <label>确认密码</label>
-                        <input type="text" placeholder="请再次输入密码" class="head-input" id="pawre" name='repass'>
-                    </div>
-                    <div class="error errorpawre" style="width:400px;height: 30px;color: red;font-size: 12px;">
-                        <span></span>
-                    </div>
-                    <div class="form-input">
-                        <label>手 机 号</label>
-                        <input type="text" placeholder="请输入您的手机号" class="head-input" id="phonenum" name='tel'>
-                    </div>
-                    <div class="error errorphone" style="width:400px;height: 30px;color: red;font-size: 12px;">
-                        <span></span>
-                    </div>
-                    <div class="form-input">
-                        <button type="button" class="head-btn">立&nbsp; 即&nbsp; 注&nbsp; 册</button>
-                    </div>
-                    <div class="other-reg">
-                        <a href=""><i class="iconfont icon-touxiang"></i>企业用户注册</a>
-                        <a href=""><i class="iconfont icon-wangluo"></i>海外用户注册</a>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<script th:src="@{/js/jQuery/jquery-3.6.0.js}"></script>
-<script>
-
-    //为表单元素添加失去焦点事件
-</script>
-<div class="form-footer">
-    <div class="footer-pc">
-        <div class="footer-links">
-            <a>关于我们</a><span class="footer-ge">|</span>
-            <a>联系我们</a><span class="footer-ge">|</span>
-            <a>人才招聘</a><span class="footer-ge">|</span>
-            <a>商家入驻</a><span class="footer-ge">|</span>
-            <a>广告服务</a><span class="footer-ge">|</span>
-            <a>手机京东</a><span class="footer-ge">|</span>
-            <a>友情链接</a><span class="footer-ge">|</span>
-            <a>销售联盟</a><span class="footer-ge">|</span>
-            <a>京东社区</a><span class="footer-ge">|</span>
-            <a>京东公益</a><span class="footer-ge">|</span>
-            <a>Engish Site</a>
-        </div>
-        <div class="links">
-            <a>Copyrightc2004-2022京东JD.com 版权所有</a>
+<div class="container">
+    <div class="Register-wrapper">
+        <div class="header">Register</div>
+        <div class="form-wrapper">
+            <input type="text" name="username" placeholder="username" class="input-item" id="username-input">
+            <input type="text" name='password' placeholder="password" class="input-item" id="password-input">
+            <input type="text" name='repassword' placeholder="confirm password" class="input-item"
+                   id="repassword-input">
+            <input type="text" name='phone' placeholder="phone" class="input-item" id="phone-input">
+            <button type="button" class="btn" onclick="submitForm()">立&nbsp; 即&nbsp; 注&nbsp; 册</button>
         </div>
     </div>
 </div>
 </body>
 
-<!--<script th:src="@{/js/register.js}">-->
 <script>
-    var btn = document.querySelector(".head-btn");
-
-    btn.onclick = function () {
-        const username = document.querySelector("[name='username']").value;
-        const password = document.querySelector("[name='password']").value;
-        const phone = document.querySelector("[name='tel']").value;
+    function submitForm() {
+        const username = document.getElementById("username-input").value;
+        const password = document.getElementById("password-input").value;
+        const repassword = document.getElementById("repassword-input").value;
+        const phone = document.getElementById("phone-input").value;
         if (username === "" || password === "") {
             alert("用户名密码不能为空!");
+            return false;
+        }
+        if (password !=repassword) {
+            alert("两次密码不一致!");
             return false;
         }
         if (phone === "") {

@@ -1,6 +1,5 @@
 server:
   port: 9000
-
 spring:
   application:
     name: mall-tiny-order
@@ -11,6 +10,10 @@ spring:
     url: jdbc:mysql://localhost:3306/gulimall_oms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
+  redis:
+    port: 6379
+    host: 124.222.56.141
+    password: Yi1Ge2Ren3Redis.
   cloud:
     nacos:
       discovery: # 注册中心
@@ -18,6 +21,11 @@ spring:
         namespace: 4f3b5226-066e-48e2-b7a6-d71f99290479
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
+
+  # 模板引擎
+  thymeleaf:
+    cache: false  # 关闭thymeleaf缓存（开发期间可以实时看到页面变化，上线后开启缓存可以提高性能）
+
 # mapper扫描路径
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*.xml   # mapper扫描路径

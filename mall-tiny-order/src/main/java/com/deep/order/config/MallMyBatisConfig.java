@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableTransactionManagement    // 开启事务
-@MapperScan("com.deep.product.dao")
+@MapperScan("com.deep.order.dao")
 @MapperScan(basePackages = "com.deep.order.dao")
 public class MallMyBatisConfig {
     /**

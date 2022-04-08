@@ -5,6 +5,7 @@ import com.deep.cart.model.vo.CartVO;
 import org.springframework.lang.NonNull;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
  * 购物车
@@ -27,12 +28,28 @@ public interface CartService {
      * @param skuId 商品id
      * @param count 商品数量
      */
-    void addToCart(@NonNull Long skuId,int count);
+    void addToCart(@NonNull Long skuId, int count);
 
     /**
      * 获取添加到购物车中的商品
+     *
      * @param skuId 商品id
      * @return 商品
      */
     CartItemVO getCartItem(@Nonnull Long skuId);
+
+    /**
+     * 更新商品选中状态
+     *
+     * @param skuId   商品id
+     * @param checked 选中状态
+     */
+    void updateCheckStatus(Long skuId, Integer checked);
+
+    /**
+     * 获取购物项数据
+     *
+     * @return 购物项集合
+     */
+    List<CartItemVO> getCartItems();
 }

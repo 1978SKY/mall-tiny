@@ -11,6 +11,10 @@ spring:
     url: jdbc:mysql://localhost:3306/gulimall_wms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
+  redis:
+    port: 6379
+    host: 124.222.56.141
+    password: Yi1Ge2Ren3Redis.
   cloud:
     nacos:
       discovery: # 注册中心

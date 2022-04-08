@@ -1,10 +1,10 @@
 package com.deep.auth.controller.web;
 
-import com.deep.common.model.constant.AuthConstant;
 import com.deep.auth.model.entity.MemberEntity;
 import com.deep.auth.model.params.LoginParam;
 import com.deep.auth.model.params.RegParam;
 import com.deep.auth.service.LoginService;
+import com.deep.common.model.constant.AuthConstant;
 import com.deep.common.model.dto.MemberDTO;
 import com.deep.common.utils.BeanUtils;
 import io.swagger.annotations.Api;
@@ -60,5 +60,4 @@ public class LoginController {
         System.out.println(regParam);
         return "Do register success";
     }
-
 }

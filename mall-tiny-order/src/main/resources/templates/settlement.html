@@ -5,8 +5,8 @@
     <meta charset="utf-8"/>
     <base href="http://124.222.56.141">
     <script src="/static/order/confirm/js/jquery-3.1.1.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/static/order/confirm/css/JD2.css"/>
-    <title>结算页</title>
+    <link rel="stylesheet" type="text/css" href="../static/mall/order/css/settlement.css"/>
+    <title>填写订单</title>
 </head>
 
 <body>
@@ -16,7 +16,7 @@
         <ul class="header-left">
             <li>
                 <img src="/static/order/confirm/img/header_1.png"/>
-                <a href="http://gulimall.com">谷粒学院首页</a>
+                <a href="http://localhost:88/api/product/">首页</a>
             </li>
         </ul>
         <ul class="header-right">
@@ -25,7 +25,7 @@
                     src="/static/order/confirm/img/06.png"/></li>
             <li>|</li>
             <li class="spacer"></li>
-            <li><a href="http://member.gulimall.com/memberOrder.html">我的订单</a></li>
+            <li><a href="http://localhost:88/api/order/">我的订单</a></li>
         </ul>
         <div style="clear: both;"></div>
     </div>
@@ -39,8 +39,9 @@
 </div>
 
 <!--主体部分-->
-<p class="p1">填写并核对订单信息 <span style="color: red" th:if="${msg!=null}" th:text="${msg}"></span></p>
-<div class="section">
+<p class="p1" style="margin-left: 10%;">填写并核对订单信息 <span style="color: red" th:if="${msg!=null}" th:text="${msg}"></span>
+</p>
+<div class="section" style="margin-left: 20%;">
     <!--收货人信息-->
     <div class="top-2">
         <span>收货人信息</span>
@@ -66,10 +67,6 @@
 <div class="top_1">
     <div class="to_right">
         <h5>商家：谷粒学院自营</h5>
-        <div>
-            <button>换购</button>
-            <span>已购满20.00元，再加49.90元，可返回购物车领取赠品</span></div>
-        <!--图片-->
         <div class="yun1" th:each="item:${confirmOrderData.items}">
             <img th:src="${item.image}" class="yun"/>
             <div class="mi">
@@ -81,7 +78,6 @@
                 <p class="tui-1"><img src="/static/order/confirm/img/i_07.png"/>支持7天无理由退货</p>
             </div>
         </div>
-        <div class="hh1"></div>
         <p>退换无忧 <span class="money">￥ 0.00</span></p>
     </div>
 </div>
@@ -93,45 +89,53 @@
             <span>件商品，总商品金额：</span>
             <span class="rmb">￥[[${#numbers.formatDecimal(confirmOrderData.total, 1, 2)}]]</span>
         </p>
-        <p class="qian_y">
-            <span>返现：</span>
-            <span class="rmb">  -￥0.00</span>
-        </p>
-        <p class="qian_y">
-            <span>运费： </span>
-            <span class="rmb"> &nbsp ￥<b id="fare"></b></span>
-        </p>
-        <p class="qian_y">
-            <span>服务费： </span>
-            <span class="rmb"> &nbsp ￥0.00</span>
-        </p>
-        <p class="qian_y">
-            <span>退换无忧： </span>
-            <span class="rmb"> &nbsp ￥0.00</span>
-        </p>
     </div>
     <div class="yfze">
         <p class="yfze_a"><span class="z">应付总额：</span><span class="hq">￥<b id="payPrice">[[${#numbers.formatDecimal(confirmOrderData.payPrice, 1, 2)}]]</b></span>
         </p>
     </div>
-    <form action="http://localhost:88/api/order/index/submitOrder" method="post">
+    <form>
         <input id="addrInput" type="hidden" name="addrId"/>
-        <input id="payPriceInput" type="hidden" name="payPrice">
-        <input name="orderToken" th:value="${confirmOrderData.orderToken}" type="hidden"/>
-        <button class="tijiao" type="submit">提交订单</button>
+        <input id="payPriceInput" type="hidden" name="payPrice" th:value="${confirmOrderData.payPrice}"/>
+        <input id="orderTokenInput" name="orderToken" th:value="${confirmOrderData.orderToken}" type="hidden"/>
+        <button class="tijiao" type="button" onclick="submitOrder()">提交订单</button>
     </form>
 </div>
 </div>
-
-<div class="headera">
-    <div class="Logo-tu">
-        <span><img src="/static/order/confirm/img/service_items_1.png"/></span>
-        <span><img src="/static/order/confirm/img/service_items_2.png"/></span>
-        <span><img src="/static/order/confirm/img/service_items_3.png"/></span>
-        <span><img src="/static/order/confirm/img/service_items_4.png"/></span>
-    </div>
-</div>
 <script>
+    function submitOrder() {
+        const addrId = document.getElementById("addrInput").value;
+        if (addrId == null || addrId === "") {
+            alert("请选择收货人信息!");
+            return false;
+        }
+        const payPrice = document.getElementById("payPriceInput").value;
+        const orderToken = document.getElementById("orderTokenInput").value;
+        let order = {
+            addrId: addrId,
+            payPrice: payPrice,
+            orderToken: orderToken
+        };
+
+        $.ajax({
+            type: 'POST',
+            datatype: 'json',
+            url: 'http://localhost:88/api/order/index/submitOrder',
+            contentType: "application/json",
+            data: JSON.stringify(order),
+            success: function (data) {
+                if (data === "order token 失效!") {
+                    alert(data);
+                    return false;
+                }
+                window.location.href = "http://localhost:88/api/order/pay/" + data;
+            },
+            error: function (data) {
+                alert(data + "服务器异常!");
+            }
+        });
+    }
+
     $(document).ready(function () {
         $('.header-right li:nth-of-type(6)').hover(function () {
             $('.header-r-11').css('display', 'block')
@@ -160,8 +164,6 @@
         });
 
         highlightAddress();
-        var addrId = $(".addr-item p[def='1']").attr("addrId");
-        getFare(addrId)
     });
 
 
@@ -177,30 +179,9 @@
 
         //获取到当前地址id
         var addrId = $(this).attr("addrId");
-
-        //发送ajax请求获取运费信息
-        getFare(addrId);
+        $("#addrInput").val(addrId);
     });
 
-    //查运费
-    function getFare(addrId) {
-        //给表单回填选择的地址
-        $("#addrInput").val(addrId);
-        $.get("http://localhost:9000/order/fare?addrId=" + addrId, function (resp) {
-            console.log(resp);
-            $("#fare").text(resp.data.fare);
-            var total = [[${confirmOrderData.total}]];
-
-            var payPrice = total * 1 + resp.data.fare * 1;
-            //设置运费
-            $("#payPrice").text(payPrice);
-            $("#payPriceInput").val(payPrice);
-
-            //设置收获地址人信息
-            $("#receiveAddress").text(resp.data.address.province + " " + resp.data.address.city + " " + " " + resp.data.address.region + resp.data.address.detailAddress);
-            $("#receiver").text(resp.data.address.name);
-        })
-    }
 </script>
 </body>
 

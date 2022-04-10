@@ -20,10 +20,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -99,5 +96,19 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         payVO.setBody("");
 
         return payVO;
+    }
+
+    @Override
+    public OrderVO getOrderVO(String orderSn) {
+        Assert.hasLength(orderSn, "订单号不能为空!");
+
+        QueryWrapper<OrderEntity> wrapper = new QueryWrapper<>();
+        OrderEntity order = getOne(wrapper.eq("order_sn", orderSn));
+        OrderVO orderVO = BeanUtils.transformFrom(order, OrderVO.class);
+        List<OrderItemEntity> items = orderItemService.getByOrderIds(Collections.singletonList(order.getId()));
+        List<OrderItemVO> itemVOS = BeanUtils.transformFromInBatch(items, OrderItemVO.class);
+        assert orderVO != null;
+        orderVO.setItems(itemVOS);
+        return orderVO;
     }
 }

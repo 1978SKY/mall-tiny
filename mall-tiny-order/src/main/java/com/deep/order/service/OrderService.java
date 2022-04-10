@@ -38,4 +38,10 @@ public interface OrderService extends IService<OrderEntity> {
      * @return 订单
      */
     PayVO getOrderPay(@Nonnull String orderSn);
+
+    /**
+     * 获取支付订单
+     * @return 支付订单
+     */
+    OrderVO getOrderVO(String orderSn);
 }

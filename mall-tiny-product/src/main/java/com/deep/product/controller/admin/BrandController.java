@@ -4,7 +4,7 @@ import com.deep.common.utils.PageUtils;
 import com.deep.common.utils.R;
 import com.deep.product.model.entity.BrandEntity;
 import com.deep.product.model.params.BrandParam;
-import com.deep.product.service.BrandService;
+import com.deep.product.service.admin.BrandService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

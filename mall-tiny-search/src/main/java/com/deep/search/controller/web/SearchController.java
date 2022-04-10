@@ -32,6 +32,6 @@ public class SearchController {
         SearchResultVO result = searchService.search(searchParam);
 
         model.addAttribute("result", result);
-        return "search";
+        return "newSearch";
     }
 }

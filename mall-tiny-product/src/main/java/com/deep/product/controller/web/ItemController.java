@@ -1,7 +1,7 @@
 package com.deep.product.controller.web;
 
 import com.deep.product.model.vo.SkuItemVO;
-import com.deep.product.service.SkuInfoService;
+import com.deep.product.service.admin.SkuInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +32,6 @@ public class ItemController {
     public String skuItem(@PathVariable("skuId") Long skuId, Model model) {
         SkuItemVO result = skuInfoService.queryItem(skuId);
         model.addAttribute("item", result);
-        return "item";
+        return "newItem";
     }
 }

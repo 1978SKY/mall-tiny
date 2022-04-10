@@ -34,7 +34,7 @@ public class CartItemServiceImpl implements CartItemService {
     private CartService cartService;
 
     @Override
-    public void updateCheckStatus(Long skuId, Integer checked) {
+    public void updateCheckStatus(Long skuId, Boolean checked) {
         Assert.notNull(skuId, "商品id不能为空!");
         cartService.updateCheckStatus(skuId, checked);
     }

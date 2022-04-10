@@ -44,7 +44,7 @@ public interface CartService {
      * @param skuId   商品id
      * @param checked 选中状态
      */
-    void updateCheckStatus(Long skuId, Integer checked);
+    void updateCheckStatus(Long skuId, Boolean checked);
 
     /**
      * 获取购物项数据

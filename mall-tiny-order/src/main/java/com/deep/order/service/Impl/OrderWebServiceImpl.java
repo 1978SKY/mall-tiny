@@ -4,7 +4,6 @@ import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.deep.common.exception.BadLoginException;
 import com.deep.common.model.dto.MemberDTO;
-import com.deep.common.utils.BeanUtils;
 import com.deep.common.utils.R;
 import com.deep.order.feign.CartFeignService;
 import com.deep.order.feign.MemberFeignService;
@@ -18,7 +17,6 @@ import com.deep.order.model.entity.OrderItemEntity;
 import com.deep.order.model.enume.OrderStatusEnum;
 import com.deep.order.model.params.OrderSubmitParam;
 import com.deep.order.model.vo.OrderConfirmVO;
-import com.deep.order.model.vo.OrderItemVO;
 import com.deep.order.model.vo.OrderVO;
 import com.deep.order.service.OrderItemService;
 import com.deep.order.service.OrderService;
@@ -29,10 +27,15 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -55,6 +58,8 @@ public class OrderWebServiceImpl implements OrderWebService {
     private WareFeignService wareFeignService;
     @Autowired
     private StringRedisTemplate redisTemplate;
+    @Autowired
+    private ThreadPoolExecutor executor;
 
     @Override
     public List<OrderVO> queryPage(Map<String, Object> params) {
@@ -72,25 +77,31 @@ public class OrderWebServiceImpl implements OrderWebService {
         }
         OrderConfirmVO confirmVO = new OrderConfirmVO();
         // ① 获取当前请求属性（解决异步编排时请求头共享问题）
-        // RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
-        // RequestContextHolder.setRequestAttributes(attributes);
+        RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
+
         // 远程查询会员收获地址
-        List<MemberAddressDTO> address = memberFeignService.getMemberAddress(memberId);
-        confirmVO.setMemberAddressDTOS(address);
+        CompletableFuture<Void> setAddressFuture = CompletableFuture.runAsync(() -> {
+            List<MemberAddressDTO> address = memberFeignService.getMemberAddress(memberId);
+            confirmVO.setMemberAddressDTOS(address);
+        }, executor);
 
         // 远程查询购物项
-        List<CartItemDTO> cartItems = cartFeignService.getCheckedItem();
-        confirmVO.setItems(cartItems);
+        CompletableFuture<Void> setCartItemsFuture = CompletableFuture.runAsync(() -> {
+            RequestContextHolder.setRequestAttributes(attributes);
+            List<CartItemDTO> cartItems = cartFeignService.getCheckedItem();
+            confirmVO.setItems(cartItems);
+        }, executor).thenRunAsync(() -> {
+            // 设置库存
+            List<Long> skuIds = confirmVO.getItems().stream()
+                    .map(CartItemDTO::getSkuId).collect(Collectors.toList());
+            R r = wareFeignService.isHasStock(skuIds);
+            if (r.getCode() == 0) {
+                Map<Long, Boolean> stock = r.getData("data", new TypeReference<>() {
+                });
+                confirmVO.setStocks(stock);
+            }
+        }, executor);
 
-        // 设置库存
-        List<Long> skuIds = cartItems.stream()
-                .map(CartItemDTO::getSkuId).collect(Collectors.toList());
-        R r = wareFeignService.isHasStock(skuIds);
-        if (r.getCode() == 0) {
-            Map<Long, Boolean> stock = r.getData("data", new TypeReference<>() {
-            });
-            confirmVO.setStocks(stock);
-        }
         // 查询优惠积分
         confirmVO.setIntegration(0);
 
@@ -101,23 +112,29 @@ public class OrderWebServiceImpl implements OrderWebService {
                 .set(OrderConstant.USER_ORDER_TOKEN_PREFIX + memberId, token, 30, TimeUnit.MINUTES);
         confirmVO.setOrderToken(token);
 
+        try {
+            CompletableFuture.allOf(setAddressFuture, setCartItemsFuture).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return confirmVO;
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Map<Integer, OrderVO> submitOrder(OrderSubmitParam submitParam) {
+    public Map<Integer, String> submitOrder(OrderSubmitParam submitParam) {
         MemberDTO member = LoginInterceptor.LOGIN_USER_THREAD_LOCAL.get();
-        HashMap<Integer, OrderVO> resultMap = new HashMap<>();
-        // 防重令牌
+        HashMap<Integer, String> resultMap = new HashMap<>();
+
+        // 验证防重令牌
         String orderToken = submitParam.getOrderToken();
         if (!checkOrderToken(member.getId(), orderToken)) {
             resultMap.put(-1, null);
             return resultMap;
         }
         // 生成订单
-        OrderVO orderVO = createOrder(submitParam.getAddrId());
-        resultMap.put(1, orderVO);
+        String orderSn = createOrder(submitParam.getAddrId());
+        resultMap.put(1, orderSn);
 
         // 锁定库存
         // 清除购物车
@@ -130,10 +147,11 @@ public class OrderWebServiceImpl implements OrderWebService {
      *
      * @return 订单实体
      */
-    private OrderVO createOrder(Long addrId) {
+    private String createOrder(Long addrId) {
         MemberDTO member = LoginInterceptor.LOGIN_USER_THREAD_LOCAL.get();
         // 订单号
         String orderSn = IdWorker.getTimeId();
+
         // 构建订单数据
         OrderEntity order = new OrderEntity();
         order.setMemberId(member.getId());
@@ -156,7 +174,6 @@ public class OrderWebServiceImpl implements OrderWebService {
         order.setConfirmStatus(0);
 
         //TODO get item form db
-
         List<CartItemDTO> cartItems = cartFeignService.getCheckedItem();
         BigDecimal totalPrice = new BigDecimal(0);
         for (CartItemDTO cartItem : cartItems) {
@@ -181,19 +198,7 @@ public class OrderWebServiceImpl implements OrderWebService {
         }).collect(Collectors.toList());
         orderItemService.saveBatch(itemEntities);
 
-        OrderVO orderVO = BeanUtils.transformFrom(order, OrderVO.class);
-        List<OrderItemVO> itemVOS = BeanUtils.transformFromInBatch(itemEntities, OrderItemVO.class);
-        Map<Long, String> titleMap = new HashMap<>();
-        for (CartItemDTO cartItem : cartItems) {
-            titleMap.putIfAbsent(cartItem.getSkuId(), cartItem.getTitle());
-        }
-        itemVOS.forEach(item -> {
-            item.setTitle(titleMap.get(item.getSkuId()));
-        });
-        assert orderVO != null;
-        orderVO.setItems(itemVOS);
-
-        return orderVO;
+        return orderSn;
     }
 
     /**
@@ -203,7 +208,7 @@ public class OrderWebServiceImpl implements OrderWebService {
      * @return 合法性校验结果
      */
     private boolean checkOrderToken(Long memberId, String orderToken) {
-        Assert.notNull(orderToken, "订单id不能为空!");
+        Assert.notNull(orderToken, "订单token不能为空!");
         String redisKey = OrderConstant.USER_ORDER_TOKEN_PREFIX + memberId;
         // 校验并删除orderToken（LUA脚本、原子性操作）
         String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";

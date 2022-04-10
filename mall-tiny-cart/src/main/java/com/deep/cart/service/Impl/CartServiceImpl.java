@@ -74,13 +74,13 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void updateCheckStatus(Long skuId, Integer checked) {
+    public void updateCheckStatus(Long skuId, Boolean checked) {
         Assert.notNull(skuId, "商品id不能为空!");
         BoundHashOperations<String, Object, Object> ops = getCartOps();
         String json = (String) ops.get(skuId.toString());
         CartItemVO itemVO = JSON.parseObject(json, CartItemVO.class);
         assert itemVO != null;
-        itemVO.setCheck(checked == 1);
+        itemVO.setCheck(checked);
 
         ops.put(skuId.toString(), JSON.toJSONString(itemVO));
     }

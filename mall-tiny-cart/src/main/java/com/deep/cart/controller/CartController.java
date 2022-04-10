@@ -34,7 +34,8 @@ public class CartController {
     public String cartIndex(Model model) {
         CartVO cartVO = cartService.getCartDetail();
         model.addAttribute("cart", cartVO);
-        return "cartIndex";
+        // return "cartIndex";
+        return "newCartIndex";
     }
 
     @GetMapping(value = "/addToCart")

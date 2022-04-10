@@ -33,5 +33,5 @@ public interface OrderWebService {
      * @param param 提交参数
      * @return 映射表
      */
-    Map<Integer, OrderVO> submitOrder(OrderSubmitParam submitParam);
+    Map<Integer, String> submitOrder(OrderSubmitParam submitParam);
 }

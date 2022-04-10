@@ -2,12 +2,10 @@ package com.deep.product.controller.admin;
 
 import com.deep.common.utils.BeanUtils;
 import com.deep.common.utils.R;
-import com.deep.product.model.entity.BrandEntity;
 import com.deep.product.model.entity.CategoryBrandRelationEntity;
 import com.deep.product.model.params.CategoryBrandRelationParam;
 import com.deep.product.model.vo.BrandVO;
-import com.deep.product.service.BrandService;
-import com.deep.product.service.CategoryBrandRelationService;
+import com.deep.product.service.admin.CategoryBrandRelationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 分类品牌关联关系

@@ -3,12 +3,10 @@ package com.deep.product.controller.admin;
 import com.deep.common.utils.R;
 import com.deep.product.model.entity.CategoryEntity;
 import com.deep.product.model.params.CategoryParam;
-import com.deep.product.model.vo.CategoryVO;
-import com.deep.product.service.CategoryService;
+import com.deep.product.service.admin.CategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;

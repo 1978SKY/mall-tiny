@@ -187,7 +187,6 @@
                                 <a href="/static/search/#"
                                    th:href="${'javascript:searchProducts(&quot;catId&quot;,'+catalog.catalogId+')'}"
                                    th:text="${catalog.catalogName}">5.56英寸及以上
-
                                 </a>
                             </li>
                         </ul>
@@ -369,6 +368,7 @@
                     </div>
                     <!--排序内容，每四个是一组-->
                     <div class="rig_tab">
+                        <div th:for=""></div>
                         <div th:each="product : ${result.products}">
                             <p class="da">
                                 <a th:href="|http://localhost:10001/api/product/item/${product.skuId}.html|">

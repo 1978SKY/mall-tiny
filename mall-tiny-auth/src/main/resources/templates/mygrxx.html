@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="utf-8"/>
+    <base href="http://124.222.56.141">
+    <title>个人信息</title>
+    <link rel="stylesheet" type="text/css" href="../static/mall/common/css/public.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/mall/auth/css/mygrxx.css"/>
+</head>
+<body>
+<!------------------------------head------------------------------>
+<div class="head ding">
+    <div class="wrapper clearfix">
+        <div class="clearfix" id="top">
+            <h1 class="fl">
+                <a href="http://localhost:88/api/product/">
+                    <img src="../static/mall/common/img/logo.png"/>
+                </a>
+            </h1>
+            <div class="fr clearfix" id="top1">
+                <form action="#" method="get" class="fl">
+                    <input type="text" id="searchText" placeholder="搜索"/>
+                    <input type="button" onclick="search()"/>
+                </form>
+            </div>
+        </div>
+        <ul class="clearfix" id="bott" style="margin-left: 30%;">
+            <li><a href="http://localhost:88/api/product/">首页</a></li>
+            <li>
+                <a href="javascript:void(0)">所有商品</a>
+            </li>
+            <li>
+                <a href="javascript:void(0)">秒杀</a>
+            </li>
+            <li>
+                <a href="javascript:void(0)">金融</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!------------------------------idea------------------------------>
+<div class="address mt">
+    <div class="wrapper clearfix">
+        <a href="http://localhost:88/api/product/" class="fl">首页</a>
+        <span>/</span>
+        <a href="javascript:void(0)" class="on">个人信息</a>
+    </div>
+</div>
+
+<!------------------------------Bott------------------------------>
+<div class="Bott">
+    <div class="wrapper clearfix">
+        <div class="zuo fl">
+            <h3>
+                <a href="#"><img src="../static/mall/common/img/tx.png"/></a>
+                <p class="clearfix"><span class="fl" th:text="${session.loginUser.nickname}"></span>
+                    <span class="fr"><a href="http://localhost:8000/api/auth/login/logout">退出登录</a></span></p>
+            </h3>
+            <div>
+                <h4>我的交易</h4>
+                <ul>
+                    <li><a href="http://localhost:88/api/cart/">我的购物车</a></li>
+                    <li><a href="http://localhost:88/api/order/index/">我的订单</a></li>
+                    <li><a href="javascript:void(0)">评价晒单</a></li>
+                </ul>
+                <h4>个人中心</h4>
+                <ul>
+                    <li><a href="javascript:void(0)">我的中心</a></li>
+                    <li><a href="http://localhost:88/api/auth/user/address">地址管理</a></li>
+                </ul>
+                <h4>账户管理</h4>
+                <ul>
+                    <li class="on"><a href="http://localhost:88/api/auth/user/address">个人信息</a></li>
+                    <li><a href="http://localhost:88/api/auth/user/repassword">修改密码</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="you fl">
+            <h2>个人信息</h2>
+            <div class="gxin">
+                <div class="tx">
+                    <a href="#">
+                        <img src="../static/mall/common/img/tx.png"/>
+                        <p id="avatar">修改头像</p></a></div>
+                <div class="xx">
+                    <h3 class="clearfix"><strong class="fl">基础资料</strong><a href="javascript:void(0)" class="fr"
+                                                                            id="edit1">编辑</a></h3>
+                    <div th:text="'姓名：'+${session.loginUser.username}"></div>
+                    <div th:text="'生日：'+${#dates.format(session.loginUser.birth,'dd-MM-yyyy')}"></div>
+                    <div th:text="'性别：'+${session.loginUser.gender}"></div>
+                    <div th:text="'邮箱：'+${session.loginUser.email}"></div>
+                    <h3>高级设置</h3>
+                    <div><span class="fl">银行卡</span><a href="javascript:void(0)" class="fr">管理</a></div>
+                    <div><span class="fl">账号地区：中国</span><a href="javascript:void(0)" class="fr" id="edit2">修改</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--遮罩-->
+<div class="mask"></div>
+<!--编辑弹框-->
+<div class="bj">
+    <div class="clearfix"><a class="fr gb"><img src="../static/mall/common/img/icon4.png"/></a></div>
+    <h3>编辑基础资料</h3>
+    <form action="#" method="get">
+        <p><label>姓名：</label><input type="text" value="六六六"/></p>
+        <p><label>生日：</label><input type="text"/></p>
+        <p>
+            <label>性别：</label>
+            <span><input type="radio"/>男</span>
+            <span><input type="radio"/>女</span>
+        </p>
+        <div class="bc">
+            <input type="button" value="保存"/>
+            <input type="button" value="取消"/>
+        </div>
+    </form>
+</div>
+<!--高级设置修改-->
+<div class="xg">
+    <div class="clearfix"><a href="#" class="fr gb"><img src="../static/mall/common/img/icon4.png"/></a></div>
+    <h3>切换账号地区</h3>
+    <form action="#" method="get">
+        <p><label>姓名：</label><input type="text" value="六六六"/></p>
+        <div class="bc">
+            <input type="button" value="保存"/>
+            <input type="button" value="取消"/>
+        </div>
+    </form>
+</div>
+<!--修改头像-->
+<div class="avatar">
+    <div class="clearfix"><a class="fr gb"><img src="../static/mall/common/img/icon4.png"/></a></div>
+    <h3>修改头像</h3>
+    <form action="#" method="get">
+        <h4>请上传图片</h4>
+        <input type="button" value="上传头像"/>
+        <p>jpg或png，大小不超过2M</p>
+        <input type="submit" value="提交"/>
+    </form>
+</div>
+
+<!--返回顶部-->
+<div class="gotop">
+    <a href="http://localhost:88/api/cart/">
+        <dl>
+            <dt><img src="../static/mall/index/img/gt1.png"/></dt>
+            <dd>去购<br/>物车</dd>
+        </dl>
+    </a>
+    <a href="javascript:void(0)" class="dh">
+        <dl>
+            <dt><img src="../static/mall/index/img/gt2.png"/></dt>
+            <dd>联系<br/>客服</dd>
+        </dl>
+    </a>
+    <a href="javascript:void(0)">
+        <dl>
+            <dt><img src="../static/mall/index/img/gt3.png"/></dt>
+            <dd>个人<br/>中心</dd>
+        </dl>
+    </a>
+    <a class="toptop" style="display: none">
+        <dl>
+            <dt><img src="../static/mall/index/img/gt4.png"/></dt>
+            <dd>返回<br/>顶部</dd>
+        </dl>
+    </a>
+    <p>400-800-8200</p>
+</div>
+
+<!--footer-->
+<div class="footer">
+    <div class="top">
+        <div class="wrapper">
+            <div class="clearfix">
+                <a href="javascript:void(0)" class="fl"><img src="../static/mall/common/img/foot1.png"/></a>
+                <span class="fl">7天无理由退货</span>
+            </div>
+            <div class="clearfix">
+                <a href="javascript:void(0)" class="fl"><img src="../static/mall/common/img/foot2.png"/></a>
+                <span class="fl">15天免费换货</span>
+            </div>
+            <div class="clearfix">
+                <a href="javascript:void(0)" class="fl"><img src="../static/mall/common/img/foot3.png"/></a>
+                <span class="fl">满599包邮</span>
+            </div>
+            <div class="clearfix">
+                <a href="javascript:void(0)" class="fl"><img src="../static/mall/common/img/foot4.png"/></a>
+                <span class="fl">手机特色服务</span>
+            </div>
+        </div>
+    </div>
+    <p class="dibu">最家家居&copy;2022-2099公司版权所有 京ICP备080100-44备0000111000号<br/>
+        违法和不良信息举报电话：400-800-8200，本网站所列数据，除特殊说明，所有数据均出自我司实验室测试</p>
+</div>
+</body>
+<script src="../static/mall/common/js/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+<script>
+
+    function search() {
+        const keyword = $("#searchText").val();
+        window.location.href = "http://localhost:88/api/search/?keyword=" + keyword;
+    }
+
+    //	个人信息 编辑
+    $("#edit1").click(function(){
+        $(".mask").show();
+        $(".bj").show();
+    });
+    $("#edit2").click(function(){
+        $(".mask").show();
+        $(".xg").show();
+    });
+
+    //修改头像
+    $("#avatar").click(function(){
+        $(".mask").show();
+        $(".avatar").show();
+    });
+
+    //	弹框关闭按钮
+    $(".gb").click(function(){
+        $(".mask").hide();
+        $(".bj").hide();
+        $(".xg").hide();
+        $(".remima").hide();
+        $(".avatar").hide();
+        $(".pj").hide();
+        $(".chak").hide();
+    });
+
+</script>
+</html>

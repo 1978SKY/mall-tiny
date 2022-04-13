@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -52,6 +53,8 @@ public class LoginController {
         // 重定向回登录页
         return "redirect:http://localhost:8000/api/auth/login";
     }
+
+
 
     @ResponseBody
     @PostMapping("/doRegister")

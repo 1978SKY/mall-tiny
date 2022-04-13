@@ -38,7 +38,8 @@ public class OrderWebController {
         List<OrderVO> orders = orderWebService.queryPage(params);
 
         model.addAttribute("orders", orders);
-        return "orderIndex";
+        // return "orderIndex";
+        return "myorderq";
     }
 
     @GetMapping("/settlement")

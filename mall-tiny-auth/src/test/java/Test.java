@@ -6,6 +6,10 @@ import java.util.LinkedList;
  * @date 2022/4/1
  */
 public class Test {
+    public static void main(String[] args) {
+
+    }
+
     public static class TreeNode {
         int val;
         TreeNode left;
@@ -53,8 +57,5 @@ public class Test {
 
         }
         return null;
-    }
-
-    public static void main(String[] args) {
     }
 }

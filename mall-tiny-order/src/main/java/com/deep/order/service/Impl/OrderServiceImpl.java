@@ -9,6 +9,7 @@ import com.deep.common.utils.Query;
 import com.deep.order.dao.OrderDao;
 import com.deep.order.model.entity.OrderEntity;
 import com.deep.order.model.entity.OrderItemEntity;
+import com.deep.order.model.enume.OrderStatusEnum;
 import com.deep.order.model.vo.OrderItemVO;
 import com.deep.order.model.vo.OrderVO;
 import com.deep.order.model.vo.PayVO;
@@ -57,29 +58,31 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
                 new Query<OrderEntity>().getPage(params),
                 wrapper.eq("member_id", userId).orderByDesc("create_time")
         );
-        List<OrderVO> orderVOS = BeanUtils.transformFromInBatch(page.getRecords(), OrderVO.class);
+        List<OrderEntity> orders = page.getRecords();
+        List<Long> orderIds = orders.stream().map(OrderEntity::getId).collect(Collectors.toList());
 
-        List<Long> orderIds = orderVOS.stream().map(OrderVO::getId).collect(Collectors.toList());
         List<OrderItemEntity> items = orderItemService.getByOrderIds(orderIds);
         List<OrderItemVO> itemVOS = BeanUtils.transformFromInBatch(items, OrderItemVO.class);
         // key:orderId value:List<OrderVO>
         Map<Long, List<OrderItemVO>> itemsMap = new HashMap<>();
         for (OrderItemVO itemVO : itemVOS) {
             List<OrderItemVO> list;
-            if (!itemsMap.containsKey(itemVO.getSkuId())) {
+            if (!itemsMap.containsKey(itemVO.getOrderId())) {
                 list = new ArrayList<>();
-                list.add(itemVO);
             } else {
-                list = itemsMap.get(itemVO.getSkuId());
+                list = itemsMap.get(itemVO.getOrderId());
             }
             list.add(itemVO);
-            itemsMap.put(itemVO.getSkuId(), list);
+            itemsMap.put(itemVO.getOrderId(), list);
         }
 
-        orderVOS.forEach(item -> {
-            item.setItems(itemsMap.get(item.getId()));
-        });
-        return orderVOS;
+        return orders.stream().map((order) -> {
+            OrderVO orderVO = BeanUtils.transformFrom(order, OrderVO.class);
+            assert orderVO != null;
+            orderVO.setStatus(OrderStatusEnum.checkStatus(order.getStatus()));
+            orderVO.setItems(itemsMap.get(orderVO.getId()));
+            return orderVO;
+        }).collect(Collectors.toList());
     }
 
     @Override

@@ -31,4 +31,26 @@ public enum OrderStatusEnum {
     public String getMsg() {
         return msg;
     }
+
+    public static String checkStatus(int status) {
+        switch (status) {
+            case 0:
+                return CREATE_NEW.msg;
+            case 1:
+                return PAYED.msg;
+            case 2:
+                return SENDED.msg;
+            case 3:
+                return RECIEVED.msg;
+            case 4:
+                return CANCLED.msg;
+            case 5:
+                return SERVICING.msg;
+            case 6:
+                return SERVICED.msg;
+            default:
+                break;
+        }
+        return "";
+    }
 }

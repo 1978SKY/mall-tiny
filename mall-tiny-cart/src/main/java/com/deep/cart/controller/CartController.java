@@ -42,7 +42,7 @@ public class CartController {
     @ApiOperation("添加到购物车")
     public String addToCart(@RequestParam("skuId") Long skuId,
                             @RequestParam("num") int count,
-                            RedirectAttributes attributes) throws ExecutionException, InterruptedException {
+                            RedirectAttributes attributes) {
         cartService.addToCart(skuId, count);
         // 给重定向请求用的【参数会拼接在下面请求之后】【转发会在请求域中】
         attributes.addAttribute("skuId", skuId);

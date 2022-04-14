@@ -18,7 +18,7 @@ import java.util.List;
  * @author Deep
  * @date 2022/3/15
  */
-@Api(value = "商品分类")
+@Api(tags = "商品分类")
 @RestController
 @RequestMapping("/api/product/category")
 public class CategoryController {

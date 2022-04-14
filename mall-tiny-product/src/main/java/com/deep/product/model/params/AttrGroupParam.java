@@ -35,9 +35,4 @@ public class AttrGroupParam implements InputConverter<AttrGroupEntity> {
      * 所属分类id
      */
     private Long catelogId;
-//    /**
-//     * 完整目录
-//     */
-//    @TableField(exist = false)
-//    private Long[] catelogPath;
 }

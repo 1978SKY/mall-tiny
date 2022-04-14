@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: mall-tiny-gateway
+
+  resources:
+    add-mappings: true
+
   cloud:
     # nacos配置
     nacos:
@@ -34,6 +38,9 @@ spring:
           uri: lb://mall-tiny-auth
           predicates:
             - Path=/api/auth/**
+          filters:
+#            - SwaggerHeaderFilter
+            - StripPrefix=1
 
         - id: cart_route
           uri: lb://mall-tiny-cart
@@ -44,6 +51,9 @@ spring:
           uri: lb://mall-tiny-product
           predicates:
             - Path=/api/product/**
+          filters:
+#            - SwaggerHeaderFilter
+            - StripPrefix=1
 
         - id: ware_route
           uri: lb://mall-tiny-ware

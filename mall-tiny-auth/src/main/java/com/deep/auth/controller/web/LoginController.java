@@ -24,7 +24,7 @@ import javax.servlet.http.HttpSession;
  * @date 2022/2/4
  */
 @Slf4j
-@Api("普通登录")
+@Api(tags = "普通登录")
 @Controller
 @RequestMapping("/api/auth/login")
 public class LoginController {

@@ -5,7 +5,6 @@ import com.deep.product.model.entity.SkuSaleAttrValueEntity;
 import com.deep.product.model.vo.SkuItemSaleAttrVO;
 import org.springframework.lang.NonNull;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -26,5 +25,5 @@ public interface SkuSaleAttrValueService extends IService<SkuSaleAttrValueEntity
      * @param skuId 商品id
      * @return 销售属性集合
      */
-    List<SkuSaleAttrValueEntity> getSaleAttrsBySkuId(@Nonnull Long skuId);
+    List<SkuSaleAttrValueEntity> getSaleAttrsBySkuId(@NonNull Long skuId);
 }

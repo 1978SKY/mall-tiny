@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Deep
  * @date 2022/3/24
  */
-@Slf4j
-@Api(value = "商品信息")
+@Api(tags = "商品信息")
 @Controller
 @RequestMapping("/api/product/item")
 public class ItemController {

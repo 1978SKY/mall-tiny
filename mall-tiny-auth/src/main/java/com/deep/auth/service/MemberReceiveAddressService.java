@@ -2,8 +2,8 @@ package com.deep.auth.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.deep.auth.model.entity.MemberReceiveAddressEntity;
+import org.springframework.lang.NonNull;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -20,6 +20,6 @@ public interface MemberReceiveAddressService extends IService<MemberReceiveAddre
      * @param memberId 会员id
      * @return 收货地址集合
      */
-    List<MemberReceiveAddressEntity> getAddress(@Nonnull Long memberId);
+    List<MemberReceiveAddressEntity> getAddress(@NonNull Long memberId);
 
 }

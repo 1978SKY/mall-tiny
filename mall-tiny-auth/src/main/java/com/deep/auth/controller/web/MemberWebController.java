@@ -23,7 +23,7 @@ import java.util.List;
  * @author Deep
  * @date 2022/4/12
  */
-@Api("会员控制器web端")
+@Api(tags = "会员控制器web端")
 @Controller
 @RequestMapping("/api/auth/user")
 public class MemberWebController {

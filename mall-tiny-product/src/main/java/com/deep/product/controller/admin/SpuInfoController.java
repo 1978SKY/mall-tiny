@@ -17,7 +17,7 @@ import java.util.Map;
  * @author Deep
  * @date 2022/3/20
  */
-@Api(value = "spu信息", tags = "spuInfoController")
+@Api(tags = "spu信息")
 @RestController
 @RequestMapping("/api/product/spuinfo")
 public class SpuInfoController {

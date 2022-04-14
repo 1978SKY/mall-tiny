@@ -2,11 +2,7 @@ package com.deep.auth.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.deep.auth.model.entity.MemberEntity;
-import com.deep.auth.model.entity.MemberReceiveAddressEntity;
 import com.deep.auth.model.params.PasswordParam;
-
-import javax.annotation.Nonnull;
-import java.util.List;
 
 /**
  * 会员

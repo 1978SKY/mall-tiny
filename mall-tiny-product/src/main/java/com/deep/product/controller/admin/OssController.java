@@ -6,6 +6,7 @@ import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
 import com.deep.common.utils.DateUtil;
 import com.deep.common.utils.R;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import java.util.Map;
  * @author Deep
  * @date 2022/3/27
  */
+@Api(tags = "阿里云存储")
 @RestController
 @RequestMapping("/api/product/oss")
 public class OssController {

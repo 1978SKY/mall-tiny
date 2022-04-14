@@ -20,7 +20,7 @@ import java.util.List;
  * @author Deep
  * @date 2022/3/17
  */
-@Api(value = "分类品牌关联关系")
+@Api(tags = "分类品牌关联关系")
 @RestController
 @RequestMapping("/api/product/categorybrandrelation")
 public class CategoryBrandRelationController {

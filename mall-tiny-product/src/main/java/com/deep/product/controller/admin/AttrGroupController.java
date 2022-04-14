@@ -24,7 +24,7 @@ import java.util.Map;
  * @author Deep
  * @date 2022/3/17
  */
-@Api(value = "属性分组")
+@Api(tags = "属性分组")
 @RestController
 @RequestMapping("/api/product/attrgroup")
 public class AttrGroupController {

@@ -22,7 +22,7 @@ import java.util.Map;
  * @author Deep
  * @date 2022/3/18
  */
-@Api(value = "商品属性规格")
+@Api(tags = "商品属性规格")
 @RestController
 @RequestMapping("/api/product/attr")
 public class AttrController {

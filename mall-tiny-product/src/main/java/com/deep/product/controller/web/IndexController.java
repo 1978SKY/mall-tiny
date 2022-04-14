@@ -22,7 +22,7 @@ import java.util.List;
  * @author Deep
  * @date 2022/3/13
  */
-@Api(value = "商城首页")
+@Api(tags = "商城首页")
 @Controller
 @RequestMapping("/api/product")
 public class IndexController {

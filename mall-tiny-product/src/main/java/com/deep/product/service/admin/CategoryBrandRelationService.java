@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.deep.product.model.entity.CategoryBrandRelationEntity;
 import org.springframework.lang.NonNull;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -56,7 +55,7 @@ public interface CategoryBrandRelationService extends IService<CategoryBrandRela
     /**
      * 获取品牌分类已经关联的集合
      */
-    List<CategoryBrandRelationEntity> hadRelations(@Nonnull Long brandId);
+    List<CategoryBrandRelationEntity> hadRelations(@NonNull Long brandId);
 
     /**
      * 通过分类id获取品牌集合

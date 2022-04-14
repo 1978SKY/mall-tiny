@@ -30,7 +30,7 @@ import java.util.Map;
  * @date 2022/4/2
  */
 @Slf4j
-@Api("第三方登录")
+@Api(tags = "第三方登录")
 @Controller
 @RequestMapping("/api/auth/oauth2.0")
 public class OAuth2Controller {

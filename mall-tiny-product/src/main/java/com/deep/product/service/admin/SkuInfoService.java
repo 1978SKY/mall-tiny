@@ -7,7 +7,6 @@ import com.deep.product.model.params.SpuSaveParam;
 import com.deep.product.model.vo.SkuItemVO;
 import org.springframework.lang.NonNull;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Map;
 
@@ -36,5 +35,5 @@ public interface SkuInfoService extends IService<SkuInfoEntity> {
     /**
      * 获取sku销售属性
      */
-    List<String> getSkuSaleAttr(@Nonnull Long skuId);
+    List<String> getSkuSaleAttr(@NonNull Long skuId);
 }

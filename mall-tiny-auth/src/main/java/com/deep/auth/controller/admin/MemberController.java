@@ -16,7 +16,7 @@ import java.util.List;
  * @author Deep
  * @date 2022/4/5
  */
-@Api("会员控制器")
+@Api(tags = "会员控制器")
 @Controller
 @RequestMapping("/api/auth/member")
 public class MemberController {

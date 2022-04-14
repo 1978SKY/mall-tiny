@@ -20,7 +20,7 @@ import java.util.Map;
  * @author Deep
  * @date 2022/3/15
  */
-@Api(value = "品牌管理")
+@Api(tags = "品牌管理")
 @RestController
 @RequestMapping("/api/product/brand")
 public class BrandController {

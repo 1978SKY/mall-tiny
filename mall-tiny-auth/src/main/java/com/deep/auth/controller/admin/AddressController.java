@@ -11,22 +11,22 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 会员控制器
+ * 收获地址
  *
  * @author Deep
  * @date 2022/4/5
  */
-@Api(tags = "会员控制器")
+@Api(tags = "收获地址")
 @Controller
 @RequestMapping("/api/auth/member")
-public class MemberController {
+public class AddressController {
 
     @Autowired
     private MemberReceiveAddressService addressService;
 
     @ResponseBody
     @GetMapping(value = "/{memberId}/address")
-    @ApiOperation("会员收货地址")
+    @ApiOperation("收货地址集合")
     public List<MemberReceiveAddressEntity> getAddress(@PathVariable("memberId") Long memberId) {
 
         return addressService.getAddress(memberId);
@@ -34,7 +34,7 @@ public class MemberController {
 
     @ResponseBody
     @GetMapping(value = "/address")
-    @ApiOperation("会员收货地址")
+    @ApiOperation("收货地址")
     public MemberReceiveAddressEntity getMajorAddress(@RequestParam("addrId") Long addrId) {
 
         return addressService.getById(addrId);

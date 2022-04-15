@@ -22,7 +22,7 @@ import java.util.List;
  * @date 2022/3/21
  */
 @Slf4j
-@Api(value = "商品上架")
+@Api(tags = "商品上架—后台")
 @RestController
 @RequestMapping("api/search/save")
 public class UploadController {

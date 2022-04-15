@@ -21,7 +21,7 @@ import java.util.Map;
  * @author Deep
  * @date 2022/3/28
  */
-@Api(value = "采购单")
+@Api(tags = "采购单—后台")
 @RestController
 @RequestMapping("/api/ware/purchase")
 public class PurchaseController {
@@ -68,6 +68,7 @@ public class PurchaseController {
     }
 
     @PostMapping("/done")
+    @ApiOperation("完成采购")
     public R finishPurchase(@RequestBody FinishParam finishParam) {
         purchaseService.finishPurchase(Arrays.asList(finishParam.getId()));
         return R.ok();

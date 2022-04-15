@@ -1,10 +1,10 @@
 package com.deep.order.controller.web;
 
-import com.deep.common.utils.BeanUtils;
 import com.deep.order.model.params.OrderSubmitParam;
 import com.deep.order.model.vo.OrderConfirmVO;
 import com.deep.order.model.vo.OrderVO;
 import com.deep.order.service.OrderWebService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +24,7 @@ import java.util.Map;
  */
 @Slf4j
 @Controller
+@Api(tags = "订单-前台")
 @RequestMapping("/api/order/index")
 public class OrderWebController {
     @Autowired
@@ -38,8 +39,7 @@ public class OrderWebController {
         List<OrderVO> orders = orderWebService.queryPage(params);
 
         model.addAttribute("orders", orders);
-        // return "orderIndex";
-        return "myorderq";
+        return "order";
     }
 
     @GetMapping("/settlement")

@@ -18,7 +18,7 @@ import java.util.Map;
  * @author Deep
  * @date 2022/3/28
  */
-@Api(value = "采购需求")
+@Api(tags = "采购需求—后台")
 @RestController
 @RequestMapping("/api/ware/purchasedetail")
 public class PurchaseDemandController {
@@ -41,7 +41,7 @@ public class PurchaseDemandController {
         return R.ok();
     }
 
-    @RequestMapping("/update")
+    @PostMapping("/update")
     @ApiOperation(value = "修改采购需求")
     public R update(@RequestBody PurchaseDemandEntity purchase) {
         purchaseDemandService.updateById(purchase);
@@ -49,7 +49,7 @@ public class PurchaseDemandController {
         return R.ok();
     }
 
-    @RequestMapping("/delete")
+    @PostMapping("/delete")
     @ApiOperation(value = "删除采购需求")
     public R delete(@RequestBody Long[] ids) {
         purchaseDemandService.removeByIds(Arrays.asList(ids));

@@ -1,6 +1,7 @@
 package com.deep.order.config;
 
 import com.deep.order.interceptor.LoginInterceptor;
+import com.deep.order.interceptor.SwaggerInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -19,6 +20,10 @@ public class OrderWebConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**").excludePathPatterns("/api/order/v2/api-docs");
+
+        registry.addInterceptor(new SwaggerInterceptor()).addPathPatterns("/api/order/v2/api-docs");
     }
+
+
 }

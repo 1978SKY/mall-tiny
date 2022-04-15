@@ -13,15 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.concurrent.ExecutionException;
-
 /**
  * 购物车
  *
  * @author Deep
  * @date 2022/4/3
  */
-@Api(value = "购物车")
+@Api(tags = "购物车")
 @Controller
 @RequestMapping("/api/cart/")
 public class CartController {
@@ -34,8 +32,8 @@ public class CartController {
     public String cartIndex(Model model) {
         CartVO cartVO = cartService.getCartDetail();
         model.addAttribute("cart", cartVO);
-        // return "cartIndex";
-        return "newCartIndex";
+
+        return "cart";
     }
 
     @GetMapping(value = "/addToCart")

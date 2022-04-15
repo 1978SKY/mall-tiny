@@ -20,7 +20,7 @@ import java.util.Map;
  * @date 2022/3/29
  */
 @Slf4j
-@Api(value = "订单控制器")
+@Api(tags = "订单-后台")
 @RestController
 @RequestMapping("/api/order/order")
 public class OrderController {

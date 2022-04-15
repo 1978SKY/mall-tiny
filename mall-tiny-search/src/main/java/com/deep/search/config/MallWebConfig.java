@@ -1,10 +1,9 @@
-package com.deep.product.config;
+package com.deep.search.config;
 
-import com.deep.product.interceptor.SwaggerInterceptor;
+import com.deep.search.interceptor.SwaggerInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -23,6 +22,6 @@ public class MallWebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new SwaggerInterceptor()).addPathPatterns("/api/product/v2/api-docs");
+        registry.addInterceptor(new SwaggerInterceptor()).addPathPatterns("/api/search/v2/api-docs");
     }
 }

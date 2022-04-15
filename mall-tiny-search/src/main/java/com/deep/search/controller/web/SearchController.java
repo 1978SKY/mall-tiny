@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @date 2022/3/20
  */
 @Slf4j
-@Api(value = "检索控制器")
+@Api(tags = "商品检索—前台")
 @Controller
 @RequestMapping("/api/search")
 public class SearchController {

@@ -3,6 +3,8 @@ package com.deep.cart.controller;
 import com.deep.cart.model.params.CheckParam;
 import com.deep.cart.model.vo.CartItemVO;
 import com.deep.cart.service.CartItemService;
+import com.deep.common.utils.R;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import java.util.List;
  * @author Deep
  * @date 2022/4/5
  */
+@Api(tags = "购物项")
 @Controller
 @RequestMapping("/api/cart/item")
 public class CartItemController {
@@ -26,9 +29,10 @@ public class CartItemController {
     @ResponseBody
     @PostMapping(value = "checkItem")
     @ApiOperation("切换选中状态")
-    public void updateSelectStatus(@RequestBody CheckParam checkParam) {
+    public R updateSelectStatus(@RequestBody CheckParam checkParam) {
         // 更新选中状态
         cartItemService.updateCheckStatus(checkParam.getSkuId(), checkParam.getChecked());
+        return R.ok();
     }
 
     @ResponseBody

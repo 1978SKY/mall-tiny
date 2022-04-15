@@ -1,4 +1,4 @@
-package com.deep.product.config;
+package com.deep.search.config;
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import org.springframework.context.annotation.Bean;
@@ -27,39 +27,18 @@ public class Swagger2Config {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.deep.product.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.deep.search.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Product")
-                .description("商品模块API文档")
+                .title("Search")
+                .description("检索模块API文档")
                 .contact("Deep")
                 .version("1.0")
                 .build();
     }
-
-//    @Bean
-//    public Docket adminApi1() {
-//        String[] basePackage = {"com.deep.product.controller.web"};
-//        return Swagger2ConfigUtils.docket(
-//                "web",
-//                "Product-web",
-//                "商品模块-前台",
-//                basePackage);
-//    }
-//
-//    @Bean
-//    public Docket adminApi() {
-//        String[] basePackage = {"com.deep.product.controller.admin"};
-//        return Swagger2ConfigUtils.docket(
-//                "admin",
-//                "Product-admin",
-//                "商品模块-后台",
-//                basePackage);
-//    }
-
 
 }

@@ -3,6 +3,7 @@ package com.deep.ware.controller.admin;
 import com.deep.common.utils.PageUtils;
 import com.deep.common.utils.R;
 import com.deep.ware.service.WareSkuService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import java.util.Map;
  * @author Deep
  * @date 2022/3/28
  */
+@Api(tags = "商品库存—后台")
 @RestController
 @RequestMapping("/api/ware/waresku")
 public class WareSkuController {

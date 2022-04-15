@@ -17,7 +17,7 @@ import java.util.Map;
  * @author Deep
  * @date 2022/3/28
  */
-@Api(value = "仓库信息")
+@Api(tags = "仓库信息—后台")
 @RestController
 @RequestMapping("/api/ware/wareinfo")
 public class WareInfoController {

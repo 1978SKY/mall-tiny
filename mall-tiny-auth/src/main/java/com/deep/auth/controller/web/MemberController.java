@@ -23,10 +23,10 @@ import java.util.List;
  * @author Deep
  * @date 2022/4/12
  */
-@Api(tags = "会员控制器web端")
+@Api(tags = "会员")
 @Controller
 @RequestMapping("/api/auth/user")
-public class MemberWebController {
+public class MemberController {
 
     @Autowired
     private MemberReceiveAddressService addressService;
@@ -34,16 +34,13 @@ public class MemberWebController {
     private MemberService memberService;
 
     @GetMapping("/center")
-    @ApiOperation("个人中心")
-    public String center(HttpSession session) {
-        if (session.getAttribute(AuthConstant.LOGIN_USER) == null) {
-            return "redirect:http://localhost:8000/api/auth/login";
-        }
-        return "mygrxx";
+    @ApiOperation(value = "个人中心")
+    public String center() {
+        return "myDetail";
     }
 
     @GetMapping("/address")
-    @ApiOperation("地址管理")
+    @ApiOperation(value = "地址管理")
     public String address(HttpSession session, Model model) {
         if (session.getAttribute(AuthConstant.LOGIN_USER) == null) {
             return "redirect:http://localhost:8000/api/auth/login";
@@ -56,21 +53,16 @@ public class MemberWebController {
     }
 
     @GetMapping("/repassword")
-    @ApiOperation("修改密码页面")
-    public String password(HttpSession session) {
-        if (session.getAttribute(AuthConstant.LOGIN_USER) == null) {
-            return "redirect:http://localhost:8000/api/auth/login";
-        }
+    @ApiOperation(value = "修改密码页面")
+    public String password() {
+
         return "password";
     }
 
     @ResponseBody
     @PostMapping("/doRepassword")
     @ApiOperation("修改密码")
-    public String doRepassword(@RequestBody PasswordParam param, HttpSession session) {
-        if (session.getAttribute(AuthConstant.LOGIN_USER) == null) {
-            return "redirect:http://localhost:8000/api/auth/login";
-        }
+    public String doRepassword(@RequestBody PasswordParam param) {
         return memberService.updatePassword(param) ? "修改成功!" : "修改失败!";
     }
 

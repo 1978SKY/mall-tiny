@@ -24,7 +24,7 @@ import javax.servlet.http.HttpSession;
  * @date 2022/2/4
  */
 @Slf4j
-@Api(tags = "普通登录")
+@Api(tags = "登录&注册")
 @Controller
 @RequestMapping("/api/auth/login")
 public class LoginController {
@@ -53,7 +53,6 @@ public class LoginController {
         // 重定向回登录页
         return "redirect:http://localhost:8000/api/auth/login";
     }
-
 
 
     @ResponseBody

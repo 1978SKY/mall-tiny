@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.*;
  * @author Deep
  * @date 2022/4/7
  */
-@Api(value = "支付控制器")
 @Controller
+@Api(tags = "支付")
 @RequestMapping("/api/order/pay")
 public class PayController {
 

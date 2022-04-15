@@ -7,6 +7,7 @@ import com.aliyun.oss.model.PolicyConditions;
 import com.deep.common.utils.DateUtil;
 import com.deep.common.utils.R;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,7 @@ public class OssController {
     private String bucket;
 
     @GetMapping("/policy")
+    @ApiOperation("上传文件")
     public R policy() {
         // 主机
         String host = "https://" + bucket + "." + endpoint;

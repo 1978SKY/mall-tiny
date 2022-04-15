@@ -19,7 +19,7 @@ import java.util.Map;
  * @author Deep
  * @date 2022/3/28
  */
-@Api(value = "库存采购单")
+@Api(tags = "库存采购单—后台")
 @RestController
 @RequestMapping("/api/ware/wareordertask")
 public class WareOrderTaskController {

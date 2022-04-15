@@ -1,6 +1,7 @@
 package com.deep.cart.config;
 
 import com.deep.cart.interceptor.LoginInterceptor;
+import com.deep.cart.interceptor.SwaggerInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -20,6 +21,8 @@ public class CartWebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor())
-                .addPathPatterns("/**");
+                .addPathPatterns("/**").excludePathPatterns("/api/cart/v2/api-docs");
+
+        registry.addInterceptor(new SwaggerInterceptor()).addPathPatterns("/api/cart/v2/api-docs");
     }
 }

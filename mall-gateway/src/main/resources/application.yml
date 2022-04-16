@@ -1,0 +1,77 @@
+server:
+  port: 88
+
+spring:
+  application:
+    name: mall-tiny-gateway
+
+  resources:
+    add-mappings: true
+
+  cloud:
+    # nacos配置
+    nacos:
+      discovery: # 注册中心
+        server-addr: 124.222.56.141:8848
+        namespace: 4f3b5226-066e-48e2-b7a6-d71f99290479
+    # 网关配置
+    gateway:
+      # 跨域请求配置
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: # 允许哪些网站的跨域请求
+              - "http://localhost:8001"
+            allowedMethods: # 允许的跨域ajax的请求方式
+              - "GET"
+              - "POST"
+              - "PUT"
+              - "DELETE"
+              - "OPTIONS"
+            allowedHeaders: "*"     # 允许在请求中携带的头信息
+            allowCredentials: true  # 是否允许携带cookie
+            maxAge: 360000          # 这次跨域检测的有效期
+      # 路由配置
+      routes:
+        - id: auth_route
+          uri: lb://mall-tiny-auth
+          predicates:
+            - Path=/api/auth/**
+
+        - id: seckill_route
+          uri: lb://mall-seckill
+          predicates:
+            - Path=/api/coupon/**
+
+        - id: cart_route
+          uri: lb://mall-tiny-cart
+          predicates:
+            - Path=/api/cart/**
+
+        - id: product_route
+          uri: lb://mall-tiny-product
+          predicates:
+            - Path=/api/product/**
+
+        - id: ware_route
+          uri: lb://mall-tiny-ware
+          predicates:
+            - Path=/api/ware/**
+
+        - id: order_route
+          uri: lb://mall-tiny-order
+          predicates:
+            - Path=/api/order/**
+
+        - id: search_route
+          uri: lb://mall-tiny-search
+          predicates:
+            - Path=/api/search/**
+
+        - id: admin_route
+          uri: lb://renren-fast
+          predicates:
+            - Path=/api/**    # /** 会拦截前面的路由，因此要放到后面
+          filters:
+            - RewritePath=/api/?(?<segment>.*), /renren-fast/$\{segment}

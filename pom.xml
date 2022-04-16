@@ -17,15 +17,16 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>mall-tiny-product</module>
+        <module>mall-product</module>
         <module>mall-common</module>
-        <module>mall-tiny-search</module>
+        <module>mall-search</module>
         <module>renren-fast</module>
-        <module>mall-tiny-gateway</module>
-        <module>mall-tiny-ware</module>
-        <module>mall-tiny-order</module>
-        <module>mall-tiny-cart</module>
-        <module>mall-tiny-auth</module>
+        <module>mall-gateway</module>
+        <module>mall-ware</module>
+        <module>mall-order</module>
+        <module>mall-cart</module>
+        <module>mall-auth</module>
+        <module>mall-seckill</module>
     </modules>
 
     <properties>

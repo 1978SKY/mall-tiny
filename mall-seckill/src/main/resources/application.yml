@@ -24,3 +24,9 @@ spring:
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*.xml   # mapper扫描路径
+  global-config:
+    db-config:
+      id-type: auto

@@ -35,6 +35,14 @@ public class SeckillPromotionController {
         return R.ok().put("page", page);
     }
 
+    @GetMapping("/info/{id}")
+    @ApiOperation("信息")
+    public R info(@PathVariable("id") Long id){
+        SeckillPromotionEntity seckillPromotion = seckillPromotionService.getById(id);
+
+        return R.ok().put("seckillPromotion", seckillPromotion);
+    }
+
     @PostMapping("/save")
     @ApiOperation("新增")
     public R save(@RequestBody SeckillPromotionEntity seckillPromotion) {

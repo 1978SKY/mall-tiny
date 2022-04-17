@@ -36,6 +36,14 @@ public class MemberPriceController {
         return R.ok().put("page", page);
     }
 
+    @GetMapping("/info/{id}")
+    @ApiOperation("信息")
+    public R info(@PathVariable("id") Long id){
+        MemberPriceEntity memberPrice = memberPriceService.getById(id);
+
+        return R.ok().put("memberPrice", memberPrice);
+    }
+
     @PostMapping("/save")
     @ApiOperation("新增")
     public R save(@RequestBody MemberPriceEntity memberPrice) {

@@ -36,6 +36,14 @@ public class SeckillSessionController {
         return R.ok().put("page", page);
     }
 
+    @RequestMapping("/info/{id}")
+    @ApiOperation("信息")
+    public R info(@PathVariable("id") Long id) {
+        SeckillSessionEntity seckillSession = seckillSessionService.getById(id);
+
+        return R.ok().put("seckillSession", seckillSession);
+    }
+
     @PostMapping("/save")
     @ApiOperation("保存")
     public R save(@RequestBody SeckillSessionEntity seckillSession) {

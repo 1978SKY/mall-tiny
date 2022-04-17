@@ -35,6 +35,14 @@ public class HomeSubjectController {
         return R.ok().put("page", page);
     }
 
+    @GetMapping("/info/{id}")
+    @ApiOperation("信息")
+    public R info(@PathVariable("id") Long id){
+        HomeSubjectEntity homeSubject = homeSubjectService.getById(id);
+
+        return R.ok().put("homeSubject", homeSubject);
+    }
+
     @PostMapping("/save")
     @ApiOperation("保存")
     public R save(@RequestBody HomeSubjectEntity homeSubject) {

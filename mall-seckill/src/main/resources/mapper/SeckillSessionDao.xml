@@ -7,6 +7,7 @@
     <resultMap type="com.deep.seckill.model.entity.SeckillSessionEntity" id="seckillSessionMap">
         <result property="id" column="id"/>
         <result property="name" column="name"/>
+        <result property="promotionId" column="promotion_id"/>
         <result property="startTime" column="start_time"/>
         <result property="endTime" column="end_time"/>
         <result property="status" column="status"/>

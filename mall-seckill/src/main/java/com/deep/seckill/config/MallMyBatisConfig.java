@@ -1,4 +1,4 @@
-package com.deep.product.config;
+package com.deep.seckill.config;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
@@ -10,11 +10,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * MyBatis Plus配置类
  *
  * @author Deep
- * @date 2022/3/17
+ * @date 2022/4/17
  */
 @Configuration
 @EnableTransactionManagement
-@MapperScan("com.deep.product.dao")
+@MapperScan("com.deep.seckill.dao")
 public class MallMyBatisConfig {
     /**
      * 分页插件

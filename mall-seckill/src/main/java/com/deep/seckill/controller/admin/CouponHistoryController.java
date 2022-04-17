@@ -28,13 +28,20 @@ public class CouponHistoryController {
         this.couponHistoryService = couponHistoryService;
     }
 
-
     @GetMapping("/list")
     @ApiOperation("优惠券")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = couponHistoryService.queryPage(params);
 
         return R.ok().put("page", page);
+    }
+
+    @RequestMapping("/info/{id}")
+    @ApiOperation("信息")
+    public R info(@PathVariable("id") Long id){
+        CouponHistoryEntity couponHistory = couponHistoryService.getById(id);
+
+        return R.ok().put("couponHistory", couponHistory);
     }
 
     @PostMapping("/save")

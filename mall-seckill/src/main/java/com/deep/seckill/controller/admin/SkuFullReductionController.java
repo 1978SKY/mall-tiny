@@ -35,6 +35,14 @@ public class SkuFullReductionController {
         return R.ok().put("page", page);
     }
 
+    @GetMapping("/info/{id}")
+    @ApiOperation("信息")
+    public R info(@PathVariable("id") Long id){
+        SkuFullReductionEntity skuFullReduction = skuFullReductionService.getById(id);
+
+        return R.ok().put("skuFullReduction", skuFullReduction);
+    }
+
     @PostMapping("/save")
     @ApiOperation("新增")
     public R save(@RequestBody SkuFullReductionEntity skuFullReduction) {

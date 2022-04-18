@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import org.apache.http.HttpStatus;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ import java.util.Map;
  * @author Mark sunlightcs@gmail.com
  */
 public class R extends HashMap<String, Object> {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public R() {
@@ -59,6 +61,7 @@ public class R extends HashMap<String, Object> {
         return new R();
     }
 
+    @Override
     public R put(String key, Object value) {
         super.put(key, value);
         return this;
@@ -76,9 +79,9 @@ public class R extends HashMap<String, Object> {
      * String字符串->json字符串->typeReference对象
      */
     public <T> T getData(String msg, TypeReference<T> typeReference) {
-        Object data = get(msg); // 默认是map类型，springmvc做的
+        // 默认是map类型，springmvc做的
+        Object data = get(msg);
         String jsonStr = JSON.toJSONString(data);
-        T t = JSON.parseObject(jsonStr, typeReference);
-        return t;
+        return JSON.parseObject(jsonStr, typeReference);
     }
 }

@@ -42,6 +42,11 @@ spring:
         - id: seckill_route
           uri: lb://mall-seckill
           predicates:
+            - Path=/api/seckill/**
+
+        - id: coupon_route
+          uri: lb://mall-coupon
+          predicates:
             - Path=/api/coupon/**
 
         - id: cart_route

@@ -9,25 +9,18 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mall-seckill</artifactId>
-    <description>商品秒杀模块</description>
+    <artifactId>mall-coupon</artifactId>
+    <description>商品优惠模块</description>
 
     <properties>
         <maven.compiler.source>14</maven.compiler.source>
         <maven.compiler.target>14</maven.compiler.target>
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.deep.mall</groupId>
             <artifactId>mall-common</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.baomidou</groupId>
-                    <artifactId>mybatis-plus-boot-starter</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -36,11 +29,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.redisson</groupId>
-            <artifactId>redisson</artifactId>
-            <version>3.16.2</version>
         </dependency>
     </dependencies>
 
@@ -54,5 +42,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

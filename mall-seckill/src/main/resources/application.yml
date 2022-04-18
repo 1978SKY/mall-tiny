@@ -1,15 +1,9 @@
 server:
-  port: 13000
+  port: 14000
 spring:
   application:
     name: mall-seckill
-  # MySQL配置
-  datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/gulimall_sms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-    username: root
-    password: 123456
+
   redis:
     port: 6379
     host: 124.222.56.141
@@ -24,9 +18,3 @@ spring:
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
-
-mybatis-plus:
-  mapper-locations: classpath*:/mapper/*.xml   # mapper扫描路径
-  global-config:
-    db-config:
-      id-type: auto

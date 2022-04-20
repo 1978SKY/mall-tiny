@@ -9,8 +9,9 @@ package com.deep.seckill.service;
 public interface UploadService {
     /**
      * 上架秒杀商品
-     *
+     * 
+     * @param day 最近天数
      * @return 上架结果
      */
-    boolean uploadSeckillSkus();
+    boolean uploadSeckillSkus(int day);
 }

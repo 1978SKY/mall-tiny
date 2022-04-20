@@ -1,8 +1,11 @@
 package com.deep.seckill.feign;
 
+import com.deep.common.utils.R;
 import com.deep.seckill.model.dto.SeckillSessionWithSkusDTO;
 import com.deep.seckill.model.enume.UploadEnums;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -20,5 +23,6 @@ public interface CouponFeignService {
      * @param day 时间
      * @return 秒杀场次
      */
-    List<SeckillSessionWithSkusDTO> getSeckillSessions(int day);
+    @GetMapping("/api/coupon/seckillsession/getSkillSessions")
+    R getSeckillSessions(@RequestParam(value = "day") int day);
 }

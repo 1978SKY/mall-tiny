@@ -5,6 +5,7 @@ import com.deep.common.utils.R;
 import com.deep.ware.service.WareSkuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,9 +35,18 @@ public class WareSkuController {
 
     @PostMapping("/hasStock")
     @ApiOperation("判断是否有商品库存")
-    R isHasStock(@RequestBody List<Long> skuIds) {
+    public R isHasStock(@RequestBody List<Long> skuIds) {
         Map<Long, Boolean> stockMap = wareSkuService.skuIdsHasStock(skuIds);
 
         return R.ok().put("data", stockMap);
     }
+
+    @GetMapping("/lockInventory")
+    @ApiOperation("检查并锁定库存")
+    public R checkAndLockStock(@RequestParam("skuId") Long skuId, @RequestParam("count") Integer count) {
+        Map<Boolean, String> map = wareSkuService.lockInventory(skuId, count);
+
+        return map.containsKey(true) ? R.ok() : R.error(map.get(false));
+    }
+
 }

@@ -45,17 +45,19 @@ public class SeckillSkuRelationController {
     @PostMapping("/save")
     @ApiOperation("新增")
     public R save(@RequestBody SeckillSkuRelationEntity seckillSkuRelation) {
-        seckillSkuRelationService.save(seckillSkuRelation);
+        Map<Boolean, String> map = seckillSkuRelationService.saveOrUpdateDetail(seckillSkuRelation);
+        // seckillSkuRelationService.save(seckillSkuRelation);
 
-        return R.ok();
+        return map.containsKey(true) ? R.ok() : R.error(map.get(false));
     }
 
     @PostMapping("/update")
-    @ApiOperation("删除")
+    @ApiOperation("修改")
     public R update(@RequestBody SeckillSkuRelationEntity seckillSkuRelation) {
-        seckillSkuRelationService.updateById(seckillSkuRelation);
+        Map<Boolean, String> map = seckillSkuRelationService.saveOrUpdateDetail(seckillSkuRelation);
+        // seckillSkuRelationService.updateById(seckillSkuRelation);
 
-        return R.ok();
+        return map.containsKey(true) ? R.ok() : R.error(map.get(false));
     }
 
     @PostMapping("/delete")

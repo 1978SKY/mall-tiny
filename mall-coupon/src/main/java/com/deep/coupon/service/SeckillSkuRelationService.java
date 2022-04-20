@@ -31,4 +31,12 @@ public interface SeckillSkuRelationService extends IService<SeckillSkuRelationEn
      * @return 商品Hash集合()
      */
     Map<Long, List<SeckillSkuRelationEntity>> getBySessionIds(@NonNull List<Long> sessionIds);
+
+    /**
+     * 保存或修改秒杀关联的商品
+     * 
+     * @param seckillSkuRelation 秒杀活动商品关联
+     * @return 成功/失败
+     */
+    Map<Boolean,String> saveOrUpdateDetail(@NonNull SeckillSkuRelationEntity seckillSkuRelation);
 }

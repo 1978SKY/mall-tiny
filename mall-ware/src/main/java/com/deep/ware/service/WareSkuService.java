@@ -30,4 +30,13 @@ public interface WareSkuService extends IService<WareSkuEntity> {
      * 完成采购
      */
     void finishPurchase(@NonNull List<PurchaseDemandEntity> demandEntities);
+
+    /**
+     * 检查并锁定库存
+     * 
+     * @param skuId 商品id
+     * @param count 数量
+     * @return 操作结果
+     */
+    Map<Boolean, String> lockInventory(@NonNull Long skuId,@NonNull Integer count);
 }

@@ -13,5 +13,14 @@ public class SeckillConstant {
      */
     public static final String UPLOAD_LOCK = "seckill:upload:lock";
 
-    public static final Integer UPLOAD_TIME = 10;
+    /**
+     * 持有锁的时间
+     */
+    public static final Integer LOCK_TIME = 10;
+
+    /**
+     * 秒杀活动在Redis中前缀
+     */
+    public static final String SESSION_CACHE_PREFIX = "seckill:session:";
+
 }

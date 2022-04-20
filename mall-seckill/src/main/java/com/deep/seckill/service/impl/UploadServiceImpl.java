@@ -56,7 +56,7 @@ public class UploadServiceImpl implements UploadService {
 
             Boolean hasKey = redisTemplate.hasKey(key);
             if (hasKey != null && !hasKey) {
-                redisTemplate.opsForHash().put(key, session.getId(), session);
+                redisTemplate.opsForHash().put(key, session.getId().toString(), JSON.toJSONString(session));
                 redisTemplate.expire(key, Duration.ofMillis(endTime - startTime + 100));
             }
         }

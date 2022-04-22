@@ -40,5 +40,5 @@ public class SeckillSessionWithSkusDTO {
     /**
      * 秒杀商品集合
      */
-    private List<SeckillSkuDTO> relationSkus;
+    private List<SeckillSkuDTO> seckillSkus;
 }

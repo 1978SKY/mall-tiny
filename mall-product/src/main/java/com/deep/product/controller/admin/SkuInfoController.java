@@ -1,16 +1,18 @@
 package com.deep.product.controller.admin;
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import com.deep.common.utils.PageUtils;
 import com.deep.common.utils.R;
 import com.deep.product.model.entity.SkuInfoEntity;
 import com.deep.product.service.admin.SkuInfoService;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * sku信息
@@ -45,5 +47,13 @@ public class SkuInfoController {
     public R getSkuSaleAttrValues(@PathVariable("skuId") Long skuId) {
         List<String> saleAttrs = skuInfoService.getSkuSaleAttr(skuId);
         return R.ok().put("saleAttrs", saleAttrs);
+    }
+
+    @PostMapping("/info/skuIds")
+    @ApiOperation("批量获取商品")
+    public R infos(@RequestBody List<Long> skuIds) {
+        List<SkuInfoEntity> skuInfos = skuInfoService.listByIds(skuIds);
+
+        return R.ok().put("data", skuInfos);
     }
 }

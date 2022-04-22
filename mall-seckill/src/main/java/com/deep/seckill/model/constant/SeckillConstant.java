@@ -21,6 +21,11 @@ public class SeckillConstant {
     /**
      * 秒杀活动在Redis中前缀
      */
-    public static final String SESSION_CACHE_PREFIX = "seckill:session:";
+    public static final String SESSION_CACHE_PREFIX = "seckill:relation:";
+
+    /**
+     * 秒杀商品在Redis中缓存前缀
+     */
+    public static final String SKU_CACHE_PREFIX = "seckill:sku:";
 
 }

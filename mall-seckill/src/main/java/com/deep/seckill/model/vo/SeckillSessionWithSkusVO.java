@@ -1,15 +1,15 @@
-package com.deep.coupon.model.vo;
-
-import lombok.Data;
+package com.deep.seckill.model.vo;
 
 import java.util.Date;
 import java.util.List;
 
+import lombok.Data;
+
 /**
- * 秒杀场次
- *
+ * 商品秒杀统一封装
+ * 
  * @author Deep
- * @date 2022/4/18
+ * @date 2022/4/21
  */
 @Data
 public class SeckillSessionWithSkusVO {
@@ -38,7 +38,7 @@ public class SeckillSessionWithSkusVO {
      */
     private Date createTime;
     /**
-     * 秒杀商品集合
+     * 商品
      */
-    private List<SeckillSkuVO> seckillSkus;
+    private List<SeckillSkuVO> skuInfoVOList;
 }

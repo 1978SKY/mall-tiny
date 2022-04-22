@@ -1,8 +1,10 @@
 package com.deep.seckill.model.dto;
 
-import lombok.Data;
-
 import java.math.BigDecimal;
+
+import com.deep.common.model.dto.SkuInfoDTO;
+
+import lombok.Data;
 
 /**
  * 秒杀场次关联商品
@@ -12,14 +14,6 @@ import java.math.BigDecimal;
  */
 @Data
 public class SeckillSkuDTO {
-    /**
-     * 关联id
-     */
-    private Long id;
-    /**
-     * 活动场次id
-     */
-    private Long promotionSessionId;
     /**
      * 商品id
      */
@@ -40,4 +34,8 @@ public class SeckillSkuDTO {
      * 排序
      */
     private Integer seckillSort;
+    /**
+     * 商品详细信息
+     */
+    private SkuInfoDTO skuInfoDTO;
 }

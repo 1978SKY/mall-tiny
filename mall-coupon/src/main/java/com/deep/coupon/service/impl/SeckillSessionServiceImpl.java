@@ -67,7 +67,7 @@ public class SeckillSessionServiceImpl extends ServiceImpl<SeckillSessionDao, Se
             List<SeckillSkuRelationEntity> subSkus = sessionSkusMap.get(item.getId());
             if (!CollectionUtils.isEmpty(subSkus)) {
                 List<SeckillSkuVO> skuVos = BeanUtils.transformFromInBatch(subSkus, SeckillSkuVO.class);
-                Objects.requireNonNull(sessionVO).setRelationSkus(skuVos);
+                Objects.requireNonNull(sessionVO).setSeckillSkus(skuVos);
             }
             return sessionVO;
         }).collect(Collectors.toList());

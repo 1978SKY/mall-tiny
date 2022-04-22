@@ -46,7 +46,6 @@ public class SeckillSkuRelationController {
     @ApiOperation("新增")
     public R save(@RequestBody SeckillSkuRelationEntity seckillSkuRelation) {
         Map<Boolean, String> map = seckillSkuRelationService.saveOrUpdateDetail(seckillSkuRelation);
-        // seckillSkuRelationService.save(seckillSkuRelation);
 
         return map.containsKey(true) ? R.ok() : R.error(map.get(false));
     }
@@ -55,7 +54,6 @@ public class SeckillSkuRelationController {
     @ApiOperation("修改")
     public R update(@RequestBody SeckillSkuRelationEntity seckillSkuRelation) {
         Map<Boolean, String> map = seckillSkuRelationService.saveOrUpdateDetail(seckillSkuRelation);
-        // seckillSkuRelationService.updateById(seckillSkuRelation);
 
         return map.containsKey(true) ? R.ok() : R.error(map.get(false));
     }

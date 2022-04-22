@@ -41,17 +41,14 @@ public class SeckillSkuDTO {
      * 排序
      */
     private Integer seckillSort;
-
     /**
      * sku的详细信息
      */
     private SkuInfoEntity skuInfo;
-
     /**
      * 当前商品秒杀的开始时间
      */
     private Long startTime;
-
     /**
      * 当前商品秒杀的结束时间
      */

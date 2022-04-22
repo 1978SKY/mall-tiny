@@ -18,3 +18,7 @@ spring:
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
+
+  # 模板引擎
+  thymeleaf:
+    cache: false  # 关闭thymeleaf缓存（开发期间可以实时看到页面变化，上线后开启缓存可以提高性能）

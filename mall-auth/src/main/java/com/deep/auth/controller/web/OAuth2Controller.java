@@ -49,7 +49,7 @@ public class OAuth2Controller {
         paramMap.put("grant_type", "authorization_code");
         paramMap.put("code", code);
         paramMap.put("client_id", "672b6b1a905b8d2395e045349531e5384bfe81423359460142e9d2f388573795");
-        paramMap.put("redirect_uri", "http://localhost:8000/api/auth/oauth2.0/gitee/doLogin");
+        paramMap.put("redirect_uri", "http://localhost:88/api/auth/oauth2.0/gitee/doLogin");
         paramMap.put("client_secret", "f3fae5d8c055d58c192b05112ff75f9e0c3f957b3c6f524461bc9cc581367748");
 
         // 1、根据code换取access_token
@@ -70,6 +70,6 @@ public class OAuth2Controller {
             }
         }
         // Login error
-        return "redirect:http://localhost:8000/api/auth/login";
+        return "redirect:http://localhost:88/api/auth/login.html";
     }
 }

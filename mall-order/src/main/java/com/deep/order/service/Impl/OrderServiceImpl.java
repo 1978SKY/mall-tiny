@@ -43,26 +43,21 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         QueryWrapper<OrderEntity> wrapper = new QueryWrapper<>();
-        String key = (String) params.get("key");
+        String key = (String)params.get("key");
         if (StringUtils.hasLength(key)) {
-            wrapper.eq("order_sn", key).or()
-                    .eq("member_id", key).or()
-                    .like("member_username", key);
+            wrapper.eq("order_sn", key).or().eq("member_id", key).or().like("member_username", key);
         }
-        IPage<OrderEntity> page =
-                this.page(new Query<OrderEntity>().getPage(params), wrapper);
+        IPage<OrderEntity> page = this.page(new Query<OrderEntity>().getPage(params), wrapper);
         return new PageUtils(page);
     }
 
     @Override
     public List<OrderVO> queryUserOrderPage(@NonNull Long userId, Map<String, Object> params) {
         Assert.notNull(userId, "用户id不能为空!");
-        QueryWrapper<OrderEntity> wrapper = new QueryWrapper<>();
 
-        IPage<OrderEntity> page = this.page(
-                new Query<OrderEntity>().getPage(params),
-                wrapper.eq("member_id", userId).orderByDesc("create_time")
-        );
+        QueryWrapper<OrderEntity> wrapper = new QueryWrapper<>();
+        IPage<OrderEntity> page = this.page(new Query<OrderEntity>().getPage(params),
+            wrapper.eq("member_id", userId).orderByDesc("create_time"));
         List<OrderEntity> orders = page.getRecords();
         List<Long> orderIds = orders.stream().map(OrderEntity::getId).collect(Collectors.toList());
 
@@ -114,9 +109,18 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         OrderEntity order = getOne(wrapper.eq("order_sn", orderSn));
         OrderVO orderVO = BeanUtils.transformFrom(order, OrderVO.class);
         List<OrderItemEntity> items = orderItemService.getByOrderIds(Collections.singletonList(order.getId()));
-        List<OrderItemVO> itemVOS = BeanUtils.transformFromInBatch(items, OrderItemVO.class);
+        List<OrderItemVO> itemVos = BeanUtils.transformFromInBatch(items, OrderItemVO.class);
         assert orderVO != null;
-        orderVO.setItems(itemVOS);
+        orderVO.setItems(itemVos);
         return orderVO;
+    }
+
+    @Override
+    public List<OrderEntity> getMemberOrders(@NonNull Long memberId) {
+        Assert.notNull(memberId, "会员id不能为空!");
+
+        QueryWrapper<OrderEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("member_id", memberId);
+        return list(wrapper);
     }
 }

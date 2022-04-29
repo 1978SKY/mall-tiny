@@ -33,7 +33,8 @@
 
 <!--logo图片-->
 <div class="top-1">
-    <img src="/static/order/confirm/img/logo1.jpg" class="img1"/><span>结算页</span>
+    <img src="/static/order/confirm/img/logo1.jpg" class="img1"/>
+    <span>结算页</span>
     <!--右侧绿色-->
     <img src="/static/order/confirm/img/08.png" class="img2"/>
 </div>
@@ -118,15 +119,23 @@
             orderToken: orderToken
         };
 
+        if (payPrice <= 0) {
+            alert("商品无货，请稍后再试!");
+            return false;
+        }
+
         $.ajax({
             type: 'POST',
             datatype: 'json',
-            url: 'http://localhost:88/api/order/index/submitOrder',
+            url: 'http://localhost:88/api/order/web/submitOrder',
             contentType: "application/json",
             data: JSON.stringify(order),
             success: function (data) {
                 if (data === "order token 失效!") {
-                    alert(data);
+                    alert("token失效,请刷新页面重新提交!");
+                    return false;
+                } else if (data === "0") {
+                    alert("订单中包含仓库不存在或库存不足的商品!");
                     return false;
                 }
                 window.location.href = "http://localhost:88/api/order/pay/" + data;

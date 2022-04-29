@@ -26,12 +26,12 @@ public class SearchController {
     @Autowired
     private SearchService searchService;
 
-    @GetMapping({"/", "/search"})
+    @GetMapping({"/search.html"})
     @ApiOperation("检索")
     public String getPage(SearchParam searchParam, Model model) {
         SearchResultVO result = searchService.search(searchParam);
 
         model.addAttribute("result", result);
-        return "newSearch";
+        return "search";
     }
 }

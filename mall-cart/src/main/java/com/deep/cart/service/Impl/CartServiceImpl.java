@@ -15,6 +15,7 @@ import com.deep.common.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -64,7 +65,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartItemVO getCartItem(Long skuId) {
+    public CartItemVO getCartItem(@NonNull Long skuId) {
         Assert.notNull(skuId, "商品id不能为空!");
 
         BoundHashOperations<String, Object, Object> ops = getCartOps();

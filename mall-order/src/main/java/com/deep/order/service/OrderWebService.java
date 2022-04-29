@@ -24,13 +24,14 @@ public interface OrderWebService {
 
     /**
      * 订单确认页
+     * @return 订单确认
      */
     OrderConfirmVO confirmOrder();
 
     /**
      * 提交订单
      *
-     * @param param 提交参数
+     * @param submitParam 提交参数
      * @return 映射表
      */
     Map<Integer, String> submitOrder(OrderSubmitParam submitParam);

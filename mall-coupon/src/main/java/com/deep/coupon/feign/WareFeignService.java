@@ -12,7 +12,7 @@ import com.deep.common.utils.R;
  * @author Deep
  * @date 2022/4/19
  */
-@FeignClient("mall-tiny-ware")
+@FeignClient("mall-ware")
 public interface WareFeignService {
 
     /**

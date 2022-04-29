@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.deep.common.utils.PageUtils;
 import com.deep.common.utils.R;
 import com.deep.product.model.entity.SkuInfoEntity;
-import com.deep.product.service.admin.SkuInfoService;
+import com.deep.product.service.SkuInfoService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

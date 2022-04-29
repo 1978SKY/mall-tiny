@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: mall-tiny-gateway
+    name: mall-gateway
 
   resources:
     add-mappings: true
@@ -35,7 +35,7 @@ spring:
       # 路由配置
       routes:
         - id: auth_route
-          uri: lb://mall-tiny-auth
+          uri: lb://mall-auth
           predicates:
             - Path=/api/auth/**
 
@@ -50,27 +50,27 @@ spring:
             - Path=/api/coupon/**
 
         - id: cart_route
-          uri: lb://mall-tiny-cart
+          uri: lb://mall-cart
           predicates:
             - Path=/api/cart/**
 
         - id: product_route
-          uri: lb://mall-tiny-product
+          uri: lb://mall-product
           predicates:
             - Path=/api/product/**
 
         - id: ware_route
-          uri: lb://mall-tiny-ware
+          uri: lb://mall-ware
           predicates:
             - Path=/api/ware/**
 
         - id: order_route
-          uri: lb://mall-tiny-order
+          uri: lb://mall-order
           predicates:
             - Path=/api/order/**
 
         - id: search_route
-          uri: lb://mall-tiny-search
+          uri: lb://mall-search
           predicates:
             - Path=/api/search/**
 

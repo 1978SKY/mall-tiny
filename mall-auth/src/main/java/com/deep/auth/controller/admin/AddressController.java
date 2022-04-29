@@ -29,7 +29,7 @@ public class AddressController {
     @ApiOperation("收货地址集合")
     public List<MemberReceiveAddressEntity> getAddress(@PathVariable("memberId") Long memberId) {
 
-        return addressService.getAddress(memberId);
+        return addressService.getAddresses(memberId);
     }
 
     @ResponseBody

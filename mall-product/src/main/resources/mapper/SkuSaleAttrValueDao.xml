@@ -27,7 +27,7 @@
         where sku_id in (
             select sku_id
             from `pms_sku_info`
-            where spu_id = 17
+            where spu_id = #{spuId}
         )
         group by sale.attr_id,
                  sale.attr_name,

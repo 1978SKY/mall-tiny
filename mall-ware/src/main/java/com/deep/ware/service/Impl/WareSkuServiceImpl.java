@@ -1,10 +1,9 @@
 package com.deep.ware.service.Impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import com.deep.common.exception.StockException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -103,48 +102,68 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Map<Boolean, String> lockInventory(@NonNull Long skuId, @NonNull Integer count) {
+    public boolean lockInventory(@NonNull Long skuId, @NonNull Integer count) {
         Assert.notNull(skuId, "商品id不能为空!");
         Assert.isTrue(count > 0, "商品数量必须为正数!");
 
-        QueryWrapper<WareSkuEntity> wrapper = new QueryWrapper<>();
-        wrapper.eq("sku_id", skuId);
-        List<WareSkuEntity> skus = list(wrapper);
-        // check
-        Map<Boolean, String> map = checkStock(count, skus);
-        if (map != null) {
-            return map;
-        }
-        map = new HashMap<>(1);
-        // 锁定库存
-        // TODO Redisson 锁（分布式锁，防止多扣库存）
-        wrapper.clear();
-        // 依次从扣除仓库库存，直到count为0之止
-        for (int i = 0; i < skus.size() && count > 0; i++) {
-            WareSkuEntity sku = skus.get(i);
-            // 每个仓库剩余库存
-            int subRemainStock = sku.getStock() - sku.getStockLocked();
-            if (subRemainStock >= count) {
-                sku.setStockLocked(sku.getStockLocked() + count);
-            } else {
-                sku.setStockLocked(sku.getStockLocked() + subRemainStock);
+        Map<Long, Integer> map = new HashMap<>(1);
+        map.put(skuId, count);
+
+        return lockInventory(map);
+        
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean lockInventory(Map<Long, Integer> stockMap) {
+        // 判断商品是否有库存且库存充足
+        for (Map.Entry<Long, Integer> entry : stockMap.entrySet()) {
+            Long skuId = entry.getKey();
+            Integer count = entry.getValue();
+
+            Map<Boolean, String> map = checkStock(skuId, count);
+            if (map != null) {
+                log.debug("商品{}{}", skuId, map.get(false));
+                return false;
             }
-            count -= subRemainStock;
         }
-        // 更新库存
-        updateBatchById(skus);
-        map.put(true, null);
-        return map;
+
+        for (Map.Entry<Long, Integer> entry : stockMap.entrySet()) {
+            Long skuId = entry.getKey();
+            Integer count = entry.getValue();
+            QueryWrapper<WareSkuEntity> wrapper = new QueryWrapper<>();
+            wrapper.eq("sku_id", skuId);
+            List<WareSkuEntity> skus = list(wrapper);
+            for (int i = 0; i < skus.size() && count > 0; i++) {
+                WareSkuEntity sku = skus.get(i);
+                // 每个仓库剩余库存
+                int subRemainStock = sku.getStock() - sku.getStockLocked();
+                if (subRemainStock >= count) {
+                    sku.setStockLocked(sku.getStockLocked() + count);
+                } else {
+                    sku.setStockLocked(sku.getStockLocked() + subRemainStock);
+                }
+                count -= subRemainStock;
+            }
+            // 更新库存
+            updateBatchById(skus);
+        }
+        return true;
     }
 
     /**
      * 检查库存
-     * 
-     * @param count 扣减库存数量
-     * @param skus 商品集合
+     *
+     * @param skuId 商品id
+     * @param count 扣减数量
      * @return 检查结果
      */
-    private Map<Boolean, String> checkStock(Integer count, List<WareSkuEntity> skus) {
+    private Map<Boolean, String> checkStock(Long skuId, Integer count) {
+
+        QueryWrapper<WareSkuEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("sku_id", skuId);
+        List<WareSkuEntity> skus = list(wrapper);
+
         HashMap<Boolean, String> map = new HashMap<>(1);
         if (skus.isEmpty()) {
             map.put(false, "仓库没有该商品！");
@@ -160,4 +179,5 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
         }
         return null;
     }
+
 }

@@ -39,7 +39,7 @@ public class OssController {
     private String bucket;
 
     @GetMapping("/policy")
-    @ApiOperation("上传文件")
+    @ApiOperation("oss签名策略")
     public R policy() {
         // 主机
         String host = "https://" + bucket + "." + endpoint;
@@ -68,9 +68,7 @@ public class OssController {
             respMap.put("dir", dir);
             respMap.put("host", host);
             respMap.put("expire", String.valueOf(expireEndTime / 1000));
-            // respMap.put("expire", formatISO8601Date(expiration));
         } catch (Exception e) {
-            // Assert.fail(e.getMessage());
             System.out.println(e.getMessage());
         } finally {
             ossClient.shutdown();

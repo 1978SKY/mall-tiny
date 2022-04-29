@@ -2,6 +2,8 @@ package com.deep.seckill.service;
 
 import java.util.List;
 
+import com.deep.seckill.model.dto.RedisSkuDto;
+import com.deep.seckill.model.vo.SessionLocalSkuVo;
 import org.springframework.lang.NonNull;
 
 import com.deep.seckill.model.dto.SeckillSessionWithSkusDTO;
@@ -21,13 +23,13 @@ public interface IndexService {
      * @param params 查询参数
      * @return 秒杀商品页
      */
-    List<SeckillSkuDTO> getSeckillSessions();
+    List<SessionLocalSkuVo.LocalSkuVo> getSeckillSessions();
 
     /**
      * 获取秒杀商品详情
-     * 
-     * @param skuId 商品id
+     * @param sessionId 活动id
+     * @param skuId 商品详情
      * @return 商品详情
      */
-    SeckillSkuDTO getSeckillSkuDetail(@NonNull Long skuId);
+    RedisSkuDto getSeckillSkuDetail(@NonNull Long sessionId, @NonNull Long skuId);
 }

@@ -25,16 +25,16 @@ import java.util.Map;
 @Slf4j
 @Controller
 @Api(tags = "订单-前台")
-@RequestMapping("/api/order/index")
+@RequestMapping("/api/order/web")
 public class OrderWebController {
     @Autowired
     private OrderWebService orderWebService;
 
-    @GetMapping("/")
+    @GetMapping("/order.html")
     @ApiOperation("订单首页")
-    public String listUserOderItems(@RequestParam(value = "pageNum",
-            required = false, defaultValue = "1") String pageNum, Model model) {
-        Map<String, Object> params = new HashMap<>();
+    public String listUserOderItems(
+        @RequestParam(value = "pageNum", required = false, defaultValue = "1") String pageNum, Model model) {
+        Map<String, Object> params = new HashMap<>(1);
         params.put("pageNum", pageNum);
         List<OrderVO> orders = orderWebService.queryPage(params);
 
@@ -42,13 +42,10 @@ public class OrderWebController {
         return "order";
     }
 
-    @GetMapping("/settlement")
+    @GetMapping("/settlement.html")
     @ApiOperation("订单结算页")
     public String toTrade(Model model) {
-        long start = System.currentTimeMillis();
         OrderConfirmVO orderConfirmVO = orderWebService.confirmOrder();
-        long end = System.currentTimeMillis();
-        log.info("远程查询商品共耗时{}ms", (end - start));
 
         model.addAttribute("confirmOrderData", orderConfirmVO);
         return "settlement";
@@ -58,15 +55,12 @@ public class OrderWebController {
     @PostMapping("/submitOrder")
     @ApiOperation("提交订单")
     public String submitOrder(@RequestBody OrderSubmitParam param) {
-        long start = System.currentTimeMillis();
         Map<Integer, String> map = orderWebService.submitOrder(param);
-        long end = System.currentTimeMillis();
-        log.info("生成订单共耗时{}ms", (end - start));
-
         if (map == null || map.size() != 1) {
             throw new RuntimeException("orderWebService内部逻辑错误!");
-        }
-        if (map.containsKey(-1)) {
+        } else if (map.containsKey(0)) {
+            return "0";
+        } else if (map.containsKey(-1)) {
             return "order token 失效!";
         }
         return map.get(1);

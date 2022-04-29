@@ -17,5 +17,11 @@
         <result property="price" column="price"/>
         <result property="saleCount" column="sale_count"/>
     </resultMap>
+    <select id="getBestSale" resultMap="skuInfoMap">
+        select *
+        from `pms_sku_info`
+        order by sale_count desc
+        limit #{count}
+    </select>
 
 </mapper>

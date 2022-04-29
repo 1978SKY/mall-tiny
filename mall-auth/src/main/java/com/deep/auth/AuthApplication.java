@@ -3,6 +3,7 @@ package com.deep.auth;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 /**
@@ -11,6 +12,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
  * @author Deep
  * @date 2022/3/29
  */
+@EnableFeignClients("com.deep.auth.feign")
 @EnableRedisHttpSession
 @EnableDiscoveryClient
 @SpringBootApplication

@@ -14,7 +14,7 @@ import java.util.List;
  * @author Deep
  * @date 2022/3/27
  */
-@FeignClient("mall-tiny-search")
+@FeignClient("mall-search")
 public interface SearchFeignService {
     /**
      * 商品上架

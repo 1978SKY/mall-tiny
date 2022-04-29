@@ -3,7 +3,7 @@ package com.deep.product.controller.admin;
 import com.deep.common.utils.R;
 import com.deep.product.model.entity.CategoryEntity;
 import com.deep.product.model.params.CategoryParam;
-import com.deep.product.service.admin.CategoryService;
+import com.deep.product.service.CategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +22,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/product/category")
 public class CategoryController {
-    @Autowired
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
+
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @GetMapping("/list/tree")
     @ApiOperation("返回所有分类数据")

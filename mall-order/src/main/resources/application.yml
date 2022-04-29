@@ -2,7 +2,7 @@ server:
   port: 9000
 spring:
   application:
-    name: mall-tiny-order
+    name: mall-order
   # MySQL配置
   datasource:
     type: com.zaxxer.hikari.HikariDataSource

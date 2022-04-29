@@ -13,7 +13,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
  * @date 2022/3/29
  */
 @EnableFeignClients("com.deep.order.feign")
-@EnableRedisHttpSession     // 开启redis存储session功能
+@EnableRedisHttpSession
 @EnableDiscoveryClient
 @SpringBootApplication
 public class OrderApplication {

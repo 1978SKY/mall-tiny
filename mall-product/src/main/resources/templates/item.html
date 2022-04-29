@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <base href="http://124.222.56.141/static/">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--==== favicon css ====-->
+    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon"/>
+    <!-- josefin font -->
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+    <title>Sofast Multipurpose eCommerce HTML Template</title>
+    <!-- font-awesome -->
+    <link rel="stylesheet" href="assets/css/all.min.css">
+    <!-- flaticon -->
+    <link rel="stylesheet" href="assets/font/flaticon.css">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!-- menu -->
+    <link rel="stylesheet" href="assets/css/menu.css">
+    <!-- swiper slider -->
+    <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
+    <!-- venobox -->
+    <link rel="stylesheet" href="assets/css/venobox.css">
+    <!-- select -->
+    <link rel="stylesheet" href="assets/css/select2.min.css">
+    <!-- jquery ui -->
+    <link rel="stylesheet" href="assets/css/jquery-ui.min.css">
+    <!-- style -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- responsive -->
+    <link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+
+<body>
+<!-- 启动预加载器区域 -->
+<div class="preloader">
+    <div class="preloader-orbit-loading">
+        <div class="cssload-inner cssload-one"></div>
+        <div class="cssload-inner cssload-two"></div>
+        <div class="cssload-inner cssload-three"></div>
+    </div>
+</div>
+<!-- 开始滚动顶部按钮 -->
+<div class="scroll-top">
+    <button class="top-to-btn">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+</div>
+<!-- header -->
+<header>
+    <!-- 开始菜单栏区域 -->
+    <section class="inner-page menubar">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row align-items-center">
+                        <!-- logo -->
+                        <div class="col-lg-2 col-md-4 col-sm-5 col-6">
+                            <div class="logo">
+                                <a href="index.html">
+                                    <img src="assets/images/home1/logo.png" alt="Logo"/>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- 主菜单 -->
+                        <div class="col-lg-8 col-md-4 col-sm-2 col-6">
+                            <!-- desktop-menu -->
+                            <nav class="navbar position-static justify-content-center desktop-menu p-0">
+                                <div class="main-menu">
+                                    <ul class="menu">
+                                        <li>
+                                            <a href="http://localhost:88/api/product/index.html">Home</a>
+                                        </li>
+                                        <li><a href="http://localhost:88/api/seckill/seckill.html">seckill</a></li>
+                                        <li><a href="http://localhost:88/api/search/search.html">search</a></li>
+                                        <li><a href="about/mall.html">About</a></li>
+                                        <li><a href="about.html">Gitee</a></li>
+                                        <li><a href="about.html">AboutMe</a></li>
+                                    </ul>
+                                </div>
+                            </nav>
+                        </div>
+                        <!-- 通知 -->
+                        <div class="col-lg-2 col-md-4 col-sm-5 right-col">
+                            <div class="notification">
+                                <ul class="d-flex justify-content-end">
+                                    <li>
+                                        <a th:if="${session.loginUser==null}"
+                                           href="http://localhost:88/api/auth/login.html">
+                                            <i class="flaticon-user-1"></i>
+                                        </a>
+                                        <a th:if="${session.loginUser!=null}"
+                                           href="http://localhost:88/api/auth/account/account.html">
+                                            <i class="flaticon-user-1"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a th:if="${session.loginUser==null}"
+                                           href="http://localhost:88/api/auth/login.html">
+                                            <i class="flaticon-shopping-cart-1"></i>
+                                        </a>
+                                        <a th:if="${session.loginUser!=null}"
+                                           href="http://localhost:88/api/cart/cart.html">
+                                            <i class="flaticon-shopping-cart-1"></i>
+                                            <span class="quantity" style="background: white;color: red">02</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</header>
+<!-- banner -->
+<section class="inner-page banner" data-img="assets/images/inner/banner-bg.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>product details</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">seckill</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- detail -->
+<section class="shop-page shop-detail">
+    <div class="container">
+        <div class="row">
+            <div class="col-xxl-10 offset-xxl-1">
+                <div class="row">
+                    <div class="col-lg-5 col-md-6">
+                        <div class="image-area">
+                            <div class="product-gallery swiper-container">
+                                <div class="swiper-wrapper">
+                                    <div class="item swiper-slide">
+                                        <img id="zoom_01" th:src="${product.info.skuDefaultImg}" alt="Product">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-6">
+                        <div class="detail-content">
+                            <p class="stock">available:<span> in stock</span></p>
+                            <h5 th:text="${product.info.skuName}"></h5>
+                            <div class="review-area d-flex align-items-center">
+                                <ul class="rating d-flex">
+                                    <li><i class="fas fa-star"></i></li>
+                                    <li><i class="fas fa-star"></i></li>
+                                    <li><i class="fas fa-star"></i></li>
+                                    <li><i class="fas fa-star"></i></li>
+                                    <li><i class="fas fa-star"></i></li>
+                                </ul>
+                                <p>(2 customer review)</p>
+                            </div>
+                            <h5><a th:text="'￥'+${#numbers.formatDecimal(product.info.price,0,2)}"></a>
+                            </h5>
+                            <p class="desc" th:text="${product.info.skuTitle}"></p>
+
+
+                            <div class="color-pallate d-flex align-items-center" th:each="attr:${product.saleAttr}">
+                                <p th:text="${attr.attrName}+' : '"></p>
+                                <ul class="d-flex">
+                                    <li style="color: #a10000;margin-left: 10px;" th:each="value:${attr.attrValues}">
+                                        <span id="sku_attr_value" th:attr="skus = ${value.skuIds},
+                                            class=${#lists.contains(#strings.listSplit(value.skuIds,','),
+                                            product.info.skuId.toString())?'sku_attr_value checked':'sku_attr_value'}">
+                                            [[${value.attrValue}]]
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="border-area">
+                                <div class="cart-part d-flex align-items-center">
+                                    <div class="d-flex number-spinner">
+                                        <button data-dir="dwn" class="down-btn"><i
+                                                class="fas fa-minus"></i></button>
+                                        <label>
+                                            <input type="text" class="form-control text-center input-value"
+                                                   id="productNum" value="1">
+                                        </label>
+                                        <button data-dir="up" class="up-btn"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                    <a id="addToCart" class="cart" th:attr="skuId=${product.info.skuId}"><span>add to cart</span></a>
+                                    <div class="add-more d-flex align-items-center">
+                                        <a href="javascript:void(0)"><i class="flaticon-heart"></i></a>
+                                        <a href="javascript:void(0)"><i class="flaticon-refresh"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="share d-flex align-items-center">
+                                <h5>share : </h5>
+                                <ul class="d-flex">
+                                    <li><a href="javascript:void(0)"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li><a href="javascript:void(0)"><i class="fab fa-pinterest-p"></i></a></li>
+                                    <li><a href="javascript:void(0)"><i class="fab fa-instagram"></i></a></li>
+                                    <li><a href="javascript:void(0)"><i class="fab fa-google-plus-g"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 商品介绍&&评价 -->
+<section class="shop-page shop-review">
+    <div class="container">
+        <div class="row">
+            <div class="col-xxl-10 offset-xxl-1">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
+                                type="button" role="tab" aria-controls="home" aria-selected="true">description
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
+                                type="button" role="tab" aria-controls="profile" aria-selected="false">review
+                            <span>(2)</span></button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="description">
+                            <p>Nam tristique porta ligula, vel viverra sem eleifend nec. Nulla sed purus augue, eu
+                                euismod tellus. Nam mattis eros nec mi sagittis sagittis. Vestibulum suscipit cursus
+                                bibendum. Integer at justo eget semsa auctor auctor eget vitae arcu. Nam tempor
+                                malesuada porttitor. Nulla quis dignissim ipsum. Aliquam pulvinar iaculis justo, sit
+                                amet interdum sem hendrerit vitae. Vivamus vel erat tortor. Nulla facilisi quam,
+                                lacinia eu aliquam ac, aliquam in nisl.</p>
+                            <p>Nam tristique porta ligula, vel viverra sem eleifend nec. Nulla sed purus augue, eu
+                                euismod tellus. Nam mattis eros nec mi sagittis sagittis. Vestibulum suscipit cursus
+                                bibendum. Integer at justo eget semsa auctor auctor eget vitae arcu. Nam tempor
+                                malesuada porttitor. Nulla quis dignissim ipsum. Aliquam pulvinar iaculis justo, sit
+                                amet interdum sem hendrerit vitae. Vivamus vel erat tortor. Nulla facilisi quam,
+                                lacinia eu aliquam ac, aliquam in nisl.</p>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <ul class="comment">
+                                    <li class="item d-flex">
+                                        <div class="image">
+                                            <a href="#!">
+                                                <img src="assets/images/shop/review1.jpg" alt="Review Image">
+                                            </a>
+                                        </div>
+                                        <!-- 商品评价 -->
+                                        <div class="media-body">
+                                            <ul class="rating d-flex">
+                                                <li><i class="fas fa-star"></i></li>
+                                                <li><i class="fas fa-star"></i></li>
+                                                <li><i class="fas fa-star"></i></li>
+                                                <li><i class="fas fa-star"></i></li>
+                                                <li><i class="fas fa-star"></i></li>
+                                            </ul>
+                                            <a href="#!">
+                                                <h6>Kenneth R. Myers</h6>
+                                            </a>
+                                            <a href="#!">
+                                                <p>August 11, 2021</p>
+                                            </a>
+                                            <p>I am 6 feet tall and 220 lbs. This shirt fit me perfectly in the che
+                                                shoulders. Myt only complaint is that it is so long! I like to wear
+                                                polo shirts untucked This shirt goes completely past my rear end If
+                                                I wore it with ordy shorts you probably wouldnt be able to see the
+                                                shorts at all – completelythe shirt. It needs to be 4 inches shorter
+                                                in terms of length to suitable
+                                                woretheit with ordinary shorts, you probably</p>
+                                        </div>
+                                    </li>
+                                    <li class="item d-flex">
+                                        <div class="image">
+                                            <a href="#!">
+                                                <img src="assets/images/shop/review2.jpg" alt="Review Image">
+                                            </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <ul class="rating d-flex">
+                                                <li><i class="fas fa-star"></i></li>
+                                                <li><i class="fas fa-star"></i></li>
+                                                <li><i class="fas fa-star"></i></li>
+                                                <li><i class="fas fa-star"></i></li>
+                                                <li><i class="fas fa-star"></i></li>
+                                            </ul>
+                                            <a href="#!">
+                                                <h6>Mike Addington</h6>
+                                            </a>
+                                            <a href="#!">
+                                                <p>August 11, 2021</p>
+                                            </a>
+                                            <p>I am 6 feet tall and 220 lbs. This shirt fit me perfectly in the che
+                                                shoulders. Myt only complaint is that it is so long! I like to wear
+                                                polo shirts untucked This shirt goes completely past my rear end If
+                                                I wore it with ordy shorts you probably wouldnt be able to see .
+                                            </p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="add-review">
+                                    <h6>Add A Review</h6>
+                                    <p>Your email address will not be published</p>
+                                    <!-- Rating Stars Box -->
+                                    <div class="rating-stars d-flex">
+                                        <p>give your rating</p>
+                                        <ul id="stars">
+                                            <li class='star' title='Poor' data-value='1'>
+                                                <i class='fas fa-star fa-fw'></i>
+                                            </li>
+                                            <li class='star' title='Fair' data-value='2'>
+                                                <i class='fas fa-star fa-fw'></i>
+                                            </li>
+                                            <li class='star' title='Good' data-value='3'>
+                                                <i class='fas fa-star fa-fw'></i>
+                                            </li>
+                                            <li class='star' title='Excellent' data-value='4'>
+                                                <i class='fas fa-star fa-fw'></i>
+                                            </li>
+                                            <li class='star' title='WOW!!!' data-value='5'>
+                                                <i class='fas fa-star fa-fw'></i>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <form action="#">
+                                        <label>
+                                            <textarea placeholder="your review*" class="inputs" required></textarea>
+                                        </label>
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6">
+                                                <label>
+                                                    <input type="text" placeholder="your name*" class="inputs" required>
+                                                </label>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <label>
+                                                    <input type="email" placeholder="your email*" class="inputs"
+                                                           required>
+                                                </label>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <button type="submit">submit <span class="btn-dot"></span></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- overview -->
+<section class="home1 overview">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="bg">
+                    <div class="bg-inner">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6">
+                                <div class="item d-flex align-items-center justify-content-center">
+                                    <div class="icon">
+                                        <i class="flaticon-fire-truck"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h5>free shipping</h5>
+                                        <h6>Orders over $250</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="item d-flex align-items-center justify-content-center">
+                                    <div class="icon">
+                                        <i class="flaticon-cards"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h5>quick payment</h5>
+                                        <h6>100% secure payment</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="item d-flex align-items-center justify-content-center">
+                                    <div class="icon">
+                                        <i class="flaticon-gift-box"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h5>gift certificate</h5>
+                                        <h6>Buy now $500</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="item d-flex align-items-center justify-content-center last-item">
+                                    <div class="icon">
+                                        <i class="flaticon-customer-service"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h5>24/7 support</h5>
+                                        <h6>Quick Support</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- footer -->
+<footer class="footer">
+    <!-- footer-top -->
+    <section class="footer-top pb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>about us</h5>
+                        </div>
+                        <p>Can only be used for learning
+                        </p>
+                        <div class="follow">
+                            <h6>follow us</h6>
+                            <ul class="d-flex social">
+                                <li><a href="javascript:void(0)"><i class="fab fa-facebook-f"></i></a></li>
+                                <li><a href="javascript:void(0)"><i class="fab fa-twitter"></i></a></li>
+                                <li><a href="javascript:void(0)"><i class="fab fa-skype"></i></a></li>
+                                <li><a href="javascript:void(0)"><i class="fab fa-instagram"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>my account</h5>
+                        </div>
+                        <ul>
+                            <li><a href="javascript:void(0)">my account</a></li>
+                            <li><a href="javascript:void(0)">wishlist</a></li>
+                            <li><a href="javascript:void(0)">login</a></li>
+                            <li><a href="javascript:void(0)">address</a></li>
+                            <li><a href="javascript:void(0)">new products</a></li>
+                            <li><a href="javascript:void(0)">faq</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>support</h5>
+                        </div>
+                        <ul>
+                            <li><a href="javascript:void(0)">help</a></li>
+                            <li><a href="javascript:void(0)">contact us</a></li>
+                            <li><a href="javascript:void(0)">feedback</a></li>
+                            <li><a href="javascript:void(0)">customer service</a></li>
+                            <li><a href="javascript:void(0)">reservation</a></li>
+                            <li><a href="javascript:void(0)">store locations</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>contact us</h5>
+                        </div>
+                        <ul class="address">
+                            <li class="d-flex align-items-center">
+                                <div class="icon">
+                                    <i class="flaticon-phone"></i>
+                                </div>
+                                <div class="text">
+                                    <h6>phone</h6>
+                                    <p>1852433xxxx</p>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <div class="icon">
+                                    <i class="flaticon-mail"></i>
+                                </div>
+                                <div class="text">
+                                    <h6>email</h6>
+                                    <p>187075xxxx@qq.com</p>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <div class="icon">
+                                    <i class="flaticon-placeholder"></i>
+                                </div>
+                                <div class="text">
+                                    <h6>address</h6>
+                                    <p>Western Road, Melbourne</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>useful links</h5>
+                        </div>
+                        <ul>
+                            <li><a href="javascript:void(0)">policy privacy</a></li>
+                            <li><a href="javascript:void(0)">site map</a></li>
+                            <li><a href="javascript:void(0)">store location</a></li>
+                            <li><a href="javascript:void(0)">my account</a></li>
+                            <li><a href="javascript:void(0)">orders traking</a></li>
+                            <li><a href="javascript:void(0)">terms of service</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- footer-bottom -->
+    <section class="footer-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="border-area">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 col-md-6">
+                                <p>Copyright 2022-2099, All Rights By <a href="#">MALL</a>.
+                                </p>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="payment">
+                                    <ul class="d-flex justify-content-end">
+                                        <li><a href="javascript:void(0)"><img src="assets/images/payment/visa.png"
+                                                                              alt="Visa"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img src="assets/images/payment/master.png"
+                                                                              alt="Master"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img src="assets/images/payment/paypal.png"
+                                                                              alt="Paypal"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img src="assets/images/payment/skrill.png"
+                                                                              alt="Skrill"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img
+                                                src="assets/images/payment/maestro.png" alt="Maestro"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img
+                                                src="assets/images/payment/electron.png" alt="Electron"/></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</footer>
+<!-- jquery -->
+<script src="assets/plugins/jquery-3.4.1.min.js"></script>
+<!-- bootstrap -->
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<!-- menu -->
+<script src="assets/plugins/menu.min.js"></script>
+<!-- swiper slider -->
+<script src="assets/plugins/swiper-bundle.min.js"></script>
+<!-- packery -->
+<script src="assets/plugins/packery.pkgd.min.js"></script>
+<!-- countdown -->
+<script src="assets/plugins/jquery.countdown.min.js"></script>
+<!-- venobox -->
+<script src="assets/plugins/venobox.min.js"></script>
+<!-- jquery ui -->
+<script src="assets/plugins/jquery-ui.min.js"></script>
+<!-- select -->
+<script src="assets/plugins/select2.min.js"></script>
+<!-- zoom -->
+<script src="assets/plugins/jquery.elevateZoom-3.0.8.min.js"></script>
+<!-- Google map -->
+<script src="http://ditu.google.cn/maps/api/js?key=AIzaSyCjkssBA3hMeFtClgslO2clWFR6bRraGz0"></script>
+<!-- script -->
+<script src="assets/js/script.js"></script>
+</body>
+
+<script>
+    /**************切换商品***************/
+    $(".sku_attr_value").click(function () {
+        var skus = new Array();
+        // 1.获取所有加了checked的属性
+        // 1.1 点击的元素加上自定义属性
+        $(this).addClass("clicked");
+        var curr = $(this).attr("skus").split(",");
+        // 当前被点击的所有sku组合的数组放进去
+        skus.push(curr)
+        // 去掉同一行所有的checked
+        $(this).parent().parent().find(".sku_attr_value").removeClass("checked");
+
+        $("a[class='sku_attr_value checked']").each(function () {
+            skus.push($(this).attr("skus").split(","));
+        });
+        // 2.取出他们的交集 得到skuId 调用filter方法的一定是jQuery元素
+        var filterEle = skus[0];
+        for (var i = 1; i < skus.length; i++) {
+            filterEle = $(filterEle).filter(skus[i]);
+        }
+        console.log(filterEle[0])
+        // 3.跳转
+        location.href = "http://localhost:88/api/product/item/" + filterEle[0] + ".html";
+    });
+
+    /**************添加购物车***************/
+    $("#addToCart").click(function () {
+        let skuId = $(this).attr("skuId");
+        const num = document.getElementById("productNum").value;
+        location.href = "http://localhost:88/api/cart/addToCart?skuId=" + skuId + "&num=" + num;
+        return false;
+    });
+</script>
+
+
+</html>

@@ -1,5 +1,6 @@
 package com.deep.cart.controller;
 
+import com.deep.cart.interceptor.LoginInterceptor;
 import com.deep.cart.model.params.CheckParam;
 import com.deep.cart.model.vo.CartItemVO;
 import com.deep.cart.service.CartItemService;
@@ -27,7 +28,7 @@ public class CartItemController {
     private CartItemService cartItemService;
 
     @ResponseBody
-    @PostMapping(value = "checkItem")
+    @PostMapping("/checkItem")
     @ApiOperation("切换选中状态")
     public R updateSelectStatus(@RequestBody CheckParam checkParam) {
         // 更新选中状态
@@ -36,10 +37,18 @@ public class CartItemController {
     }
 
     @ResponseBody
-    @GetMapping(value = "getCartItems")
+    @GetMapping("/getCartItems")
     @ApiOperation("获取被选中的购物项")
     public List<CartItemVO> getCurrentCartItems() {
         return cartItemService.getCheckItems();
+    }
+
+    @ResponseBody
+    @PostMapping("/delItem")
+    public R deleteItem(@RequestBody List<Long> skuIds) {
+        cartItemService.deleteItems(skuIds);
+
+        return R.ok();
     }
 
 }

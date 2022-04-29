@@ -14,7 +14,7 @@ import java.util.List;
  * @author Deep
  * @date 2022/4/4
  */
-@FeignClient("mall-tiny-product")
+@FeignClient("mall-product")
 public interface ProductFeignService {
 
     /**

@@ -12,7 +12,7 @@ import java.util.List;
  * @author Deep
  * @date 2022/3/29
  */
-@FeignClient("mall-tiny-ware")
+@FeignClient("mall-ware")
 public interface WareFeignService {
     /**
      * 判断是否有商品库存

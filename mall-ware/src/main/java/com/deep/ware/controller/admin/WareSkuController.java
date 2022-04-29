@@ -42,11 +42,22 @@ public class WareSkuController {
     }
 
     @GetMapping("/lockInventory")
-    @ApiOperation("检查并锁定库存")
+    @ApiOperation(value = "检查并锁定库存", hidden = true)
     public R checkAndLockStock(@RequestParam("skuId") Long skuId, @RequestParam("count") Integer count) {
-        Map<Boolean, String> map = wareSkuService.lockInventory(skuId, count);
+        boolean b = wareSkuService.lockInventory(skuId, count);
 
-        return map.containsKey(true) ? R.ok() : R.error(map.get(false));
+        return b ? R.ok() : R.error("仓库没有该商品或库存不足!");
+    }
+
+    @PostMapping("/ckeckstock")
+    @ApiOperation("检查并锁定库存")
+    public R checkAndLock(@RequestBody Map<Long, Integer> stockMap) {
+
+        boolean b = wareSkuService.lockInventory(stockMap);
+        if (b) {
+            return R.ok();
+        }
+        return R.error(-1, "仓库没有该商品或库存不足!");
     }
 
 }

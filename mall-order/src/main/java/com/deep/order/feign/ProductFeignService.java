@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.FeignClient;
  * @author Deep
  * @date 2022/4/7
  */
-@FeignClient("mall-tiny-product")
+@FeignClient("mall-product")
 public interface ProductFeignService {
 
 }

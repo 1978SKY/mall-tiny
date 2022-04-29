@@ -2,7 +2,10 @@ package com.deep.seckill.service;
 
 import java.util.List;
 
+import com.deep.seckill.model.dto.RedisSkuDto;
 import com.deep.seckill.model.dto.SeckillSkuDTO;
+import com.deep.seckill.model.vo.SessionLocalSkuVo;
+import org.springframework.lang.NonNull;
 
 /**
  * 上架服务
@@ -20,9 +23,18 @@ public interface UploadService {
     boolean uploadSeckillSkus(int day);
 
     /**
-     * 获取秒杀商品
+     * 获取所有秒杀商品
      * 
      * @return 秒杀商品
      */
-    List<SeckillSkuDTO> getSeckillSkus();
+    List<SessionLocalSkuVo> listSeckillSkus();
+
+    /**
+     * 获取秒杀商品详情
+     * 
+     * @param sessionId 活动id
+     * @param skuId 商品详情
+     * @return 商品详情
+     */
+    RedisSkuDto getSkuDetail(@NonNull Long sessionId, @NonNull Long skuId);
 }

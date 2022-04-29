@@ -12,13 +12,12 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
 /**
- * 登录
+ * 账户管理
  *
  * @author Deep
  * @date 2022/2/4
@@ -48,10 +47,9 @@ public class LoginController {
     @GetMapping("/logout")
     @ApiOperation("注销操作")
     public String logout(HttpSession session) {
-
         session.removeAttribute(AuthConstant.LOGIN_USER);
         // 重定向回登录页
-        return "redirect:http://localhost:8000/api/auth/login";
+        return "redirect:http://localhost:88/api/auth/login.html";
     }
 
 

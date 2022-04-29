@@ -5,8 +5,8 @@ import com.deep.common.utils.R;
 import com.deep.product.model.entity.ProductAttrValueEntity;
 import com.deep.product.model.params.AttrParam;
 import com.deep.product.model.vo.AttrVO;
-import com.deep.product.service.admin.AttrService;
-import com.deep.product.service.admin.ProductAttrValueService;
+import com.deep.product.service.AttrService;
+import com.deep.product.service.ProductAttrValueService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +26,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/product/attr")
 public class AttrController {
+
     @Autowired
     private AttrService attrService;
     @Autowired
@@ -33,9 +34,8 @@ public class AttrController {
 
     @GetMapping("/{attrType}/list/{catelogId}")
     @ApiOperation("查询属性规格")
-    public R baseAttrList(@RequestParam Map<String, Object> params,
-                          @PathVariable("catelogId") Long catId,
-                          @PathVariable("attrType") String type) {
+    public R baseAttrList(@RequestParam Map<String, Object> params, @PathVariable("catelogId") Long catId,
+        @PathVariable("attrType") String type) {
         PageUtils page = attrService.queryAttrPage(params, catId, type);
         return R.ok().put("page", page);
     }
@@ -51,8 +51,7 @@ public class AttrController {
     @GetMapping("/base/listforspu/{spuId}")
     @ApiOperation("获取spuId对应的基础属性")
     public R baseAttrListForSpu(@PathVariable("spuId") Long spuId) {
-        List<ProductAttrValueEntity> attrs =
-                productAttrValueService.baseAttrsForSpu(spuId);
+        List<ProductAttrValueEntity> attrs = productAttrValueService.baseAttrsForSpu(spuId);
 
         return R.ok().put("data", attrs);
     }

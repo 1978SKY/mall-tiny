@@ -33,7 +33,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }
         // 未登录
-        response.sendRedirect("http://localhost:8000/api/auth/login");
+        response.sendRedirect("http://localhost:8000/api/auth/login.html");
         return false;
     }
 

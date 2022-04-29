@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: mall-tiny-auth
+    name: mall-auth
   # MySQL配置
   datasource:
     type: com.zaxxer.hikari.HikariDataSource

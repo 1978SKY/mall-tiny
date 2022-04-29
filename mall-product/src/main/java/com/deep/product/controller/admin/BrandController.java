@@ -4,7 +4,7 @@ import com.deep.common.utils.PageUtils;
 import com.deep.common.utils.R;
 import com.deep.product.model.entity.BrandEntity;
 import com.deep.product.model.params.BrandParam;
-import com.deep.product.service.admin.BrandService;
+import com.deep.product.service.BrandService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +24,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/product/brand")
 public class BrandController {
-    @Autowired
-    private BrandService brandService;
+    private final BrandService brandService;
+
+    public BrandController(BrandService brandService) {
+        this.brandService = brandService;
+    }
 
     @GetMapping("/list")
     @ApiOperation("获取所有品牌")
@@ -64,11 +67,10 @@ public class BrandController {
     @PostMapping("/delete")
     @ApiOperation("删除品牌")
     public R delete(@RequestBody Long[] brandIds) {
-        List<Long> Ids = Arrays.asList(brandIds);
-        brandService.removeBatch(Ids);
+        List<Long> ids = Arrays.asList(brandIds);
+        brandService.removeBatch(ids);
 
         return R.ok();
     }
-
 
 }

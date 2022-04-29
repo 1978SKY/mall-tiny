@@ -16,5 +16,11 @@ import java.util.List;
  */
 @Mapper
 public interface SkuSaleAttrValueDao extends BaseMapper<SkuSaleAttrValueEntity> {
+    /**
+     * 获取销售属性
+     * 
+     * @param spuId spuId
+     * @return 销售属性集合
+     */
     List<SkuItemSaleAttrVO> getSaleAttrBySpuId(@Param("spuId") Long spuId);
 }

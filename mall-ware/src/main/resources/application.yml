@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: mall-tiny-ware
+    name: mall-ware
   # MySQL配置
   datasource:
     type: com.zaxxer.hikari.HikariDataSource

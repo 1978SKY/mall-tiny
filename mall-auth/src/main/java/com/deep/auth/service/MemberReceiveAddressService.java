@@ -20,6 +20,6 @@ public interface MemberReceiveAddressService extends IService<MemberReceiveAddre
      * @param memberId 会员id
      * @return 收货地址集合
      */
-    List<MemberReceiveAddressEntity> getAddress(@NonNull Long memberId);
+    List<MemberReceiveAddressEntity> getAddresses(@NonNull Long memberId);
 
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -14,6 +15,7 @@ import java.io.Serializable;
 @Data
 @TableName("ums_member_receive_address")
 public class MemberReceiveAddressEntity implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

@@ -14,7 +14,7 @@ import java.util.List;
  * @author Deep
  * @date 2022/4/5
  */
-@FeignClient(value = "mall-tiny-auth")
+@FeignClient(value = "mall-auth")
 public interface MemberFeignService {
     /**
      * 获取会员地址集合

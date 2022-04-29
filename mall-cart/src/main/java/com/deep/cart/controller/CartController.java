@@ -26,8 +26,7 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
-
-    @GetMapping(value = "/")
+    @GetMapping(value = "/cart.html")
     @ApiOperation("购物车首页")
     public String cartIndex(Model model) {
         CartVO cartVO = cartService.getCartDetail();
@@ -38,22 +37,21 @@ public class CartController {
 
     @GetMapping(value = "/addToCart")
     @ApiOperation("添加到购物车")
-    public String addToCart(@RequestParam("skuId") Long skuId,
-                            @RequestParam("num") int count,
-                            RedirectAttributes attributes) {
+    public String addToCart(@RequestParam("skuId") Long skuId, @RequestParam("num") int count,
+        RedirectAttributes attributes) {
         cartService.addToCart(skuId, count);
         // 给重定向请求用的【参数会拼接在下面请求之后】【转发会在请求域中】
         attributes.addAttribute("skuId", skuId);
         // 跳转添加成功页面防止表单重复提交
-        return "redirect:http://localhost:88/api/cart/addToCartSuccess";
+        return "redirect:http://localhost:88/api/cart/success";
     }
 
-    @GetMapping(value = "/addToCartSuccess")
+    @GetMapping(value = "/success")
     @ApiOperation("添加购物车成功")
     public String addToCartSuccessPage(@RequestParam("skuId") Long skuId, Model model) {
         // 重定向到成功页面
         CartItemVO cartItemVo = cartService.getCartItem(skuId);
-        model.addAttribute("cartItem", cartItemVo);
+        model.addAttribute("item", cartItemVo);
         return "success";
     }
 }

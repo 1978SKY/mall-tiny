@@ -36,7 +36,15 @@ public interface WareSkuService extends IService<WareSkuEntity> {
      * 
      * @param skuId 商品id
      * @param count 数量
-     * @return 操作结果
+     * @return true/false
      */
-    Map<Boolean, String> lockInventory(@NonNull Long skuId,@NonNull Integer count);
+    boolean lockInventory(@NonNull Long skuId, @NonNull Integer count);
+
+    /**
+     * 批量锁定库存
+     * 
+     * @param stockMap k: 商品id v:商品数量
+     * @return true/false
+     */
+    boolean lockInventory(Map<Long, Integer> stockMap);
 }

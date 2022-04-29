@@ -15,13 +15,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class OrderWebConfig implements WebMvcConfigurer {
 
+
+
     /**
      * 注册拦截器
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor())
-                .addPathPatterns("/api/order/index/**", "/api/order/pay/**");
+                .addPathPatterns("/api/order/web/**", "/api/order/pay/**");
         registry.addInterceptor(new SwaggerInterceptor()).addPathPatterns("/api/order/v2/api-docs");
     }
 

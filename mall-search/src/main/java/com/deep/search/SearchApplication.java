@@ -11,7 +11,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
  * @author Deep
  * @date 2022/3/20
  */
-@EnableRedisHttpSession     // 开启redis存储session功能
+@EnableRedisHttpSession
 @EnableDiscoveryClient
 @SpringBootApplication
 public class SearchApplication {

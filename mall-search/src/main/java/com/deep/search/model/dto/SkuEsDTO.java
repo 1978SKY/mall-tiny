@@ -3,6 +3,7 @@ package com.deep.search.model.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -15,6 +16,8 @@ import java.util.List;
  */
 @Data
 public class SkuEsDTO implements Serializable {
+
+    @Serial
     private static final long serialVersionUID = 1L;
     /**
      * sku id

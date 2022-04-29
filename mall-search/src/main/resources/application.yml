@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: mall-tiny-search
+    name: mall-search
   redis:
     port: 6379
     host: 124.222.56.141

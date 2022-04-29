@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: mall-tiny-product
+    name: mall-product
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver

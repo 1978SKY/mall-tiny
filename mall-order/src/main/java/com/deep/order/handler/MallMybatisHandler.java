@@ -1,4 +1,4 @@
-package com.deep.order.component;
+package com.deep.order.handler;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;

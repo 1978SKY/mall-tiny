@@ -20,7 +20,19 @@ spring:
       discovery: # 注册中心
         server-addr: 124.222.56.141:8848
         namespace: 4f3b5226-066e-48e2-b7a6-d71f99290479
-
+  rabbitmq:
+    host: 124.222.56.141
+    port: 5672
+    username: admin
+    password: Yi1Ge2Ren3RabbitMQ.
+    virtual-host: /
+    publisher-confirm-type: correlated  # 消息发送到服务器确认
+    publisher-returns: true # 消息抵达队列确认
+    template:
+      mandatory: true # 只要抵达队列就会被异步优先回调
+    listener:
+      simple:
+        acknowledge-mode: manual  # manual手动确认消息
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
 

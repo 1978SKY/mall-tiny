@@ -1,5 +1,6 @@
 package com.deep.order;
 
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -12,6 +13,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
  * @author Deep
  * @date 2022/3/29
  */
+@EnableRabbit
 @EnableFeignClients("com.deep.order.feign")
 @EnableRedisHttpSession
 @EnableDiscoveryClient

@@ -42,16 +42,23 @@ public interface OrderService extends IService<OrderEntity> {
 
     /**
      * 获取支付订单
-     * 
+     *
      * @return 支付订单
      */
     OrderVO getOrderVO(String orderSn);
 
     /**
      * 获取会员订单
-     * 
+     *
      * @param memberId 会员id
      * @return 订单集合
      */
     List<OrderEntity> getMemberOrders(@NonNull Long memberId);
+
+    /**
+     * 关闭订单交易
+     *
+     * @param orderSn 订单号
+     */
+    void closeOrder(String orderSn);
 }

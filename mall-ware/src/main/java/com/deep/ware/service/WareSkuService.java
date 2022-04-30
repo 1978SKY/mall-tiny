@@ -33,7 +33,7 @@ public interface WareSkuService extends IService<WareSkuEntity> {
 
     /**
      * 检查并锁定库存
-     * 
+     *
      * @param skuId 商品id
      * @param count 数量
      * @return true/false
@@ -42,9 +42,16 @@ public interface WareSkuService extends IService<WareSkuEntity> {
 
     /**
      * 批量锁定库存
-     * 
+     *
      * @param stockMap k: 商品id v:商品数量
      * @return true/false
      */
-    boolean lockInventory(Map<Long, Integer> stockMap);
+    boolean lockInventory(String orderSn, Map<Long, Integer> stockMap);
+
+    /**
+     * 解锁订单
+     *
+     * @param taskDetailId 工作单详情id
+     */
+    void unlockInventory(@NonNull Long taskDetailId);
 }

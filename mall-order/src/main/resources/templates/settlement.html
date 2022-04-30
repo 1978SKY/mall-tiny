@@ -131,17 +131,15 @@
             contentType: "application/json",
             data: JSON.stringify(order),
             success: function (data) {
-                if (data === "order token 失效!") {
-                    alert("token失效,请刷新页面重新提交!");
-                    return false;
-                } else if (data === "0") {
-                    alert("订单中包含仓库不存在或库存不足的商品!");
-                    return false;
+                const orderSn = data.sn;
+                if(data.sn!=null){
+                    window.location.href = "http://localhost:88/api/order/pay/" + orderSn;
+                }else{
+                    alert(data.msg);
                 }
-                window.location.href = "http://localhost:88/api/order/pay/" + data;
             },
             error: function (data) {
-                alert(data + "服务器异常!");
+                alert(data);
             }
         });
     }

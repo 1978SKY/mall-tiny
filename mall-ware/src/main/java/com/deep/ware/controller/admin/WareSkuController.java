@@ -52,12 +52,12 @@ public class WareSkuController {
     @PostMapping("/ckeckstock")
     @ApiOperation("检查并锁定库存")
     public R checkAndLock(@RequestBody Map<Long, Integer> stockMap) {
-
-        boolean b = wareSkuService.lockInventory(stockMap);
-        if (b) {
-            return R.ok();
+        boolean b = false;
+        try {
+            b = wareSkuService.lockInventory(null, stockMap);
+        } catch (Exception e) {
+            return R.error(-1, "仓库没有该商品或库存不足!");
         }
-        return R.error(-1, "仓库没有该商品或库存不足!");
+        return b ? R.ok() : R.error(-1, "仓库没有该商品或库存不足!");
     }
-
 }

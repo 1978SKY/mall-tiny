@@ -1,5 +1,7 @@
 package com.deep.order.controller.web;
 
+import com.deep.common.utils.R;
+import com.deep.order.model.enume.GenerateOrderEnum;
 import com.deep.order.model.params.OrderSubmitParam;
 import com.deep.order.model.vo.OrderConfirmVO;
 import com.deep.order.model.vo.OrderVO;
@@ -54,15 +56,12 @@ public class OrderWebController {
     @ResponseBody
     @PostMapping("/submitOrder")
     @ApiOperation("提交订单")
-    public String submitOrder(@RequestBody OrderSubmitParam param) {
-        Map<Integer, String> map = orderWebService.submitOrder(param);
-        if (map == null || map.size() != 1) {
-            throw new RuntimeException("orderWebService内部逻辑错误!");
-        } else if (map.containsKey(0)) {
-            return "0";
-        } else if (map.containsKey(-1)) {
-            return "order token 失效!";
+    public R submitOrder(@RequestBody OrderSubmitParam param) {
+        GenerateOrderEnum orderEnum = orderWebService.submitOrder(param);
+        log.info("订单生成日志 =======>> {}", orderEnum.getCode() + orderEnum.getMsg());
+        if (orderEnum.getCode().equals(GenerateOrderEnum.SUCCESS_CREATE.getCode())) {
+            return R.ok().put("sn", orderEnum.getMsg());
         }
-        return map.get(1);
+        return R.error(orderEnum.getCode(), orderEnum.getMsg());
     }
 }

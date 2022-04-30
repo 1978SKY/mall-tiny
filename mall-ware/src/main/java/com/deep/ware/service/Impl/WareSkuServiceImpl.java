@@ -1,9 +1,17 @@
 package com.deep.ware.service.Impl;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 
 import com.deep.common.exception.StockException;
+import com.deep.common.model.dto.OrderTaskDetailDto;
+import com.deep.common.utils.BeanUtils;
+import com.deep.ware.model.StockEnum;
+import com.deep.ware.model.entity.WareOrderTaskDetailEntity;
+import com.deep.ware.service.WareOrderTaskDetailService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -35,15 +43,21 @@ import lombok.extern.slf4j.Slf4j;
 public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> implements WareSkuService {
     @Autowired
     private WareSkuDao wareSkuDao;
+    @Autowired
+    private WareOrderTaskDetailService orderTaskDetailService;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+    @Autowired
+    private ThreadPoolExecutor executor;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         QueryWrapper<WareSkuEntity> wrapper = new QueryWrapper<>();
-        String wareId = (String)params.get("wareId");
+        String wareId = (String) params.get("wareId");
         if (StringUtils.hasLength(wareId)) {
             wrapper.eq("ware_id", wareId);
         }
-        String skuId = (String)params.get("skuId");
+        String skuId = (String) params.get("skuId");
         if (StringUtils.hasLength(skuId)) {
             wrapper.eq("sku_id", skuId);
         }
@@ -79,23 +93,23 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
         Assert.notEmpty(demandEntities, "采购需求集合不能为空!");
 
         List<WareSkuEntity> collect = demandEntities.stream()
-            .filter(item -> item.getStatus() < WareConstant.PurchaseDemandStatusEnum.FINISH.getCode()
-                || item.getStatus() == WareConstant.PurchaseDemandStatusEnum.HASERROR.getCode())
-            .map(item -> {
-                WareSkuEntity wareSkuEntity = this.getOne(
-                    new QueryWrapper<WareSkuEntity>().eq("sku_id", item.getSkuId()).eq("ware_id", item.getWareId()));
-                if (wareSkuEntity == null) {
-                    // create new wareSkuEntity
-                    wareSkuEntity = new WareSkuEntity();
-                    wareSkuEntity.setSkuId(item.getSkuId());
-                    wareSkuEntity.setWareId(item.getWareId());
-                    wareSkuEntity.setStock(item.getSkuNum());
-                } else {
-                    // update stock
-                    wareSkuEntity.setStock(wareSkuEntity.getStock() + item.getSkuNum());
-                }
-                return wareSkuEntity;
-            }).collect(Collectors.toList());
+                .filter(item -> item.getStatus() < WareConstant.PurchaseDemandStatusEnum.FINISH.getCode()
+                        || item.getStatus() == WareConstant.PurchaseDemandStatusEnum.HASERROR.getCode())
+                .map(item -> {
+                    WareSkuEntity wareSkuEntity = this.getOne(
+                            new QueryWrapper<WareSkuEntity>().eq("sku_id", item.getSkuId()).eq("ware_id", item.getWareId()));
+                    if (wareSkuEntity == null) {
+                        // create new wareSkuEntity
+                        wareSkuEntity = new WareSkuEntity();
+                        wareSkuEntity.setSkuId(item.getSkuId());
+                        wareSkuEntity.setWareId(item.getWareId());
+                        wareSkuEntity.setStock(item.getSkuNum());
+                    } else {
+                        // update stock
+                        wareSkuEntity.setStock(wareSkuEntity.getStock() + item.getSkuNum());
+                    }
+                    return wareSkuEntity;
+                }).collect(Collectors.toList());
 
         this.saveOrUpdateBatch(collect);
     }
@@ -105,79 +119,78 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
     public boolean lockInventory(@NonNull Long skuId, @NonNull Integer count) {
         Assert.notNull(skuId, "商品id不能为空!");
         Assert.isTrue(count > 0, "商品数量必须为正数!");
-
         Map<Long, Integer> map = new HashMap<>(1);
         map.put(skuId, count);
 
-        return lockInventory(map);
-        
+        return lockInventory(null, map);
+
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean lockInventory(Map<Long, Integer> stockMap) {
-        // 判断商品是否有库存且库存充足
+    public boolean lockInventory(String orderSn, Map<Long, Integer> stockMap) {
+        List<WareSkuEntity> wareSkuList = new ArrayList<>();
+        List<WareOrderTaskDetailEntity> orderTaskDetailList = new ArrayList<>();
+
+        QueryWrapper<WareSkuEntity> wrapper = new QueryWrapper<>();
         for (Map.Entry<Long, Integer> entry : stockMap.entrySet()) {
+            wrapper.clear();
             Long skuId = entry.getKey();
             Integer count = entry.getValue();
-
-            Map<Boolean, String> map = checkStock(skuId, count);
-            if (map != null) {
-                log.debug("商品{}{}", skuId, map.get(false));
+            wrapper.eq("sku_id", skuId).last(" AND stock - stock_locked >= " + count + " LIMIT 1");
+            WareSkuEntity wareSku = getOne(wrapper);
+            if (wareSku == null) {
+                // 仓库中没有该商品或库存不足
                 return false;
             }
+            wareSku.setStockLocked(wareSku.getStockLocked() + count);
+            wareSkuList.add(wareSku);
+
+            // 保存工作单详情（便于订单取消回溯）
+            WareOrderTaskDetailEntity orderTaskDetail = WareOrderTaskDetailEntity.builder()
+                    .skuId(skuId)
+                    .skuName(wareSku.getSkuName())
+                    .skuNum(count)
+                    .wareId(wareSku.getWareId())
+                    .lockStatus(StockEnum.LOCKED.getStatus()).build();
+            orderTaskDetailList.add(orderTaskDetail);
         }
 
-        for (Map.Entry<Long, Integer> entry : stockMap.entrySet()) {
-            Long skuId = entry.getKey();
-            Integer count = entry.getValue();
-            QueryWrapper<WareSkuEntity> wrapper = new QueryWrapper<>();
-            wrapper.eq("sku_id", skuId);
-            List<WareSkuEntity> skus = list(wrapper);
-            for (int i = 0; i < skus.size() && count > 0; i++) {
-                WareSkuEntity sku = skus.get(i);
-                // 每个仓库剩余库存
-                int subRemainStock = sku.getStock() - sku.getStockLocked();
-                if (subRemainStock >= count) {
-                    sku.setStockLocked(sku.getStockLocked() + count);
-                } else {
-                    sku.setStockLocked(sku.getStockLocked() + subRemainStock);
-                }
-                count -= subRemainStock;
-            }
-            // 更新库存
-            updateBatchById(skus);
-        }
+        // 锁定库存
+        CompletableFuture<Void> wareLockFuture = CompletableFuture.runAsync(() -> {
+            updateBatchById(wareSkuList);
+        }, executor);
+        // 保存工作单详情（便于订单取消回溯）
+        CompletableFuture<Void> taskFuture = CompletableFuture.runAsync(() -> {
+            orderTaskDetailService.saveBatch(orderTaskDetailList);
+        }, executor);
+        // 通知RabbitMQ将订单工作单保存起来
+        CompletableFuture<Void> rabbitFuture = taskFuture.thenRunAsync(() -> {
+            orderTaskDetailList.forEach(item -> {
+                OrderTaskDetailDto orderTaskDetailDto = BeanUtils.transformFrom(item, OrderTaskDetailDto.class);
+                Objects.requireNonNull(orderTaskDetailDto).setOrderSn(orderSn);
+                rabbitTemplate.convertAndSend("stock-event-exchange", "stock.locked", orderTaskDetailDto);
+            });
+        }, executor);
+
+        CompletableFuture.allOf(wareLockFuture, taskFuture, rabbitFuture);
         return true;
     }
 
-    /**
-     * 检查库存
-     *
-     * @param skuId 商品id
-     * @param count 扣减数量
-     * @return 检查结果
-     */
-    private Map<Boolean, String> checkStock(Long skuId, Integer count) {
-
-        QueryWrapper<WareSkuEntity> wrapper = new QueryWrapper<>();
-        wrapper.eq("sku_id", skuId);
-        List<WareSkuEntity> skus = list(wrapper);
-
-        HashMap<Boolean, String> map = new HashMap<>(1);
-        if (skus.isEmpty()) {
-            map.put(false, "仓库没有该商品！");
-            return map;
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void unlockInventory(@NonNull Long taskDetailId) {
+        Assert.notNull(taskDetailId, "工作单详情id不能为空!");
+        WareOrderTaskDetailEntity detail = orderTaskDetailService.getById(taskDetailId);
+        if (detail == null) {
+            throw new StockException("不存在该工作单详情!" + taskDetailId);
         }
-        int remainStock = 0;
-        for (WareSkuEntity sku : skus) {
-            remainStock += sku.getStock() - sku.getStockLocked();
+        int res = baseMapper.unlockInventory(detail.getSkuId(), detail.getWareId(), detail.getSkuNum());
+        if (res != 1) {
+            throw new StockException("解锁库存失败!");
         }
-        if (remainStock < count) {
-            map.put(false, "仓库货存不足！");
-            return map;
-        }
-        return null;
+        detail.setLockStatus(StockEnum.UNLOCKED.getStatus());
+        orderTaskDetailService.updateById(detail);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.deep.order.service;
 
+import com.deep.order.model.enume.GenerateOrderEnum;
 import com.deep.order.model.params.OrderSubmitParam;
 import com.deep.order.model.vo.OrderConfirmVO;
 import com.deep.order.model.vo.OrderVO;
@@ -34,5 +35,5 @@ public interface OrderWebService {
      * @param submitParam 提交参数
      * @return 映射表
      */
-    Map<Integer, String> submitOrder(OrderSubmitParam submitParam);
+    GenerateOrderEnum submitOrder(OrderSubmitParam submitParam);
 }

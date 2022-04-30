@@ -12,6 +12,14 @@
         <result property="skuName" column="sku_name"/>
         <result property="stockLocked" column="stock_locked"/>
     </resultMap>
+
+    <update id="unlockInventory">
+        UPDATE `wms_ware_sku`
+        SET stock_locked = stock_locked - #{skuNum}
+        WHERE sku_id = #{skuId}
+          AND ware_id = #{wareId};
+    </update>
+
     <select id="getBySkuIds" resultMap="wareSkuMap">
         select * from `wms_ware_sku`
         where

@@ -1,4 +1,4 @@
-package com.deep.ware.component;
+package com.deep.ware.handler;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;

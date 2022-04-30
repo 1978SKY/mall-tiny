@@ -15,6 +15,7 @@ import com.deep.order.model.dto.CartItemDTO;
 import com.deep.order.model.dto.MemberAddressDTO;
 import com.deep.order.model.entity.OrderEntity;
 import com.deep.order.model.entity.OrderItemEntity;
+import com.deep.order.model.enume.GenerateOrderEnum;
 import com.deep.order.model.enume.OrderStatusEnum;
 import com.deep.order.model.params.OrderSubmitParam;
 import com.deep.order.model.vo.OrderConfirmVO;
@@ -22,6 +23,8 @@ import com.deep.order.model.vo.OrderVO;
 import com.deep.order.service.OrderItemService;
 import com.deep.order.service.OrderService;
 import com.deep.order.service.OrderWebService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -47,6 +50,7 @@ import java.util.stream.Collectors;
  * @author Deep
  * @date 2022/4/5
  */
+@Slf4j
 @Service("orderWebService")
 public class OrderWebServiceImpl implements OrderWebService {
     @Autowired
@@ -61,6 +65,8 @@ public class OrderWebServiceImpl implements OrderWebService {
     private WareFeignService wareFeignService;
     @Autowired
     private StringRedisTemplate redisTemplate;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
     @Autowired
     private ThreadPoolExecutor executor;
 
@@ -99,7 +105,8 @@ public class OrderWebServiceImpl implements OrderWebService {
             List<Long> skuIds = confirmVO.getItems().stream().map(CartItemDTO::getSkuId).collect(Collectors.toList());
             R r = wareFeignService.isHasStock(skuIds);
             if (r.getCode() == 0) {
-                Map<Long, Boolean> stock = r.getData("data", new TypeReference<>() {});
+                Map<Long, Boolean> stock = r.getData("data", new TypeReference<>() {
+                });
                 confirmVO.setStocks(stock);
             }
         }, executor);
@@ -123,32 +130,28 @@ public class OrderWebServiceImpl implements OrderWebService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Map<Integer, String> submitOrder(OrderSubmitParam submitParam) {
-        MemberDTO member = LoginInterceptor.LOGIN_USER_THREAD_LOCAL.get();
-        HashMap<Integer, String> resultMap = new HashMap<>();
-
+    public GenerateOrderEnum submitOrder(OrderSubmitParam submitParam) {
         // 验证防重令牌
-        String orderToken = submitParam.getOrderToken();
-        if (!checkOrderToken(member.getId(), orderToken)) {
-            resultMap.put(-1, null);
-            return resultMap;
+        if (!checkOrderToken(submitParam.getOrderToken())) {
+            return GenerateOrderEnum.FAILURE_TOKEN;
         }
         // 生成订单
         String orderSn = createOrder(submitParam.getAddrId());
         if (!StringUtils.hasLength(orderSn)) {
-            resultMap.put(0, "没有该商品或库存不足!");
-            return resultMap;
+            return GenerateOrderEnum.FAILURE_STOCK;
         }
-        resultMap.put(1, orderSn);
-        return resultMap;
+        GenerateOrderEnum successCreate = GenerateOrderEnum.SUCCESS_CREATE;
+        successCreate.setMsg(orderSn);
+        return successCreate;
     }
 
     /**
-     * 生成订单
+     * 构建订单实体
      *
-     * @return 订单实体
+     * @return 订单号
      */
     private String createOrder(Long addrId) {
+
         MemberDTO member = LoginInterceptor.LOGIN_USER_THREAD_LOCAL.get();
         // 订单号
         String orderSn = IdWorker.getTimeId();
@@ -179,59 +182,61 @@ public class OrderWebServiceImpl implements OrderWebService {
     }
 
     private boolean orderItems(OrderEntity order) {
+        // 获取购物车购物项
         List<CartItemDTO> cartItems = cartFeignService.getCheckedItem();
+
+        List<Long> skuIds = new ArrayList<>();
+        HashMap<Long, Integer> stockMap = new HashMap<>(cartItems.size());
+        BigDecimal totalPrice = new BigDecimal(0);
+        for (CartItemDTO item : cartItems) {
+            totalPrice = totalPrice.add(item.getTotalPrice());
+            skuIds.add(item.getSkuId());
+            stockMap.put(item.getSkuId(), item.getCount());
+        }
+
         // 检查并锁定库存
-        Map<Long, Integer> stockMap =
-            cartItems.stream().collect(Collectors.toMap(CartItemDTO::getSkuId, CartItemDTO::getCount));
         R r = wareFeignService.checkAndLock(stockMap);
         if (r.getCode() == -1) {
             return false;
         }
-        // 收集商品id
-        List<Long> skuIds = new ArrayList<>();
-        BigDecimal totalPrice = new BigDecimal(0);
-        for (CartItemDTO cartItem : cartItems) {
-            totalPrice = totalPrice.add(cartItem.getTotalPrice());
-            skuIds.add(cartItem.getSkuId());
-        }
-        // TODO 支付价格等于总价减去各种优惠价格加上运费
+        // 支付价格等于总价减去各种优惠价格加上运费...
         order.setTotalAmount(totalPrice);
-
         // 解决异步编排请求头丢失
-        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-
-
+        ServletRequestAttributes requestAttributes =
+                (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        // save order
         CompletableFuture<OrderEntity> orderFuture = CompletableFuture.supplyAsync(() -> {
             orderService.save(order);
             return order;
         }, executor);
-
+        // save item
         CompletableFuture<Void> itemFuture = orderFuture.thenAcceptAsync(res -> {
-            // save item
             List<OrderItemEntity> itemEntities = cartItems.stream().map(item -> {
-                OrderItemEntity itemEntity = new OrderItemEntity();
-                itemEntity.setOrderId(res.getId());
-                itemEntity.setOrderSn(res.getOrderSn());
-                itemEntity.setSkuId(item.getSkuId());
-                itemEntity.setSkuPic(item.getImage());
-                itemEntity.setSkuPrice(item.getPrice());
-                itemEntity.setSkuQuantity(item.getCount());
-                itemEntity.setSkuAttrsVals("");
-                return itemEntity;
+                OrderItemEntity orderItem = new OrderItemEntity();
+                orderItem.setOrderId(res.getId());
+                orderItem.setOrderSn(res.getOrderSn());
+                orderItem.setSkuId(item.getSkuId());
+                orderItem.setSkuPic(item.getImage());
+                orderItem.setSkuPrice(item.getPrice());
+                orderItem.setSkuQuantity(item.getCount());
+                orderItem.setSkuAttrsVals(item.getSkuAttrValues().toString());
+                return orderItem;
             }).collect(Collectors.toList());
             orderItemService.saveBatch(itemEntities);
         }, executor);
-
+        // clear cart
         CompletableFuture<Void> cartFuture = CompletableFuture.runAsync(() -> {
             // 异步编排请求头丢失
             RequestContextHolder.setRequestAttributes(requestAttributes);
             cartFeignService.deleteItem(skuIds);
         }, executor);
+        // add order to rabbitmq
+        CompletableFuture<Void> rabbitFuture = CompletableFuture.runAsync(() -> {
+            // 异步编排请求头丢失
+            rabbitTemplate.convertAndSend("order-event-exchange", "order.create.order", order);
+        }, executor);
 
-        CompletableFuture.allOf(orderFuture, cartFuture, itemFuture);
-
-        cartFeignService.deleteItem(skuIds);
-
+        CompletableFuture.allOf(orderFuture, cartFuture, itemFuture, rabbitFuture);
         return true;
     }
 
@@ -241,14 +246,16 @@ public class OrderWebServiceImpl implements OrderWebService {
      * @param orderToken 订单唯一值
      * @return 合法性校验结果
      */
-    private boolean checkOrderToken(Long memberId, String orderToken) {
+    private boolean checkOrderToken(String orderToken) {
         Assert.notNull(orderToken, "订单token不能为空!");
-        String redisKey = OrderConstant.USER_ORDER_TOKEN_PREFIX + memberId;
+        MemberDTO member = LoginInterceptor.LOGIN_USER_THREAD_LOCAL.get();
+
+        String redisKey = OrderConstant.USER_ORDER_TOKEN_PREFIX + member.getId();
         // 校验并删除orderToken（LUA脚本、原子性操作）
         String script =
-            "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+                "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
         Long result = redisTemplate.execute(new DefaultRedisScript<Long>(script, Long.class),
-            Collections.singletonList(redisKey), orderToken);
+                Collections.singletonList(redisKey), orderToken);
         // 校验成功
         return result != null && result == 1L;
     }

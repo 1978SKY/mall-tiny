@@ -24,6 +24,18 @@ public class DateUtil {
     }
 
     /**
+     * 校验时间
+     *
+     * @param start 开始时间
+     * @param end   结束时间
+     * @return true/false
+     */
+    public static boolean checkTime(long start, long end) {
+        long now = System.currentTimeMillis();
+        return now >= start && now < end;
+    }
+
+    /**
      * 获取当前时间（格式：yyyy-MM-ss HH:mm:ss）
      *
      * @return 当前时间

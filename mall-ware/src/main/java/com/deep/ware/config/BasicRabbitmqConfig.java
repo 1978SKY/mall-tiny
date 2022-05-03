@@ -42,15 +42,11 @@ public class BasicRabbitmqConfig {
     public void initRabbitTemplate() {
 
         // 消息抵达/抵达失败 服务器时触发回调
-        rabbitTemplate.setConfirmCallback(new RabbitTemplate.ConfirmCallback() {
-
-            @Override
-            public void confirm(CorrelationData correlationData, boolean b, String s) {
-                if (b) {
-                    log.info("消息已抵达服务器 =====>>> {}", correlationData);
-                } else {
-                    log.error("消息路由服务器失败,数据{},失败原因{}", correlationData, s);
-                }
+        rabbitTemplate.setConfirmCallback((correlationData, b, s) -> {
+            if (b) {
+                log.info("消息已抵达服务器 =====>>> {}", correlationData);
+            } else {
+                log.error("消息路由服务器失败,数据{},失败原因{}", correlationData, s);
             }
         });
 

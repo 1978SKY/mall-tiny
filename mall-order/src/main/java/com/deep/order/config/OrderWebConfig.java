@@ -14,9 +14,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class OrderWebConfig implements WebMvcConfigurer {
-
-
-
     /**
      * 注册拦截器
      */
@@ -26,6 +23,4 @@ public class OrderWebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/api/order/web/**", "/api/order/pay/**");
         registry.addInterceptor(new SwaggerInterceptor()).addPathPatterns("/api/order/v2/api-docs");
     }
-
-
 }

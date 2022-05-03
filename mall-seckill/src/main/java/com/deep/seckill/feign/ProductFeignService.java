@@ -14,7 +14,7 @@ import com.deep.common.utils.R;
  * @author Deep
  * @date 2022/4/21
  */
-@FeignClient(value = "mall-tiny-product")
+@FeignClient(value = "mall-product")
 public interface ProductFeignService {
     /**
      * 批量获取商品

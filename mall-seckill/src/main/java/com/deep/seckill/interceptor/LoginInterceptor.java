@@ -1,4 +1,4 @@
-package com.deep.order.interceptor;
+package com.deep.seckill.interceptor;
 
 import com.alibaba.fastjson.JSON;
 import com.deep.common.model.constant.AuthConstant;
@@ -37,9 +37,4 @@ public class LoginInterceptor implements HandlerInterceptor {
         response.sendRedirect("http://localhost:88/api/auth/login.html");
         return false;
     }
-
-//    @Override
-//    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-//
-//    }
 }

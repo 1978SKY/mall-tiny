@@ -28,6 +28,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         String json = JSON.toJSONString(session.getAttribute(AuthConstant.LOGIN_USER));
         MemberDTO member = JSON.parseObject(json, MemberDTO.class);
         if (member != null) {
+            LOGIN_USER_THREAD_LOCAL.remove();
             LOGIN_USER_THREAD_LOCAL.set(member);
             return true;
         }

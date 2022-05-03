@@ -1,10 +1,7 @@
 package com.deep.seckill.service.impl;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.data.redis.core.HashOperations;
@@ -44,7 +41,7 @@ public class UploadServiceImpl implements UploadService {
     private final ProductFeignService productFeignService;
 
     public UploadServiceImpl(StringRedisTemplate redisTemplate, CouponFeignService couponFeignService,
-        ProductFeignService productFeignService) {
+                             ProductFeignService productFeignService) {
         this.redisTemplate = redisTemplate;
         this.couponFeignService = couponFeignService;
         this.productFeignService = productFeignService;
@@ -53,7 +50,8 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public boolean uploadSeckillSkus(int day) {
         R r = couponFeignService.getSeckillSessions(day);
-        List<SeckillSessionWithSkusDTO> sessionWithSkusList = r.getData("data", new TypeReference<>() {});
+        List<SeckillSessionWithSkusDTO> sessionWithSkusList = r.getData("data", new TypeReference<>() {
+        });
         // 无需上架
         if (sessionWithSkusList.isEmpty()) {
             return false;
@@ -82,7 +80,7 @@ public class UploadServiceImpl implements UploadService {
                 }
                 // 秒杀商品id集合
                 List<String> skuIds =
-                    sessionDto.getSkuIds().stream().map(Object::toString).collect(Collectors.toList());
+                        sessionDto.getSkuIds().stream().map(Object::toString).collect(Collectors.toList());
                 // 获取所有的秒杀商品
                 List<String> skusStr = ops.multiGet(SeckillConstant.SKU_CACHE_PREFIX + sessionDto.getId(), skuIds);
                 List<SessionLocalSkuVo.LocalSkuVo> localSkuVos = skusStr.stream().map(skuStr -> {
@@ -120,15 +118,15 @@ public class UploadServiceImpl implements UploadService {
 
     /**
      * 缓存秒杀活动 key：时间 hashKey：sessionId value：秒杀活动
-     * 
+     *
      * @param sessionWithSkusList 秒杀
      * @return true/false
      */
-    private boolean saveSessions(List<SeckillSessionWithSkusDTO> sessionWithSkusList) {
-        Assert.notEmpty(sessionWithSkusList, "秒杀活动不能为空!");
+    private boolean saveSessions(List<SeckillSessionWithSkusDTO> sessions) {
+        Assert.notEmpty(sessions, "秒杀活动不能为空!");
 
         HashOperations<String, String, String> ops = redisTemplate.opsForHash();
-        for (SeckillSessionWithSkusDTO session : sessionWithSkusList) {
+        for (SeckillSessionWithSkusDTO session : sessions) {
             long startTime = session.getStartTime().getTime();
             long endTime = session.getEndTime().getTime();
             String key = SeckillConstant.SESSION_CACHE_PREFIX + startTime + "-" + endTime;
@@ -153,10 +151,10 @@ public class UploadServiceImpl implements UploadService {
     }
 
     /**
-     * 缓存秒杀商品
+     * 缓存每个秒杀活动对应的商品
      *
      * @param session 秒杀活动
-     * @param skuIds 商品id集合
+     * @param skuIds  商品id集合
      */
     private void saveSkus(SeckillSessionWithSkusDTO session, List<Long> skuIds) {
         // save skus
@@ -168,14 +166,16 @@ public class UploadServiceImpl implements UploadService {
             if (r.getCode() != 0) {
                 throw new FeignRequestException("远程服务调用错误!");
             }
-            List<SkuInfoDTO> skuInfos = r.getData("data", new TypeReference<>() {});
+            List<SkuInfoDTO> skuInfos = r.getData("data", new TypeReference<>() {
+            });
             if (skuInfos != null && !skuInfos.isEmpty()) {
-                // 映射为map方便组装
+                // 商品详情映射为map方便组装
                 Map<Long, SkuInfoDTO> skuInfoMap =
-                    skuInfos.stream().collect(Collectors.toMap(SkuInfoDTO::getSkuId, v -> v));
+                        skuInfos.stream().collect(Collectors.toMap(SkuInfoDTO::getSkuId, v -> v));
+                // 秒杀数量map
+                HashMap<String, String> countMap = new HashMap<>();
                 // 数据过滤并组装
-                Map<String,
-                    String> redisMap = redisSkuDtos.stream()
+                Map<String, String> redisMap = redisSkuDtos.stream()
                         .filter(item -> item.getSkuId() != null && skuInfoMap.containsKey(item.getSkuId()))
                         .collect(Collectors.toMap(k -> k.getSkuId().toString(), v -> {
                             v.setSessionId(session.getId());
@@ -183,20 +183,24 @@ public class UploadServiceImpl implements UploadService {
                             v.setStartTime(session.getStartTime());
                             v.setEndTime(session.getEndTime());
                             RedisSkuDto.SkuInfoDto skuInfoDto =
-                                BeanUtils.transformFrom(skuInfoMap.get(v.getSkuId()), RedisSkuDto.SkuInfoDto.class);
+                                    BeanUtils.transformFrom(skuInfoMap.get(v.getSkuId()), RedisSkuDto.SkuInfoDto.class);
                             v.setInfo(skuInfoDto);
+                            countMap.put(SeckillConstant.COUNT_CACHE_PREFIX + v.getSkuId(), v.getSeckillCount().toString());
                             return JSON.toJSONString(v);
                         }));
+                redisTemplate.opsForValue().multiSetIfAbsent(countMap);
                 redisTemplate.opsForHash().putAll(key, redisMap);
                 redisTemplate.expire(key,
-                    Duration.ofMillis(session.getEndTime().getTime() - session.getStartTime().getTime()));
+                        Duration.ofMillis(session.getEndTime().getTime() - session.getStartTime().getTime()));
+                //TODO 锁定商品库存
+
             }
         }
     }
 
     /**
      * 检查是否在当前时间范围内
-     * 
+     *
      * @param key redis key
      * @return true/false
      */

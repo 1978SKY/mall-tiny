@@ -28,4 +28,14 @@ public class SeckillConstant {
      */
     public static final String SKU_CACHE_PREFIX = "seckill:sku:";
 
+    /**
+     * 秒杀商品数量在Redis中缓存前缀
+     */
+    public static final String COUNT_CACHE_PREFIX = "seckill:count:";
+
+    /**
+     * 用户秒杀token
+     */
+    public static final String USER_SECKILL_TOKEN = "seckill:token:";
+
 }

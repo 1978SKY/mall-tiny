@@ -254,7 +254,7 @@ public class OrderWebServiceImpl implements OrderWebService {
         // 校验并删除orderToken（LUA脚本、原子性操作）
         String script =
                 "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
-        Long result = redisTemplate.execute(new DefaultRedisScript<Long>(script, Long.class),
+        Long result = redisTemplate.execute(new DefaultRedisScript<>(script, Long.class),
                 Collections.singletonList(redisKey), orderToken);
         // 校验成功
         return result != null && result == 1L;

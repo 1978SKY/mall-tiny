@@ -1,38 +1,46 @@
 # mall-tiny
 
 #### 介绍
-微服务商城
+微服务商城，包括前台以及后台管理系统，通过将服务拆分，提供了商品服务、库存服务、订单服务、购物车服务、认证服务、秒杀服务以及网关服务
 
-#### 软件架构
-软件架构说明
+#### 技术选型
 
+| **技术**             | **说明**           |
+| -------------------- | ------------------ |
+| Spring Boot          | 容器+MVC框架       |
+| Spring Cloud         | 微服务框架         |
+| Spring Cloud Alibaba | 微服务框架         |
+| MySQL                | 数据库             |
+| Redis                | 数据缓存           |
+| MyBatis Plus         | 持久层框架         |
+| Elasticsearch        | 搜索引擎           |
+| RabbitMQ             | 消息队列           |
+| Nginx                | 静态资源服务器     |
+| Spring session       | 分布式session管理  |
+| knife4j              | 微服务文档生成工具 |
+| Maven                | 项目构建           |
 
+#### 系统架构
 
-#### 安装教程
+![image-项目架构图](./doc/项目架构图.jpg)
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+#### 业务架构
 
-#### 使用说明
+mall-tiny
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+- mall-auth -- 认证服务
+- mall-cart -- 购物车服务
+- mall-common -- 工具类及通用代码
+- mall-coupon -- 优惠服务
+- mall-gateway -- 检索服务
+- mall-order -- 订单服务
+- mall-product -- 商品服务
+- mall-search -- 检索服务
+- mall-seckill -- 秒杀服务
+- mall-ware -- 库存服务
+- renren-fast -- 后台管理服务
 
-#### 参与贡献
+#### 开发环境
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+#### 搭建说明
 
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)

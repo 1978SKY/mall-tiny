@@ -45,7 +45,7 @@ public class OrderWebController {
     }
 
     @GetMapping("/settlement.html")
-    @ApiOperation("订单结算页")
+    @ApiOperation("订单确认页")
     public String toTrade(Model model) {
         OrderConfirmVO orderConfirmVO = orderWebService.confirmOrder();
 

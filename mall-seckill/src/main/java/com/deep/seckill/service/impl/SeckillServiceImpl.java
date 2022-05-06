@@ -63,7 +63,7 @@ public class SeckillServiceImpl implements SeckillService {
     @Override
     public Map<Boolean, String> doSeckill(DoSeckillParam param) {
         Long memberId = LoginInterceptor.LOGIN_USER_THREAD_LOCAL.get().getId();
-        // 返回结果
+        // 结果
         Map<Boolean, String> resMap = new HashMap<>(1);
 
         // 校验是否参与秒杀活动
@@ -97,7 +97,7 @@ public class SeckillServiceImpl implements SeckillService {
         return resMap;
     }
 
-    /***
+    /**
      * 创建订单并通知MQ
      * @param redisSkuDto 商品信息
      * @param count 购买数量

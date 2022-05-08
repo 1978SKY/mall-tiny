@@ -1,5 +1,6 @@
 package com.deep.product.model.vo;
 
+import com.deep.product.model.entity.AttrEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -26,24 +27,20 @@ public class AttrGroupWithAttrsVO {
      */
     private Integer sort;
     /**
+     * 描述
+     */
+    private String descript;
+    /**
+     * 组图标
+     */
+    private String icon;
+    /**
      * 所属分类id
      */
     private Long catelogId;
-    /**
-     * 属性信息
-     */
-    private List<AttrVO> attrs;
 
-    @Data
-    @AllArgsConstructor
-    public static class AttrVO{
-        /**
-         * 属性id
-         */
-        private Long attrId;
-        /**
-         * 属性名
-         */
-        private String attrName;
-    }
+    /**
+     * 保存整个实体信息
+     */
+    private List<AttrEntity> attrs;
 }

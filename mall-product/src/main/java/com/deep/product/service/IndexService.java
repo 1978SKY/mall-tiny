@@ -36,7 +36,7 @@ public interface IndexService {
      */
     List<List<ProductVo>> getSelectProduct(int pageCount, int count);
 
-    /***
+    /**
      * 每周最佳销售
      * 
      * @param count 数量

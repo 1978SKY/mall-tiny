@@ -32,40 +32,40 @@ public class AttrController {
     @Autowired
     private ProductAttrValueService productAttrValueService;
 
+    @ApiOperation("获取属性规格")
     @GetMapping("/{attrType}/list/{catelogId}")
-    @ApiOperation("查询属性规格")
     public R baseAttrList(@RequestParam Map<String, Object> params, @PathVariable("catelogId") Long catId,
-        @PathVariable("attrType") String type) {
+                          @PathVariable("attrType") String type) {
         PageUtils page = attrService.queryAttrPage(params, catId, type);
         return R.ok().put("page", page);
     }
 
+    @ApiOperation("获取属性详情")
     @GetMapping("/info/{attrId}")
-    @ApiOperation("获取指定属性详情")
     public R info(@PathVariable("attrId") Long attrId) {
         AttrVO attrVO = attrService.getAttrInfo(attrId);
 
         return R.ok().put("attr", attrVO);
     }
 
-    @GetMapping("/base/listforspu/{spuId}")
     @ApiOperation("获取spuId对应的基础属性")
+    @GetMapping("/base/listforspu/{spuId}")
     public R baseAttrListForSpu(@PathVariable("spuId") Long spuId) {
         List<ProductAttrValueEntity> attrs = productAttrValueService.baseAttrsForSpu(spuId);
 
         return R.ok().put("data", attrs);
     }
 
-    @PostMapping("/save")
     @ApiOperation("保存规格属性")
+    @PostMapping("/save")
     public R save(@RequestBody AttrParam attrParam) {
         attrService.saveAttr(attrParam);
 
         return R.ok();
     }
 
-    @PostMapping("/delete")
     @ApiOperation("删除属性")
+    @PostMapping("/delete")
     public R delete(@RequestBody Long[] attrIds) {
         attrService.deleteAttrs(Arrays.asList(attrIds));
 

@@ -47,10 +47,20 @@ public class IndexServiceImpl implements IndexService {
         List<SkuInfoEntity> skus = skuInfoService.list(wrapper);
 
         List<List<ProductVo>> res = new ArrayList<>();
+
+        // ================测试数据,可删================
+        if (skus.size() < count) {
+            List<ProductVo> skuVos = BeanUtils.transformFromInBatch(skus, ProductVo.class);
+            for (int i = 0; i < pageCount; i++) {
+                res.add(skuVos);
+            }
+            return res;
+        }
+        // ==================上线数据==================
         for (int i = 0; i < pageCount; i++) {
             int index = i * count;
             List<ProductVo> skuVos =
-                BeanUtils.transformFromInBatch(skus.subList(index, index + count), ProductVo.class);
+                    BeanUtils.transformFromInBatch(skus.subList(index, index + count), ProductVo.class);
             res.add(skuVos);
         }
         return res;

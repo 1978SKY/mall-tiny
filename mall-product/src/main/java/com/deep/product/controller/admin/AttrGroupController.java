@@ -43,6 +43,12 @@ public class AttrGroupController {
         return R.ok().put("page", page);
     }
 
+    @GetMapping("/info/{groupId}")
+    public R info(@PathVariable("groupId") Long groupId){
+        AttrGroupEntity group = attrGroupService.getById(groupId);
+        return R.ok().put("attrGroup", group);
+    }
+
     @PostMapping("/save")
     @ApiOperation("新增")
     public R save(@RequestBody AttrGroupParam param) {
@@ -89,9 +95,9 @@ public class AttrGroupController {
     @GetMapping("/{attrgroupId}/attr/relation")
     @ApiOperation("获取已关联属性")
     public R attrRelation(@PathVariable("attrgroupId") Long groupId) {
-        List<AttrVO> attrVOS = relationService.getAttrsByGroupId(groupId);
+        List<AttrVO> attrVos = relationService.getAttrsByGroupId(groupId);
 
-        return R.ok().put("data", attrVOS);
+        return R.ok().put("data", attrVos);
     }
 
     @GetMapping("/{attrgroupId}/noattr/relation")

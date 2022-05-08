@@ -19,6 +19,7 @@ import com.deep.product.model.params.SpuSaveParam;
 import com.deep.product.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -26,6 +27,10 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -53,6 +58,8 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
     private SearchFeignService searchFeignService;
     @Autowired
     private WareFeignService wareFeignService;
+    @Autowired
+    private ThreadPoolExecutor executor;
 
     @Override
 
@@ -83,47 +90,46 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         return new PageUtils(page);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void saveSpuDetail(SpuSaveParam spuSaveParam) {
-        long start = System.currentTimeMillis();
+        // TODO 分布式事务回滚，当1、2、3、4、5、6中的任意一个步骤执行错误时事务回滚
+
         // 1、保存spu基本信息  pms_spu_info
         SpuInfoEntity spuInfoEntity = BeanUtils.transformFrom(spuSaveParam, SpuInfoEntity.class);
-        assert spuInfoEntity != null;
         this.save(spuInfoEntity);
-
+        assert spuInfoEntity != null;
         Long spuId = spuInfoEntity.getId();
         // 2、保存spu的描述图片 pms_spu_info_desc
-        List<String> decript = spuSaveParam.getDecript();
-        SpuInfoDescEntity descEntity = new SpuInfoDescEntity();
-        descEntity.setSpuId(spuId);
-        descEntity.setDecript(String.join(",", decript));
-        spuInfoDescService.save(descEntity);
+        CompletableFuture<Void> descFuture = CompletableFuture.runAsync(() -> {
+            List<String> decrypt = spuSaveParam.getDecript();
+            SpuInfoDescEntity descEntity = new SpuInfoDescEntity();
+            descEntity.setSpuId(spuId);
+            descEntity.setDecript(String.join(",", decrypt));
+            spuInfoDescService.save(descEntity);
+        }, executor);
         // 3、保存商品图片集  pms_spu_images
-        spuImagesService.saveImages(spuId, spuSaveParam.getImages());
-
+        CompletableFuture<Void> imgFuture = CompletableFuture.runAsync(() -> {
+            spuImagesService.saveImages(spuId, spuSaveParam.getImages());
+        }, executor);
         // 4、保存spu的规格参数 pms_product_attr_value
-        long startAttrs = System.currentTimeMillis();
-        productAttrValueService.saveAttrs(spuId, spuSaveParam.getBaseAttrs());
-        long endAttrs = System.currentTimeMillis();
-
+        CompletableFuture<Void> attrFuture = CompletableFuture.runAsync(() -> {
+            productAttrValueService.saveAttrs(spuId, spuSaveParam.getBaseAttrs());
+        }, executor);
         // 5、远程保存spu的积分信息
-        SpuSaveParam.BoundsParam bounds = spuSaveParam.getBounds();
-
+        CompletableFuture<Void> integralFuture = CompletableFuture.runAsync(() -> {
+            SpuSaveParam.BoundsParam bounds = spuSaveParam.getBounds();
+        }, executor);
         // 6、保存对应的所有sku信息
-        long startSKu = System.currentTimeMillis();
-        //TODO 优化
-        skuInfoService.savSkuParams(spuId, spuSaveParam);
-        long endSku = System.currentTimeMillis();
+        CompletableFuture<Void> skuFuture = CompletableFuture.runAsync(() -> {
+            skuInfoService.savSkuParams(spuId, spuSaveParam);
+        }, executor);
 
-        long end = System.currentTimeMillis();
-//        log.info("保存spu的规格参数,耗时{}ms", (endAttrs - startAttrs));  // 16ms
-//        log.info("保存对应的所有sku信息,耗时{}ms", (endSku - startSKu));   // 72ms、62ms、68ms、58ms
-//        log.info("总耗时：{}ms", (end - start));    // 170ms、90ms、100ms、114ms
+        CompletableFuture.allOf(descFuture, imgFuture, attrFuture, integralFuture, skuFuture);
     }
 
     @Override
-    public void up(Long spuId) {
+    public void up(@NonNull Long spuId) {
         Assert.notNull(spuId, "spuId不能为空!");
         // 1、组装数据
         // ①、查出当前spuId对应的所有基础信息、品牌名、品牌logo、分类名、基本属性信息

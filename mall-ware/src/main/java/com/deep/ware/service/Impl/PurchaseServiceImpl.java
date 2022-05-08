@@ -12,6 +12,7 @@ import com.deep.ware.model.entity.PurchaseDemandEntity;
 import com.deep.ware.model.entity.PurchaseEntity;
 import com.deep.ware.service.PurchaseDemandService;
 import com.deep.ware.service.PurchaseService;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,9 +64,9 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseDao, PurchaseEntity
         return new PageUtils(page);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public void merge(Long purchaseId, List<Long> items) {
+    public void merge(Long purchaseId, @NonNull List<Long> items) {
         Assert.notEmpty(items, "采购项不能为空!");
         if (purchaseId == null) {
             // create purchase order
@@ -81,7 +82,7 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseDao, PurchaseEntity
         demandService.updatePurchaseId(purchaseId, items);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void finishPurchase(List<Long> ids) {
         Assert.notEmpty(ids, "订单id集合不能为空!");
@@ -89,7 +90,7 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseDao, PurchaseEntity
         ids = listByIds(ids).stream()
                 .filter(item -> item.getStatus() < WareConstant.PurchaseStatusEnum.FINISH.getCode()
                         || item.getStatus() == WareConstant.PurchaseStatusEnum.HASERROR.getCode())
-                .map(item -> item.getId())
+                .map(PurchaseEntity::getId)
                 .collect(Collectors.toList());
 
         ids.forEach(purId -> {

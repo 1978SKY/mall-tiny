@@ -74,7 +74,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
                 new Query<AttrEntity>().getPage(params), wrapper);
         PageUtils pageUtils = new PageUtils(page);
         // Reassemble the data
-        List<AttrRespVO> respVOS = page.getRecords().stream().map(item -> {
+        List<AttrRespVO> respVos = page.getRecords().stream().map(item -> {
             AttrRespVO attrRespVO = new AttrRespVO();
             BeanUtils.copyProperties(item, attrRespVO);
             String catName = categoryService.getById(item.getCatelogId()).getName();
@@ -83,7 +83,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
             attrRespVO.setGroupName(groupName);
             return attrRespVO;
         }).collect(Collectors.toList());
-        pageUtils.setList(respVOS);
+        pageUtils.setList(respVos);
 
         return pageUtils;
     }
@@ -102,7 +102,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         return attrVO;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void saveAttr(AttrParam attrParam) {
         AttrEntity attrEntity = attrParam.convertTo();
@@ -114,7 +114,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         }
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteAttrs(List<Long> ids) {
         removeByIds(ids);
@@ -122,7 +122,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
         Assert.notEmpty(ids, "属性id集合不能为空!");
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateAttr(AttrParam attrParam) {
         AttrEntity attrEntity = attrParam.convertTo();

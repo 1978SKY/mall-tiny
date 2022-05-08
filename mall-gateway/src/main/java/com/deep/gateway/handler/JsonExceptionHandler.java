@@ -98,13 +98,12 @@ public class JsonExceptionHandler extends DefaultErrorWebExceptionHandler {
      * @param errorMessage 错误信息
      * @return map集合
      */
-    private static Map<String, Object> response(int status, String errorMessage) {
+    private static Map<String, Object> response(int code, String errorMessage) {
         Map<String, Object> map = new HashMap<>(4);
-        map.put("code", status);
+        map.put("code", code);
         map.put("status", HttpStatus.OK.value());
         map.put("message", errorMessage);
         log.error("异常返回：{}", map);
-        String response = JSON.toJSONString(map);
         return map;
     }
 }

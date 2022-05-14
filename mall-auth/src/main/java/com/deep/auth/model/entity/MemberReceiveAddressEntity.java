@@ -4,18 +4,17 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.io.Serial;
 import java.io.Serializable;
 
 /**
  * 会员收货地址
+ *
  * @author Deep
  * @date 2022/4/5
  */
 @Data
 @TableName("ums_member_receive_address")
 public class MemberReceiveAddressEntity implements Serializable {
-    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

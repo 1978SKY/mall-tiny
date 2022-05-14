@@ -7,12 +7,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serial;
 import java.io.Serializable;
 
 /**
  * 购买工作单
- * 
+ *
  * @author Deep
  * @date 2022/4/29
  */
@@ -22,7 +21,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @TableName("wms_ware_order_task_detail")
 public class WareOrderTaskDetailEntity implements Serializable {
-    @Serial
     private static final long serialVersionUID = 1L;
     /**
      * id

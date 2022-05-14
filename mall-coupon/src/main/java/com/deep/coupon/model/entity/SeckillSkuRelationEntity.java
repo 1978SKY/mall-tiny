@@ -3,7 +3,6 @@ package com.deep.coupon.model.entity;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
-import java.io.Serial;
 import java.math.BigDecimal;
 import java.io.Serializable;
 
@@ -11,7 +10,7 @@ import lombok.Data;
 
 /**
  * 秒杀活动商品关联
- * 
+ *
  * @author deep
  * @email ${email}
  * @date 2022-01-13 17:28:12
@@ -19,7 +18,6 @@ import lombok.Data;
 @Data
 @TableName("sms_seckill_sku_relation")
 public class SeckillSkuRelationEntity implements Serializable {
-    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

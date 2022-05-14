@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  * 用户订单dto
- * 
+ *
  * @author Deep
  * @date 2022/4/25
  */
@@ -41,13 +41,23 @@ public class OrderDto {
     private Date deliveryTime;
 
     public String getOrderStatus() {
-        return switch (status) {
-            case 0 -> "待付款";
-            case 1 -> "待发货";
-            case 2 -> "已发货";
-            case 3 -> "已完成";
-            case 4 -> "已关闭";
-            default -> "无效订单";
-        };
+        String res;
+        switch (status) {
+            case 1:
+                res = "待发货";
+                break;
+            case 2:
+                res = "已发货";
+                break;
+            case 3:
+                res = "已完成";
+                break;
+            case 4:
+                res = "已关闭";
+                break;
+            default:
+                res = "无效订单";
+        }
+        return res;
     }
 }

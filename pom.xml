@@ -20,7 +20,6 @@
         <module>mall-product</module>
         <module>mall-common</module>
         <module>mall-search</module>
-        <module>renren-fast</module>
         <module>mall-gateway</module>
         <module>mall-ware</module>
         <module>mall-order</module>

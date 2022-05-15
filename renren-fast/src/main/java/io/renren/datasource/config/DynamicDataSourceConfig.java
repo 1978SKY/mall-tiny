@@ -37,27 +37,27 @@ public class DynamicDataSourceConfig {
         return new DataSourceProperties();
     }
 
-    @Bean
-    public DynamicDataSource dynamicDataSource(DataSourceProperties dataSourceProperties) {
-        DynamicDataSource dynamicDataSource = new DynamicDataSource();
-        dynamicDataSource.setTargetDataSources(getDynamicDataSource());
+//    @Bean
+//    public DynamicDataSource dynamicDataSource(DataSourceProperties dataSourceProperties) {
+//        DynamicDataSource dynamicDataSource = new DynamicDataSource();
+//        dynamicDataSource.setTargetDataSources(getDynamicDataSource());
+//
+//        //默认数据源
+//        DruidDataSource defaultDataSource = DynamicDataSourceFactory.buildDruidDataSource(dataSourceProperties);
+//        dynamicDataSource.setDefaultTargetDataSource(defaultDataSource);
+//
+//        return dynamicDataSource;
+//    }
 
-        //默认数据源
-        DruidDataSource defaultDataSource = DynamicDataSourceFactory.buildDruidDataSource(dataSourceProperties);
-        dynamicDataSource.setDefaultTargetDataSource(defaultDataSource);
-
-        return dynamicDataSource;
-    }
-
-    private Map<Object, Object> getDynamicDataSource(){
-        Map<String, DataSourceProperties> dataSourcePropertiesMap = properties.getDatasource();
-        Map<Object, Object> targetDataSources = new HashMap<>(dataSourcePropertiesMap.size());
-        dataSourcePropertiesMap.forEach((k, v) -> {
-            DruidDataSource druidDataSource = DynamicDataSourceFactory.buildDruidDataSource(v);
-            targetDataSources.put(k, druidDataSource);
-        });
-
-        return targetDataSources;
-    }
+//    private Map<Object, Object> getDynamicDataSource(){
+//        Map<String, DataSourceProperties> dataSourcePropertiesMap = properties.getDatasource();
+//        Map<Object, Object> targetDataSources = new HashMap<>(dataSourcePropertiesMap.size());
+//        dataSourcePropertiesMap.forEach((k, v) -> {
+//            DruidDataSource druidDataSource = DynamicDataSourceFactory.buildDruidDataSource(v);
+//            targetDataSources.put(k, druidDataSource);
+//        });
+//
+//        return targetDataSources;
+//    }
 
 }

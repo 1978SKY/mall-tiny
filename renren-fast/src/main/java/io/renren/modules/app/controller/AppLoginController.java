@@ -1,8 +1,8 @@
 /**
  * Copyright (c) 2016-2019 人人开源 All rights reserved.
- * <p>
+ *
  * https://www.renren.io
- * <p>
+ *
  * 版权所有，侵权必究！
  */
 
@@ -16,7 +16,6 @@ import io.renren.modules.app.service.UserService;
 import io.renren.modules.app.utils.JwtUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +30,6 @@ import java.util.Map;
  *
  * @author Mark sunlightcs@gmail.com
  */
-@Slf4j
 @RestController
 @RequestMapping("/app")
 @Api("APP登录接口")
@@ -46,7 +44,7 @@ public class AppLoginController {
      */
     @PostMapping("login")
     @ApiOperation("登录")
-    public R login(@RequestBody LoginForm form) {
+    public R login(@RequestBody LoginForm form){
         //表单校验
         ValidatorUtils.validateEntity(form);
 
@@ -57,9 +55,8 @@ public class AppLoginController {
         String token = jwtUtils.generateToken(userId);
 
         Map<String, Object> map = new HashMap<>();
-        long expire = jwtUtils.getExpire();
         map.put("token", token);
-        map.put("expire", expire);
+        map.put("expire", jwtUtils.getExpire());
 
         return R.ok(map);
     }

@@ -54,12 +54,6 @@
 			<groupId>com.deep.mall</groupId>
 			<artifactId>mall-common</artifactId>
 			<version>1.0-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.github.xiaoymin</groupId>
-					<artifactId>knife4j-micro-spring-boot-starter</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

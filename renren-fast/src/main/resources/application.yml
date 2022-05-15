@@ -24,9 +24,9 @@ spring:
   redis:
     open: false  # 是否开启redis缓存  true开启   false关闭
     database: 0
-    host: 124.222.56.141
+    host: mall.com
     port: 6379
-    password: Yi1Ge2Ren3Redis.   # 密码（默认为空）
+    password: redisroot   # 密码（默认为空）
     timeout: 6000ms  # 连接超时时长（毫秒）
     jedis:
       pool:
@@ -40,7 +40,7 @@ spring:
   cloud:
     nacos:
       discovery: # 注册中心
-        server-addr: 124.222.56.141:8848
+        server-addr: mall.com:8848
         namespace: 4f3b5226-066e-48e2-b7a6-d71f99290479
 #  resources:
 #    add-mappings: false

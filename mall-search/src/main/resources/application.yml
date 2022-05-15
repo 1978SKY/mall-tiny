@@ -6,17 +6,17 @@ spring:
     name: mall-search
   redis:
     port: 6379
-    host: 124.222.56.141
-    password: Yi1Ge2Ren3Redis.
+    host: mall.com
+    password: redisroot
   cloud:
     # nacos配置
     nacos:
       discovery: # 注册中心
-        server-addr: 124.222.56.141:8848
+        server-addr: mall.com:8848
         namespace: 4f3b5226-066e-48e2-b7a6-d71f99290479
 
 es:
-  host: 124.222.56.141
+  host: mall.com
   port: 9200
 
 logging:

@@ -5,8 +5,9 @@ spring:
   application:
     name: mall-gateway
 
-  resources:
-    add-mappings: true
+  web:
+    resources:
+      add-mappings: true
 
   cloud:
     # nacos配置

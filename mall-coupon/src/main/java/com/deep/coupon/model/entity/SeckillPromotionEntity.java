@@ -5,7 +5,10 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * 秒杀活动
@@ -31,10 +34,14 @@ public class SeckillPromotionEntity implements Serializable {
 	/**
 	 * 开始日期
 	 */
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+//	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private Date startTime;
 	/**
 	 * 结束日期
 	 */
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+//	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private Date endTime;
 	/**
 	 * 上下线状态

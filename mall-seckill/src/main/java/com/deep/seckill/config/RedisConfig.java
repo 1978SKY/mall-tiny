@@ -24,7 +24,7 @@ public class RedisConfig {
     @Bean(destroyMethod = "shutdown")
     public RedissonClient redisson() {
         Config config = new Config();
-        config.useSingleServer().setAddress("redis://124.222.56.141:6379").setPassword("Yi1Ge2Ren3Redis.");
+        config.useSingleServer().setAddress("redis://mall.com:6379").setPassword("redisroot");
         return Redisson.create(config);
     }
 

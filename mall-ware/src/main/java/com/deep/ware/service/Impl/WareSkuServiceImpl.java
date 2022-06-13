@@ -123,7 +123,6 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
         map.put(skuId, count);
 
         return lockInventory(null, map);
-
     }
 
     @Transactional(rollbackFor = Exception.class)

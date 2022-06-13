@@ -41,11 +41,16 @@ public class SearchParam {
      */
     private List<String> attrs;
     /**
+     * 原生的所有查询条件
+     */
+    private String _queryString;
+
+    /**
      * 页码
      */
     private Integer pageNum = 1;
     /**
-     * 原生的所有查询条件
+     * 每页数量
      */
-    private String _queryString;
+    private Integer pageSize = 6;
 }

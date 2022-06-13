@@ -1,6 +1,6 @@
 package com.deep.gateway.handler;
 
-import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.DefaultErrorWebExceptionHandler;
@@ -8,17 +8,16 @@ import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
 import org.springframework.cloud.gateway.support.NotFoundException;
 import org.springframework.context.ApplicationContext;
-
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.server.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Json异常处理器
- * 
+ *
  * @author Deep
  * @date 2022/4/28
  */
@@ -26,13 +25,13 @@ import java.util.Map;
 public class JsonExceptionHandler extends DefaultErrorWebExceptionHandler {
 
     public JsonExceptionHandler(ErrorAttributes errorAttributes, WebProperties.Resources resources,
-        ErrorProperties errorProperties, ApplicationContext applicationContext) {
+                                ErrorProperties errorProperties, ApplicationContext applicationContext) {
         super(errorAttributes, resources, errorProperties, applicationContext);
     }
 
     /**
      * 获取异常属性
-     * 
+     *
      * @param request request
      * @param options options
      * @return map
@@ -42,16 +41,18 @@ public class JsonExceptionHandler extends DefaultErrorWebExceptionHandler {
         int code = HttpStatus.INTERNAL_SERVER_ERROR.value();
         Throwable error = super.getError(request);
         String message = buildMessage(request, error);
-        if (error instanceof NotFoundException) {
-            code = HttpStatus.NOT_FOUND.value();
-            message = "找不到url!";
+
+        if (error instanceof ResponseStatusException) {
+            HttpStatus status = ((ResponseStatusException) error).getStatus();
+            code = status.value();
+            message = status.getReasonPhrase();
         }
         return response(code, message);
     }
 
     /**
      * 错误响应格式(HTML/JSON,此处为JSON)
-     * 
+     *
      * @param errorAttributes 错误属性
      * @return RouterFunction
      */
@@ -62,19 +63,19 @@ public class JsonExceptionHandler extends DefaultErrorWebExceptionHandler {
 
     /**
      * 响应状态码
-     * 
+     *
      * @param errorAttributes 错误属性
      * @return 状态码
      */
     @Override
     protected int getHttpStatus(Map<String, Object> errorAttributes) {
-        return (int)errorAttributes.get("status");
+        return (int) errorAttributes.get("status");
     }
 
     /**
      * 构建异常信息
      *
-     * @param request request
+     * @param request   request
      * @param throwable 异常超类
      * @return 异常信息
      */
@@ -93,17 +94,20 @@ public class JsonExceptionHandler extends DefaultErrorWebExceptionHandler {
 
     /**
      * 构建响应数据
-     * 
-     * @param status 响应状态码
+     *
+     * @param code         响应状态码
      * @param errorMessage 错误信息
      * @return map集合
      */
     private static Map<String, Object> response(int code, String errorMessage) {
+        if (code == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
+            log.error("异常返回,状态码：{},错误信息：{}", code, errorMessage);
+        }
+
         Map<String, Object> map = new HashMap<>(4);
         map.put("code", code);
         map.put("status", HttpStatus.OK.value());
         map.put("message", errorMessage);
-        log.error("异常返回：{}", map);
         return map;
     }
 }

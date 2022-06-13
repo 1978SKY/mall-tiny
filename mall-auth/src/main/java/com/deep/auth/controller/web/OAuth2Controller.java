@@ -66,7 +66,7 @@ public class OAuth2Controller {
                 MemberDTO memberDTO = BeanUtils.transformFrom(member, MemberDTO.class);
                 session.setAttribute(AuthConstant.LOGIN_USER, memberDTO);
                 log.info("登录成功:{}", memberDTO);
-                return "redirect:http://localhost:88/api/product/";
+                return "redirect:http://localhost:88/api/product/index.html";
             }
         }
         // Login error

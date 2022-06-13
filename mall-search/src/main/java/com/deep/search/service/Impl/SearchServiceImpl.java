@@ -20,7 +20,6 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.NestedQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.MultiBucketsAggregation;
@@ -76,7 +75,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     /**
-     * 构建请求结果
+     * 解析请求结果
      */
     private SearchResultVO buildSearchResponse(SearchParam searchParam, SearchResponse searchResponse) {
         SearchHits hits = searchResponse.getHits();
@@ -150,25 +149,31 @@ public class SearchServiceImpl implements SearchService {
     private SearchRequest buildSearchRequest(SearchParam searchParam) {
         // 构建DSL对象
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+
         // 构造查询器
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
         // ------------------------------过滤条件start----------------------------------
+
+
         // 1.1 keyword【must有得分】
         if (StringUtils.hasLength(searchParam.getKeyword())) {
             // ①、skuTitle
             boolQueryBuilder.must(QueryBuilders.matchQuery("skuTitle", searchParam.getKeyword()));
         }
+
         // 1.2 分类【filter无得分】
         if (searchParam.getCatId() != null && searchParam.getCatId() > 0L) {
             boolQueryBuilder.filter(QueryBuilders.matchQuery("catalogId", searchParam.getCatId()));
         }
+
         // 1.3 品牌
         if (!CollectionUtils.isEmpty(searchParam.getBrandId())) {
             searchParam.getBrandId()
                     .parallelStream()
                     .forEach(item -> boolQueryBuilder.filter(QueryBuilders.matchQuery("brandId", item)));
         }
+
         // 1.4 属性
         if (!CollectionUtils.isEmpty(searchParam.getAttrs())) {
             searchParam.getAttrs().parallelStream().forEach(attr -> {
@@ -196,8 +201,8 @@ public class SearchServiceImpl implements SearchService {
             sourceBuilder.sort(split[0], order);
         }
         // 2.2 分页
-        sourceBuilder.from((searchParam.getPageNum() - 1) * EsConstant.PRODUCT_PAGE_SIZE);
-        sourceBuilder.size(EsConstant.PRODUCT_PAGE_SIZE);
+        sourceBuilder.from((searchParam.getPageNum() - 1) * searchParam.getPageSize());
+        sourceBuilder.size(searchParam.getPageSize());
         // 2.3 高亮
         if (StringUtils.hasLength(searchParam.getKeyword())) {
             HighlightBuilder highlightBuilder = new HighlightBuilder();
@@ -228,6 +233,8 @@ public class SearchServiceImpl implements SearchService {
         attr_agg.subAggregation(attr_id_agg);
         sourceBuilder.aggregation(attr_agg);
         // ----------------------------聚合分析end------------------------------
+
+
 //        log.info("DSL语句：{}", sourceBuilder);
         return new SearchRequest(new String[]{EsConstant.PRODUCT_INDEX}, sourceBuilder);
     }

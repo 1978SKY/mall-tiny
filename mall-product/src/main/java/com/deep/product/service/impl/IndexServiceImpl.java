@@ -45,24 +45,15 @@ public class IndexServiceImpl implements IndexService {
         int total = pageCount * count;
         wrapper.last("limit " + total);
         List<SkuInfoEntity> skus = skuInfoService.list(wrapper);
+        List<ProductVo> skuVos = BeanUtils.transformFromInBatch(skus, ProductVo.class);
 
         List<List<ProductVo>> res = new ArrayList<>();
 
-        // ================测试数据,可删================
-        if (skus.size() < count) {
-            List<ProductVo> skuVos = BeanUtils.transformFromInBatch(skus, ProductVo.class);
-            for (int i = 0; i < pageCount; i++) {
-                res.add(skuVos);
-            }
-            return res;
-        }
-        // ==================上线数据==================
         for (int i = 0; i < pageCount; i++) {
-            int index = i * count;
-            List<ProductVo> skuVos =
-                    BeanUtils.transformFromInBatch(skus.subList(index, index + count), ProductVo.class);
-            res.add(skuVos);
+            List<ProductVo> subList = skuVos.subList(i * pageCount, i * pageCount + skus.size() / pageCount);
+            res.add(subList);
         }
+
         return res;
     }
 

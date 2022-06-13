@@ -6,10 +6,32 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="/static/search/css/index.css">
-    <link rel="stylesheet" type="text/css" href="/static/search/font/iconfont.css">
-    <script src="/static/search/js/jquery-1.12.4.js"></script>
     <title>Search</title>
+    <link rel="stylesheet" type="text/css" href="/static/mall/search/font/iconfont.css">
+    <link rel="stylesheet" href="/static/mall/search/css/index.css">
+
+    <!-- font-awesome -->
+    <link rel="stylesheet" href="/static/assets/css/all.min.css">
+    <!-- flaticon -->
+    <link rel="stylesheet" href="/static/assets/font/flaticon.css">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css">
+    <!-- menu -->
+    <link rel="stylesheet" href="/static/assets/css/menu.css">
+    <!-- swiper slider -->
+    <link rel="stylesheet" href="/static/assets/css/swiper-bundle.min.css">
+    <!-- venobox -->
+    <link rel="stylesheet" href="/static/assets/css/venobox.css">
+    <!-- select -->
+    <link rel="stylesheet" href="/static/assets/css/select2.min.css">
+    <!-- jquery ui -->
+    <link rel="stylesheet" href="/static/assets/css/jquery-ui.min.css">
+    <!-- style -->
+    <link rel="stylesheet" href="/static/assets/css/style.css">
+    <!-- responsive -->
+    <link rel="stylesheet" href="/static/assets/css/responsive.css">
+
+    <script src="/static/search/js/jquery-1.12.4.js"></script>
 </head>
 <body>
 <!--头部-->
@@ -39,7 +61,10 @@
 <!--搜索导航-->
 <div class="header_sous">
     <div class="logo">
-        <a href="http://mall.com/api/product/"><img src="/static/search/image/logo1.jpg" alt=""></a>
+        <a href="http://mall.com/api/product/">
+            <img src="/static/assets/images/home1/logo.png" alt="Logo"/>
+            <!--            <img src="/static/search/image/logo1.jpg" alt="">-->
+        </a>
     </div>
     <div class="header_form">
         <input id="keyword_input" type="text" placeholder="手机" th:value="${param.keyword}"/>
@@ -47,9 +72,7 @@
     </div>
     <div class="header_ico">
         <div class="header_gw">
-            <span><a href="http://cart.mall.com/api/cart/cart.html">我的购物车</a></span>
-            <img src="/static/search/image/settleup-@1x.png"/>
-            <span>0</span>
+            <span><a href="http://cart.mall.com/api/cart/cart.html">购物车</a></span>
         </div>
         <div class="header_ko">
             <p>购物车中还没有商品，赶紧选购吧！</p>
@@ -97,7 +120,7 @@
                                 <li th:each="brand : ${result.brands}">
                                     <a href="#"
                                        th:href="${'javascript:searchProducts(&quot;brandId&quot;,'+brand.brandId+')'}">
-                                        <img th:src="${brand.brandImg}" th:width="118px" th:height="35px">
+                                        <img th:src="${brand.brandImg}" th:width="116px" th:height="28px">
                                         <div th:text="${brand.brandName}">
                                             华为(HUAWEI)
                                         </div>
@@ -107,7 +130,6 @@
                         </div>
                     </div>
                 </div>
-
                 <!--分类-->
                 <div class="JD_pre">
                     <div class="sl_key">
@@ -143,238 +165,260 @@
                 </div>
             </div>
         </div>
-        <!--排序-->
-        <!--<div class="JD_banner_main">
-            &lt;!&ndash;商品精选&ndash;&gt;
-            <div class="JD_con_left">
-                <div class="JD_con_left_bar">
-                    <div class="JD_con_one">
-                        <div class="mt">
-                            <h3>商品精选</h3>
-                            <span>广告</span>
+    </div>
+    <!-- 主体 -->
+    <!-- 主体 -->
+    <section class="home1 blog-page blog p-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-xxl-10 offset-xxl-1">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-6 col-md-6" th:each="product : ${result.products}">
+                            <div class="single">
+                                <div class="image item-animation2">
+                                    <a href="blog-detail-left.html">
+                                        <img th:src="${product.skuImg}" alt="Blog">
+                                        <!--<img src="assets/images/home1/blog/blog1.jpg" alt="Blog">-->
+                                    </a>
+                                </div>
+                                <div class="content">
+                                    <a href="#!">
+                                        <p th:text="${product.skuPrice}"></p>
+                                    </a>
+                                    <a href="blog-detail-left.html">
+                                        <h6 th:text="${product.skuTitle}"></h6>
+                                    </a>
+                                    <a href="blog-detail-left.html" class="button-style1">read more</a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="mc">
-                            <ul>
-                                <li>
-                                    <a href="/static/search/#" title="vivo X9s 全网通 4GB+64GB 磨砂黑 移动联通电信4G手机 双卡双待"><img
-                                            src="/static/search/img/59bf3c47n91d65c73.jpg" alt=""></a>
-                                    <a href="/static/search/#"
-                                       title="【预约版】华为 HUAWEI 畅享7S 全面屏双摄 4GB +64GB 黑色 移动联通电信4G手机 双卡双待">
-                                        <em>华为 HUAWEI nova 2S 全面屏四摄 6GB +64GB 曜石黑 移动联通电信4G手机 双卡双待</em>
-                                    </a>
-                                    <div class="mc_price">
-                                        <strong class="price">
-                                            <span class="J-p-5963064">￥2999.00</span>
-                                        </strong>
-                                        <span class="mc-ico" title="购买本商品送赠品">
-                                            <i class="goods-icons">赠品</i>
-                                        </span>
-                                    </div>
-                                    <div class="mc_rev">
-                                        已有<a href="/static/search/#" class="number">12466</a>人评价
-                                    </div>
-                                </li>
-                                <li>
-                                    <a href="/static/search/#" title="vivo X9s 全网通 4GB+64GB 磨砂黑 移动联通电信4G手机 双卡双待"><img
-                                            src="/static/search/img/59bf3c47n91d65c73.jpg" alt=""></a>
-                                    <a href="/static/search/#"
-                                       title="【预约版】华为 HUAWEI 畅享7S 全面屏双摄 4GB +64GB 黑色 移动联通电信4G手机 双卡双待"><em>华为 HUAWEI nova
-                                        2S 全面屏四摄 6GB +64GB 曜石黑 移动联通电信4G手机 双卡双待</em></a>
-                                    <div class="mc_price">
-                                        <strong class="price"><span class="J-p-5963064">￥2999.00</span></strong>
-                                        <span class="mc-ico" title="购买本商品送赠品"><i class="goods-icons">赠品</i></span>
-                                    </div>
-                                    <div class="mc_rev">已有<a href="/static/search/#" class="number">12466</a>人评价</div>
-                                </li>
-                                <li>
-                                    <a href="/static/search/#" title="vivo X9s 全网通 4GB+64GB 磨砂黑 移动联通电信4G手机 双卡双待"><img
-                                            src="/static/search/img/593ba628n8794c6a6.jpg" alt=""></a>
-                                    <a href="/static/search/#"
-                                       title="【预约版】华为 HUAWEI 畅享7S 全面屏双摄 4GB +64GB 黑色 移动联通电信4G手机 双卡双待"><em>诺基亚 7 (Nokia
-                                        7) 4GB+64GB 黑色 全网通 双卡双待 移动联通电信4G手机</em></a>
-                                    <div class="mc_price">
-                                        <strong class="price"><span class="J-p-5963064">￥1799.00</span></strong>
-                                        <span class="mc-ico" title="购买本商品送赠品"><i class="goods-icons">赠品</i></span>
-                                    </div>
-                                    <div class="mc_rev">已有<a href="/static/search/#" class="number">15600</a>人评价</div>
-                                </li>
-                                <li>
-                                    <a href="/static/search/#" title="vivo X9s 全网通 4GB+64GB 磨砂黑 移动联通电信4G手机 双卡双待">
-                                        <img src="/static/search/img/5919637an271a1301.jpg" alt="">
-                                    </a>
-                                    <a href="/static/search/#"
-                                       title="【预约版】华为 HUAWEI 畅享7S 全面屏双摄 4GB +64GB 黑色 移动联通电信4G手机 双卡双待">
-                                        <em>vivo Xplay6 全网通 6GB+64GB 磨砂黑 移动联通电信4G手机 双卡双待</em>
-                                    </a>
-                                    <div class="mc_price">
-                                        <strong class="price"><span class="J-p-5963064">￥3498.00</span></strong>
-                                        <span class="mc-ico" title="购买本商品送赠品"><i class="goods-icons">赠品</i></span>
-                                    </div>
-                                    <div class="mc_rev">已有<a href="/static/search/#" class="number">5369</a>人评价</div>
-                                </li>
-                            </ul>
+                        <div class="col-lg-12">
+                            <div class="pages">
+                                <ul class="d-flex justify-content-center">
+                                    <li><a href="javascript:void(0)"><i class="flaticon-chevron-1"></i></a></li>
+                                    <li><a href="javascript:void(0)" class="active">1</a></li>
+                                    <li><a href="javascript:void(0)">2</a></li>
+                                    <li><a href="javascript:void(0)">3</a></li>
+                                    <li><a href="javascript:void(0)">4</a></li>
+                                    <li><a href="javascript:void(0)"><i class="flaticon-chevron"></i></a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            &lt;!&ndash;综合排序&ndash;&gt;
-            <div class="JD_con_right">
-                <div class="filter">
-                    &lt;!&ndash;综合排序&ndash;&gt;
-                    <div class="filter_top">
-                        <div class="filter_top_left" th:with="p = ${param.sort}, priceRange = ${param.skuPrice}">
-                            <a sort="hotScore"
-                               th:class="${(!#strings.isEmpty(p) && #strings.startsWith(p,'hotScore') && #strings.endsWith(p,'desc')) ? 'sort_a desc' : 'sort_a'}"
-                               th:attr="style=${(#strings.isEmpty(p) || #strings.startsWith(p,'hotScore')) ?
-                                   'color: #fff; border-color: #e4393c; background: #e4393c;':'color: #333; border-color: #ccc; background: #fff;' }">
-                                综合排序[[${(!#strings.isEmpty(p) && #strings.startsWith(p,'hotScore') &&
-                                #strings.endsWith(p,'desc')) ?'↑':'↓' }]]</a>
-                            <a sort="saleCount"
-                               th:class="${(!#strings.isEmpty(p) && #strings.startsWith(p,'saleCount') && #strings.endsWith(p,'desc')) ? 'sort_a desc' : 'sort_a'}"
-                               th:attr="style=${(!#strings.isEmpty(p) && #strings.startsWith(p,'saleCount')) ?
-                                   'color: #fff; border-color: #e4393c; background: #e4393c;':'color: #333; border-color: #ccc; background: #fff;' }">
-                                销量[[${(!#strings.isEmpty(p) && #strings.startsWith(p,'saleCount') &&
-                                #strings.endsWith(p,'desc'))?'↑':'↓' }]]</a>
-                            <a sort="skuPrice"
-                               th:class="${(!#strings.isEmpty(p) && #strings.startsWith(p,'skuPrice') && #strings.endsWith(p,'desc')) ? 'sort_a desc' : 'sort_a'}"
-                               th:attr="style=${(!#strings.isEmpty(p) && #strings.startsWith(p,'skuPrice')) ?
-                                   'color: #fff; border-color: #e4393c; background: #e4393c;':'color: #333; border-color: #ccc; background: #fff;' }">
-                                价格[[${(!#strings.isEmpty(p) && #strings.startsWith(p,'skuPrice') &&
-                                #strings.endsWith(p,'desc'))?'↑':'↓' }]]</a>
-                            <a sort="hotScore" class="sort_a">评论分</a>
-                            <a sort="hotScore" class="sort_a">上架时间</a>
-                            <input id="skuPriceFrom" type="number"
-                                   th:value="${#strings.isEmpty(priceRange)?'':#strings.substringBefore(priceRange,'_')}"
-                                   style="width: 100px; margin-left: 30px">
-                            -
-                            <input id="skuPriceTo" type="number"
-                                   th:value="${#strings.isEmpty(priceRange)?'':#strings.substringAfter(priceRange,'_')}"
-                                   style="width: 100px">
-                            <button id="skuPriceSearchBtn">确定</button>
-                        </div>
-                        <div class="filter_top_right">
-                            <span class="fp-text">
-                               <b th:text="${result.getPageNum()}">1</b><em>/</em><i th:text="${result.getPageNavs()}">169</i>
-                           </span>
-                            <a href="/static/search/#" class="prev"><</a>
-                            <a href="/static/search/#" class="next"> > </a>
-                        </div>
-                    </div>
-                    &lt;!&ndash;收货地址&ndash;&gt;
-                    <div class="filter_bottom">
-                        <div class="filter_bottom_right">
-                            <ul>
-                                <li>
-                                    <a href="/static/search/#"><i></i>谷粒商城配送</a>
-                                </li>
-                                <li>
-                                    <a href="/static/search/#"><i></i>京尊达 </a>
-                                </li>
-                                <li>
-                                    <a href="/static/search/#"><i></i>货到付款</a>
-                                </li>
-                                <li>
-                                    <a th:with="check = ${param.hasStock}">
-                                        <input id="showHasStock" type="checkbox"
-                                               th:checked="${#strings.equals(check,'1')?true:false}">
-                                        仅显示有货
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="/static/search/#"><i></i>可配送全球</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    &lt;!&ndash;排序内容，每四个是一组&ndash;&gt;
-                    <div class="rig_tab">
-                        <div th:for=""></div>
-                        <div th:each="product:${result.products}">
-                            <p class="da">
-                                <a th:href="|http://localhost:88/api/product/item/${product.skuId}.html|">
-                                    <img class="dim" th:src="${product.skuImg}">
-                                </a>
-                            </p>
-                            <ul class="tab_im">
-                                <li>
-                                    <a href="/static/search/#" title="黑色"><img th:src="${product.skuImg}"></a>
-                                </li>
-                            </ul>
-                            <p class="tab_R">
-                                <span th:text="'￥' + ${product.skuPrice}">¥5199.00</span>
-                            </p>
-                            <p class="tab_JE">
-                                <a href="/static/search/#" th:utext="${product.skuTitle}">
-                                    Apple iPhone 7 Plus (A1661) 32G 黑色 移动联通电信4G手机
-                                </a>
-                            </p>
-                            <p class="tab_PI">已有<span>11万+</span>热门评价
-                                <a href="/static/search/#">二手有售</a>
-                            </p>
-                            <p class="tab_CP"><a href="/static/search/#" title="谷粒商城Apple产品专营店">谷粒商城Apple产品...</a>
-                                <a href='#' title="联系供应商进行咨询">
-                                    <img src="/static/search/img/xcxc.png">
-                                </a>
-                            </p>
-                            <div class="tab_FO">
-                                <div class="FO_one">
-                                    <p>自营<span>谷粒商城自营,品质保证</span></p>
-                                    <p>满赠<span>该商品参加满赠活动</span></p>
+        </div>
+    </section>
+</div>
+<!-- overview -->
+<section class="home1 overview">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="bg">
+                    <div class="bg-inner">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6">
+                                <div class="item d-flex align-items-center justify-content-center">
+                                    <div class="icon">
+                                        <i class="flaticon-fire-truck"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h5>free shipping</h5>
+                                        <h6>Orders over $250</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="item d-flex align-items-center justify-content-center">
+                                    <div class="icon">
+                                        <i class="flaticon-cards"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h5>quick payment</h5>
+                                        <h6>100% secure payment</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="item d-flex align-items-center justify-content-center">
+                                    <div class="icon">
+                                        <i class="flaticon-gift-box"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h5>gift certificate</h5>
+                                        <h6>Buy now $500</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="item d-flex align-items-center justify-content-center last-item">
+                                    <div class="icon">
+                                        <i class="flaticon-customer-service"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h5>24/7 support</h5>
+                                        <h6>Quick Support</h6>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    &lt;!&ndash;分页&ndash;&gt;
-                    <div class="filter_page">
-                        <div class="page_wrap">
-                            <span class="page_span1">
-                                <a class="page_a" th:attr="pn=${result.pageNum - 1}" href="/static/search/#"
-                                   th:if="${result.pageNum>1}">
-                                    < 上一页
-                                </a>
-                                <a class="page_a"
-                                   th:attr="pn=${navs},style=${navs == result.pageNum?'border: 0;color:#ee2222;background: #fff':''}"
-                                   th:each="navs : ${result.pageNavs}">[[${navs}]]</a>
-                                <a class="page_a" th:attr="pn=${result.pageNum + 1}"
-                                   th:if="${result.pageNum<result.totalPages}">
-                                    下一页 >
-                                </a>
-                            </span>
-                            <span class="page_span2">
-                                <em>共<b>[[${result.totalPages}]]</b>页&nbsp;&nbsp;到第</em>
-                                <input type="number" value="1">
-                                <em>页</em>
-                                <a class="page_submit">确定</a>
-                            </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- footer -->
+<footer class="footer">
+    <!-- footer-top -->
+    <section class="footer-top pb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>about us</h5>
+                        </div>
+                        <p>Can only be used for learning
+                        </p>
+                        <div class="follow">
+                            <h6>follow us</h6>
+                            <ul class="d-flex social">
+                                <li><a href="javascript:void(0)"><i class="fab fa-facebook-f"></i></a></li>
+                                <li><a href="javascript:void(0)"><i class="fab fa-twitter"></i></a></li>
+                                <li><a href="javascript:void(0)"><i class="fab fa-skype"></i></a></li>
+                                <li><a href="javascript:void(0)"><i class="fab fa-instagram"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>my account</h5>
+                        </div>
+                        <ul>
+                            <li><a href="javascript:void(0)">my account</a></li>
+                            <li><a href="javascript:void(0)">wishlist</a></li>
+                            <li><a href="javascript:void(0)">login</a></li>
+                            <li><a href="javascript:void(0)">address</a></li>
+                            <li><a href="javascript:void(0)">new products</a></li>
+                            <li><a href="javascript:void(0)">faq</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>support</h5>
+                        </div>
+                        <ul>
+                            <li><a href="javascript:void(0)">help</a></li>
+                            <li><a href="javascript:void(0)">contact us</a></li>
+                            <li><a href="javascript:void(0)">feedback</a></li>
+                            <li><a href="javascript:void(0)">customer service</a></li>
+                            <li><a href="javascript:void(0)">reservation</a></li>
+                            <li><a href="javascript:void(0)">store locations</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>contact us</h5>
+                        </div>
+                        <ul class="address">
+                            <li class="d-flex align-items-center">
+                                <div class="icon">
+                                    <i class="flaticon-phone"></i>
+                                </div>
+                                <div class="text">
+                                    <h6>phone</h6>
+                                    <p>1852433xxxx</p>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <div class="icon">
+                                    <i class="flaticon-mail"></i>
+                                </div>
+                                <div class="text">
+                                    <h6>email</h6>
+                                    <p>187075xxxx@qq.com</p>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <div class="icon">
+                                    <i class="flaticon-placeholder"></i>
+                                </div>
+                                <div class="text">
+                                    <h6>address</h6>
+                                    <p>Western Road, Melbourne</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>useful links</h5>
+                        </div>
+                        <ul>
+                            <li><a href="javascript:void(0)">policy privacy</a></li>
+                            <li><a href="javascript:void(0)">site map</a></li>
+                            <li><a href="javascript:void(0)">store location</a></li>
+                            <li><a href="javascript:void(0)">my account</a></li>
+                            <li><a href="javascript:void(0)">orders traking</a></li>
+                            <li><a href="javascript:void(0)">terms of service</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- footer-bottom -->
+    <section class="footer-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="border-area">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 col-md-6">
+                                <p>Copyright 2022-2099, All Rights By <a href="#">MALL</a>.
+                                </p>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="payment">
+                                    <ul class="d-flex justify-content-end">
+                                        <li><a href="javascript:void(0)"><img
+                                                src="assets/images/payment/visa.png" alt="Visa"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img
+                                                src="assets/images/payment/master.png" alt="Master"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img
+                                                src="assets/images/payment/paypal.png" alt="Paypal"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img
+                                                src="assets/images/payment/skrill.png" alt="Skrill"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img
+                                                src="assets/images/payment/maestro.png" alt="Maestro"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img
+                                                src="assets/images/payment/electron.png"
+                                                alt="Electron"/></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>-->
-    </div>
-</div>
-<!--底部-->
-<footer class="footer">
-    <div class="footer_top">
-        <ul>
-            <li>
-                <span></span>
-                <h3>品类齐全，轻松购物</h3>
-            </li>
-            <li>
-                <span></span>
-                <h3>多仓直发，极速配发</h3>
-            </li>
-            <li>
-                <span></span>
-                <h3>正品行货，精致服务</h3>
-            </li>
-            <li>
-                <span></span>
-                <h3>天天低价，畅选无忧</h3>
-            </li>
-        </ul>
-    </div>
+        </div>
+    </section>
 </footer>
 
 <script>

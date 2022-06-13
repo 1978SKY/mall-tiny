@@ -52,7 +52,7 @@ public class WareSkuController {
     @PostMapping("/ckeckstock")
     @ApiOperation("检查并锁定库存")
     public R checkAndLock(@RequestBody Map<Long, Integer> stockMap) {
-        boolean b = false;
+        boolean b;
         try {
             b = wareSkuService.lockInventory(null, stockMap);
         } catch (Exception e) {

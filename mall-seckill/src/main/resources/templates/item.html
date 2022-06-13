@@ -151,7 +151,9 @@
                     </div>
                     <div class="col-lg-7 col-md-6">
                         <div class="detail-content">
-                            <p class="stock">seckill time:<span th:text="${#dates.format(product.startTime,'MM-dd HH:mm')}+' ~ '+${#dates.format(product.endTime,'MM-dd HH:mm')}" style="color: red"> in stock</span></p>
+                            <p class="stock">seckill time:<span
+                                    th:text="${#dates.format(product.startTime,'MM-dd HH:mm')}+' ~ '+${#dates.format(product.endTime,'MM-dd HH:mm')}"
+                                    style="color: red"> in stock</span></p>
                             <h5 th:text="${product.info.skuName}"></h5>
                             <div class="review-area d-flex align-items-center">
                                 <ul class="rating d-flex">
@@ -182,8 +184,10 @@
                                 </ul>
                             </div>
                             <div class="category">
-                                <p>category : <a href="javascript:void(0)">home,</a> <a href="javascript:void(0)">bed,</a> <a href="javascript:void(0)">sofa</a></p>
-                                <p>tags : <a href="javascript:void(0)">home,</a> <a href="javascript:void(0)">furniture</a></p>
+                                <p>category : <a href="javascript:void(0)">home,</a> <a
+                                        href="javascript:void(0)">bed,</a> <a href="javascript:void(0)">sofa</a></p>
+                                <p>tags : <a href="javascript:void(0)">home,</a> <a
+                                        href="javascript:void(0)">furniture</a></p>
                             </div>
                             <div class="border-area">
                                 <div class="cart-part d-flex align-items-center">
@@ -191,11 +195,14 @@
                                         <button data-dir="dwn" class="down-btn"><i
                                                 class="fas fa-minus"></i></button>
                                         <label>
-                                            <input type="text" class="form-control text-center input-value" value="1">
+                                            <input type="text" class="form-control text-center input-value"
+                                                   id="productNum" value="1">
                                         </label>
                                         <button data-dir="up" class="up-btn"><i class="fas fa-plus"></i></button>
                                     </div>
-                                    <a href="#!" class="cart">add to cart <span class="btn-dot"></span></a>
+                                    <p class="cart"
+                                       th:onclick="|doSeckill(${product.sessionId},${product.skuId})|">立即抢购<span
+                                            class="btn-dot"></span></p>
                                     <div class="add-more d-flex align-items-center">
                                         <a href="javascript:void(0)"><i class="flaticon-heart"></i></a>
                                         <a href="javascript:void(0)"><i class="flaticon-refresh"></i></a>
@@ -604,5 +611,30 @@
 <!-- script -->
 <script src="assets/js/script.js"></script>
 </body>
+<script>
+    function doSeckill(sessionId, skuId) {
+        const count = document.getElementById("productNum").value;
+
+        let submitData = {
+            "sessionId": sessionId,
+            "skuId": skuId,
+            "count": count
+        }
+
+        $.ajax({
+            type: 'POST',
+            datatype: 'json',
+            url: 'http://localhost:88/api/seckill/do/seckill',
+            contentType: "application/json",
+            data: JSON.stringify(submitData),
+            success: function (data) {
+                alert("秒杀成功，请耐心等待支付操作!");
+            },
+            error: function (data) {
+                alert(data + "服务器异常!");
+            }
+        });
+    }
+</script>
 
 </html>

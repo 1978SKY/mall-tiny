@@ -76,7 +76,7 @@ public class AccountController {
     @ApiOperation(value = "地址管理")
     public String address(HttpSession session, Model model) {
         if (session.getAttribute(AuthConstant.LOGIN_USER) == null) {
-            return "redirect:http://localhost:8000/api/auth/login";
+            return "redirect:http://localhost:88/api/auth/login.html";
         }
         String json = JSON.toJSONString(session.getAttribute(AuthConstant.LOGIN_USER));
         MemberDTO member = JSON.parseObject(json, MemberDTO.class);

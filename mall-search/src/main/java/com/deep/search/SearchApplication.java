@@ -11,6 +11,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
  * @author Deep
  * @date 2022/3/20
  */
+//@EnableElasticsearchRepositories
 @EnableRedisHttpSession
 @EnableDiscoveryClient
 @SpringBootApplication

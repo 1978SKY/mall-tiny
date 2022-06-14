@@ -1,0 +1,22 @@
+{
+  "groups": [
+    {
+      "name": "es",
+      "type": "com.deep.search.config.properties.ESProperties",
+      "sourceType": "com.deep.search.config.properties.ESProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "es.host",
+      "type": "java.lang.String",
+      "sourceType": "com.deep.search.config.properties.ESProperties"
+    },
+    {
+      "name": "es.port",
+      "type": "java.lang.Integer",
+      "sourceType": "com.deep.search.config.properties.ESProperties"
+    }
+  ],
+  "hints": []
+}

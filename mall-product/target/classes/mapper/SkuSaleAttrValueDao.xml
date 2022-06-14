@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.deep.product.dao.SkuSaleAttrValueDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.deep.product.model.entity.SkuSaleAttrValueEntity" id="skuSaleAttrValueMap">
+        <result property="id" column="id"/>
+        <result property="skuId" column="sku_id"/>
+        <result property="attrId" column="attr_id"/>
+        <result property="attrName" column="attr_name"/>
+        <result property="attrValue" column="attr_value"/>
+        <result property="attrSort" column="attr_sort"/>
+    </resultMap>
+
+    <resultMap id="SkuItemSaleAttrVO" type="com.deep.product.model.vo.SkuItemSaleAttrVO">
+        <result column="attr_id" property="attrId"></result>
+        <result column="attr_name" property="attrName"></result>
+        <collection property="attrValues" ofType="com.deep.product.model.vo.SkuItemSaleAttrVO$AttrValueWithSkuIdVO">
+            <result column="attr_value" property="attrValue"></result>
+            <result column="sku_ids" property="skuIds"></result>
+        </collection>
+    </resultMap>
+    <select id="getSaleAttrBySpuId" resultMap="SkuItemSaleAttrVO">
+        select attr_id, attr_name, attr_value, GROUP_CONCAT(distinct sale.sku_id ) sku_ids
+        from pms_sku_sale_attr_value sale
+        where sku_id in (
+            select sku_id
+            from `pms_sku_info`
+            where spu_id = #{spuId}
+        )
+        group by sale.attr_id,
+                 sale.attr_name,
+                 sale.attr_value
+    </select>
+
+
+</mapper>

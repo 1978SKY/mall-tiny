@@ -1,0 +1,46 @@
+server:
+  port: 10001
+
+spring:
+  application:
+    name: mall-product
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mall.com:3306/gulimall_pms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: mysqlroot
+  redis:
+    port: 6379
+    host: mall.com
+    password: redisroot
+
+  cloud:
+    # nacos配置
+    nacos:
+      discovery: # 注册中心
+        server-addr: mall.com:8848
+        namespace: 4f3b5226-066e-48e2-b7a6-d71f99290479
+    # OSS配置
+    alicloud:
+      access-key: LTAI5tKrLm3zoumj82QTNAQB
+      secret-key: OQZidcslSbRQOqLcs8UAVGDjME8hEn
+      oss:
+        endpoint: oss-cn-shanghai.aliyuncs.com
+        bucket: deepmall
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  # 模板引擎
+  thymeleaf:
+    cache: false  # 关闭thymeleaf缓存（开发期间可以实时看到页面变化，上线后开启缓存可以提高性能）
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*.xml   # mapper扫描路径
+  global-config:
+    db-config:
+      id-type: auto
+
+logging:
+  level:
+    com.deep.product: info

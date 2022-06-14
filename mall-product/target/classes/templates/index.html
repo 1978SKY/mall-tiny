@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <base href="http://mall.com/static/">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--==== favicon css ====-->
+    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon"/>
+    <!-- josefin font -->
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+    <title>Sofast Multipurpose eCommerce HTML Template</title>
+    <!-- font-awesome -->
+    <link rel="stylesheet" href="assets/css/all.min.css">
+    <!-- flaticon -->
+    <link rel="stylesheet" href="assets/font/flaticon.css">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!-- menu -->
+    <link rel="stylesheet" href="assets/css/menu.css">
+    <!-- swiper slider -->
+    <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
+    <!-- venobox -->
+    <link rel="stylesheet" href="assets/css/venobox.css">
+    <!-- select -->
+    <link rel="stylesheet" href="assets/css/select2.min.css">
+    <!-- jquery ui -->
+    <link rel="stylesheet" href="assets/css/jquery-ui.min.css">
+    <!-- style -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- responsive -->
+    <link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+
+<body>
+<!-- 启动预加载器区域 -->
+<div class="preloader">
+    <div class="preloader-orbit-loading">
+        <div class="cssload-inner cssload-one"></div>
+        <div class="cssload-inner cssload-two"></div>
+        <div class="cssload-inner cssload-three"></div>
+    </div>
+</div>
+<!-- 开始滚动顶部按钮 -->
+<div class="scroll-top">
+    <button class="top-to-btn">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+</div>
+<!-- header -->
+<header>
+    <!-- 开始菜单栏区域 -->
+    <section class="inner-page menubar">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row align-items-center">
+                        <!-- logo -->
+                        <div class="col-lg-2 col-md-4 col-sm-5 col-6">
+                            <div class="logo">
+                                <a href="index.html">
+                                    <img src="assets/images/home1/logo.png" alt="Logo"/>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- 主菜单 -->
+                        <div class="col-lg-8 col-md-4 col-sm-2 col-6">
+                            <!-- desktop-menu -->
+                            <nav class="navbar position-static justify-content-center desktop-menu p-0">
+                                <div class="main-menu">
+                                    <ul class="menu">
+                                        <li>
+                                            <a href="http://localhost:88/api/product/index.html">Home</a>
+                                        </li>
+                                        <li><a href="http://localhost:88/api/seckill/seckill.html">seckill</a></li>
+                                        <li><a href="http://localhost:88/api/search/search.html">search</a></li>
+                                        <li><a href="about/mall.html">About</a></li>
+                                        <li><a href="about.html">Gitee</a></li>
+                                        <li><a href="about.html">AboutMe</a></li>
+                                    </ul>
+                                </div>
+                            </nav>
+                        </div>
+                        <!-- 通知 -->
+                        <div class="col-lg-2 col-md-4 col-sm-5 right-col">
+                            <div class="notification">
+                                <ul class="d-flex justify-content-end">
+                                    <li>
+                                        <a th:if="${session.loginUser==null}"
+                                           href="http://localhost:88/api/auth/login.html">
+                                            <i class="flaticon-user-1"></i>
+                                        </a>
+                                        <a th:if="${session.loginUser!=null}"
+                                           href="http://localhost:88/api/auth/account/account.html">
+                                            <i class="flaticon-user-1"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a th:if="${session.loginUser==null}"
+                                           href="http://localhost:88/api/auth/login.html">
+                                            <i class="flaticon-shopping-cart-1"></i>
+                                        </a>
+                                        <a th:if="${session.loginUser!=null}"
+                                           href="http://localhost:88/api/cart/cart.html">
+                                            <i class="flaticon-shopping-cart-1"></i>
+                                            <span class="quantity" style="background: white;color: red">02</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</header>
+<!-- banner -->
+<section class="home1 banner" data-img="assets/images/home1/banner/bg.jpg">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-xl-6 col-lg-6 order-1 order-lg-0">
+                <div class="text-part">
+                    <h5>Big Offer 50% off</h5>
+                    <h1>New Collection Summer Sale</h1>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna</p>
+                    <a href="javascript:void(0)" class="button-style1">shop now</a>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 order-0 order-lg-1">
+                <div class="image text-end">
+                    <img src="assets/images/home1/banner/banner-img.png" alt="Banner">
+                </div>
+            </div>
+        </div>
+    </div>
+    <span class="collection">collection 2021</span>
+</section>
+<!-- 热门商品 -->
+<section class="home1 trending">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h3>Trending Products</h3>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-xl-1-5 col-lg-4 col-md-6 col-sm-6" th:each="product : ${trendingProducts}">
+                        <div class="single">
+                            <span class="offer" th:text="'-'+${product.saleCount}"></span>
+                            <div class="image">
+                                <a th:href="@{'http://localhost:88/api/product/item/'+${product.skuId}+'.html'}">
+                                    <img class="img-main" th:src="${product.skuDefaultImg}" alt="Product">
+                                </a>
+                                <a th:href="@{'http://localhost:88/api/product/item/'+${product.skuId}+'.html'}">
+                                    <img class="img-hover" th:src="${product.skuDefaultImg}" alt="Product">
+                                </a>
+                            </div>
+                            <div class="content">
+                                <a th:href="@{'http://localhost:88/api/product/item/'+${product.skuId}+'.html'}">
+                                    <h6 th:text="${product.skuName}">white luxury armchair</h6>
+                                </a>
+                                <p th:text="'￥' + ${product.price}"></p>
+                                <ul class="rating d-flex">
+                                    <li><i class="fas fa-star"></i></li>
+                                    <li><i class="fas fa-star"></i></li>
+                                    <li><i class="fas fa-star"></i></li>
+                                    <li><i class="fas fa-star"></i></li>
+                                    <li><i class="fas fa-star"></i></li>
+                                </ul>
+                                <div class="action">
+                                    <ul class="d-flex">
+                                        <li>
+                                            <a th:href="@{'http://localhost:88/api/cart/addToCart?skuId='+${product.skuId}+'&num=1'}">
+                                                <i class="flaticon-shopping-cart-1"></i>
+                                                <p class="my-tooltip">
+                                                    add to cart
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)" data-bs-toggle="modal"
+                                               data-bs-target="#exampleModal">
+                                                <i class="flaticon-visibility"></i>
+                                                <p class="my-tooltip">
+                                                    quick view
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)">
+                                                <i class="flaticon-refresh"></i>
+                                                <p class="my-tooltip">
+                                                    compare
+                                                </p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 秒杀活动 -->
+<section class="home1 offer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="bg">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 order-1 order-lg-0">
+                            <div class="content">
+                                <h6>Hurry up and Get 25% Discount</h6>
+                                <h3>eames luxuary lounge chair furniture</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua enim ad minim veniam, quis nostrud
+                                </p>
+                                <div id="offer-time">
+                                    <ul class="d-flex">
+                                        <li class="text-center">
+                                            <h3 class="days"></h3>
+                                            <span>days</span>
+                                        </li>
+                                        <li class="text-center">
+                                            <h3 class="hours"></h3>
+                                            <span>hours</span>
+                                        </li>
+                                        <li class="text-center">
+                                            <h3 class="minutes"></h3>
+                                            <span>minutes</span>
+                                        </li>
+                                        <li class="text-center">
+                                            <h3 class="secounds"></h3>
+                                            <span>secounds</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <a href="shop-5-column.html" class="button-style1">view more</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 order-0 order-lg-1">
+                            <div class="image">
+                                <img src="assets/images/home1/offer/offer.png" alt="Product">
+                                <!-- 视频 -->
+                                <a class="venobox" data-autoplay="true" data-vbtype="video"
+                                   href="javascript:void(0)">
+                                    <i class="fas fa-play"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 精选商品 -->
+<section class="home1 product pt-80">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h3>Selected Product</h3>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
+                                type="button" role="tab" aria-controls="home" aria-selected="true">new arrival
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
+                                type="button" role="tab" aria-controls="profile" aria-selected="false">best
+                            sellers
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact"
+                                type="button" role="tab" aria-controls="contact" aria-selected="false">sale
+                            items
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row">
+                            <div class="col-xl-1-5 col-lg-4 col-md-6 col-sm-6"
+                                 th:each="product:${selectProducts.get(0)}">
+                                <div class="single">
+                                    <div class="image">
+                                        <a th:href="@{'http://localhost:88/api/product/item/'+${product.skuId}+'.html'}">
+                                            <img class="img-main" th:src="${product.skuDefaultImg}" alt="Product">
+                                        </a>
+                                        <a th:href="@{'http://localhost:88/api/product/item/'+${product.skuId}+'.html'}">
+                                            <img class="img-hover" th:src="${product.skuDefaultImg}" alt="Product">
+                                        </a>
+                                        <div class="action">
+                                            <ul>
+                                                <li>
+                                                    <a th:href="@{'http://localhost:88/api/cart/addToCart?skuId='+${product.skuId}+'&num=1'}">
+                                                        <i class="flaticon-shopping-cart-1"></i>
+                                                        <p class="my-tooltip">
+                                                            add to cart
+                                                        </p>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                       data-bs-target="#exampleModal">
+                                                        <i class="flaticon-visibility"></i>
+                                                        <p class="my-tooltip">
+                                                            quick view
+                                                        </p>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0)">
+                                                        <i class="flaticon-refresh"></i>
+                                                        <p class="my-tooltip">
+                                                            compare
+                                                        </p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="content">
+                                        <a th:href="@{'http://localhost:88/api/product/item/'+${product.skuId}+'.html'}">
+                                            <h6 th:text="${product.skuName}"></h6>
+                                        </a>
+                                        <p th:text="'￥'+${product.price}"></p>
+                                        <ul class="rating d-flex">
+                                            <li><i class="fas fa-star"></i></li>
+                                            <li><i class="fas fa-star"></i></li>
+                                            <li><i class="fas fa-star"></i></li>
+                                            <li><i class="fas fa-star"></i></li>
+                                            <li><i class="fas fa-star"></i></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="row">
+                            <div class="col-xl-1-5 col-lg-4 col-md-6 col-sm-6"
+                                 th:each="product:${selectProducts.get(1)}">
+                                <div class="single">
+                                    <div class="image">
+                                        <a th:href="@{'http://localhost:88/api/product/item/'+${product.skuId}+'.html'}">
+                                            <img class="img-main" th:src="${product.skuDefaultImg}" alt="Product">
+                                        </a>
+                                        <a th:href="@{'http://localhost:88/api/product/item/'+${product.skuId}+'.html'}">
+                                            <img class="img-hover" th:src="${product.skuDefaultImg}" alt="Product">
+                                        </a>
+                                        <div class="action">
+                                            <ul>
+                                                <li>
+                                                    <a th:href="@{'http://localhost:88/api/cart/addToCart?skuId='+${product.skuId}+'&num=1'}">
+                                                        <i class="flaticon-shopping-cart-1"></i>
+                                                        <p class="my-tooltip">
+                                                            add to cart
+                                                        </p>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                       data-bs-target="#exampleModal">
+                                                        <i class="flaticon-visibility"></i>
+                                                        <p class="my-tooltip">
+                                                            quick view
+                                                        </p>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0)">
+                                                        <i class="flaticon-refresh"></i>
+                                                        <p class="my-tooltip">
+                                                            compare
+                                                        </p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="content">
+                                        <a th:href="@{'http://localhost:88/api/product/item/'+${product.skuId}+'.html'}">
+                                            <h6 th:text="${product.skuName}"></h6>
+                                        </a>
+                                        <p th:text="'￥'+${product.price}"></p>
+                                        <ul class="rating d-flex">
+                                            <li><i class="fas fa-star"></i></li>
+                                            <li><i class="fas fa-star"></i></li>
+                                            <li><i class="fas fa-star"></i></li>
+                                            <li><i class="fas fa-star"></i></li>
+                                            <li><i class="fas fa-star"></i></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                        <div class="row">
+                            <div class="col-xl-1-5 col-lg-4 col-md-6 col-sm-6"
+                                 th:each="product:${selectProducts.get(2)}">
+                                <div class="single">
+                                    <div class="image">
+                                        <a th:href="@{'http://localhost:88/api/product/item/'+${product.skuId}+'.html'}">
+                                            <img class="img-main" th:src="${product.skuDefaultImg}" alt="Product">
+                                        </a>
+                                        <a th:href="@{'http://localhost:88/api/product/item/'+${product.skuId}+'.html'}">
+                                            <img class="img-hover" th:src="${product.skuDefaultImg}" alt="Product">
+                                        </a>
+                                        <div class="action">
+                                            <ul>
+                                                <li>
+                                                    <a th:href="@{'http://localhost:88/api/cart/addToCart?skuId='+${product.skuId}+'&num=1'}">
+                                                        <i class="flaticon-shopping-cart-1"></i>
+                                                        <p class="my-tooltip">
+                                                            add to cart
+                                                        </p>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                       data-bs-target="#exampleModal">
+                                                        <i class="flaticon-visibility"></i>
+                                                        <p class="my-tooltip">
+                                                            quick view
+                                                        </p>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0)">
+                                                        <i class="flaticon-refresh"></i>
+                                                        <p class="my-tooltip">
+                                                            compare
+                                                        </p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="content">
+                                        <a th:href="@{'http://localhost:88/api/product/item/'+${product.skuId}+'.html'}">
+                                            <h6 th:text="${product.skuName}"></h6>
+                                        </a>
+                                        <p th:text="'￥'+${product.price}"></p>
+                                        <ul class="rating d-flex">
+                                            <li><i class="fas fa-star"></i></li>
+                                            <li><i class="fas fa-star"></i></li>
+                                            <li><i class="fas fa-star"></i></li>
+                                            <li><i class="fas fa-star"></i></li>
+                                            <li><i class="fas fa-star"></i></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 广告 -->
+<section class="home1 order pt-50 pb-80">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="item">
+                    <img src="assets/images/home1/order/img1.jpg" alt="Order">
+                    <div class="content">
+                        <div class="text">
+                            <h6>pick your items</h6>
+                            <h4>Up to 25% Off Order Now</h4>
+                            <a href="shop-4-column.html">shop now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="item">
+                    <img src="assets/images/home1/order/img2.jpg" alt="Order">
+                    <div class="content">
+                        <div class="text">
+                            <h6>great discount here</h6>
+                            <h4>Office Chair for Best Offer</h4>
+                            <a href="shop-4-column.html">shop now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- 每周热销 -->
+<section class="home1 blog">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h3>best sale every week</h3>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-xl-3 col-lg-6 col-md-6" th:each="product : ${bestSaleProducts}">
+                        <div class="single">
+                            <div class="image item-animation2">
+                                <a th:href="@{'http://localhost:88/api/product/item/'+${product.skuId}+'.html'}">
+                                    <img th:src="${product.skuDefaultImg}" alt="Blog">
+                                </a>
+                            </div>
+                            <div class="content">
+                                <a href="javascript:void(0)">
+                                    <p th:text="'本周已销售：'+${product.saleCount}+'件'"></p>
+                                </a>
+                                <a th:href="@{'http://localhost:88/api/product/item/'+${product.skuId}+'.html'}">
+                                    <h6 th:text="${product.skuTitle}"></h6>
+                                </a>
+                                <a th:href="@{'http://localhost:88/api/product/item/'+${product.skuId}+'.html'}"
+                                   class="button-style1">read more</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- overview -->
+<section class="home1 overview">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="bg">
+                    <div class="bg-inner">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6">
+                                <div class="item d-flex align-items-center justify-content-center">
+                                    <div class="icon">
+                                        <i class="flaticon-fire-truck"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h5>free shipping</h5>
+                                        <h6>Orders over $250</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="item d-flex align-items-center justify-content-center">
+                                    <div class="icon">
+                                        <i class="flaticon-cards"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h5>quick payment</h5>
+                                        <h6>100% secure payment</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="item d-flex align-items-center justify-content-center">
+                                    <div class="icon">
+                                        <i class="flaticon-gift-box"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h5>gift certificate</h5>
+                                        <h6>Buy now $500</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="item d-flex align-items-center justify-content-center last-item">
+                                    <div class="icon">
+                                        <i class="flaticon-customer-service"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h5>24/7 support</h5>
+                                        <h6>Quick Support</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- footer -->
+<footer class="footer">
+    <!-- footer-top -->
+    <section class="footer-top pb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>about us</h5>
+                        </div>
+                        <p>Can only be used for learning
+                        </p>
+                        <div class="follow">
+                            <h6>follow us</h6>
+                            <ul class="d-flex social">
+                                <li><a href="javascript:void(0)"><i class="fab fa-facebook-f"></i></a></li>
+                                <li><a href="javascript:void(0)"><i class="fab fa-twitter"></i></a></li>
+                                <li><a href="javascript:void(0)"><i class="fab fa-skype"></i></a></li>
+                                <li><a href="javascript:void(0)"><i class="fab fa-instagram"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>my account</h5>
+                        </div>
+                        <ul>
+                            <li><a href="javascript:void(0)">my account</a></li>
+                            <li><a href="javascript:void(0)">wishlist</a></li>
+                            <li><a href="javascript:void(0)">login</a></li>
+                            <li><a href="javascript:void(0)">address</a></li>
+                            <li><a href="javascript:void(0)">new products</a></li>
+                            <li><a href="javascript:void(0)">faq</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>support</h5>
+                        </div>
+                        <ul>
+                            <li><a href="javascript:void(0)">help</a></li>
+                            <li><a href="javascript:void(0)">contact us</a></li>
+                            <li><a href="javascript:void(0)">feedback</a></li>
+                            <li><a href="javascript:void(0)">customer service</a></li>
+                            <li><a href="javascript:void(0)">reservation</a></li>
+                            <li><a href="javascript:void(0)">store locations</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>contact us</h5>
+                        </div>
+                        <ul class="address">
+                            <li class="d-flex align-items-center">
+                                <div class="icon">
+                                    <i class="flaticon-phone"></i>
+                                </div>
+                                <div class="text">
+                                    <h6>phone</h6>
+                                    <p>1852433xxxx</p>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <div class="icon">
+                                    <i class="flaticon-mail"></i>
+                                </div>
+                                <div class="text">
+                                    <h6>email</h6>
+                                    <p>187075xxxx@qq.com</p>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <div class="icon">
+                                    <i class="flaticon-placeholder"></i>
+                                </div>
+                                <div class="text">
+                                    <h6>address</h6>
+                                    <p>Western Road, Melbourne</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>useful links</h5>
+                        </div>
+                        <ul>
+                            <li><a href="javascript:void(0)">policy privacy</a></li>
+                            <li><a href="javascript:void(0)">site map</a></li>
+                            <li><a href="javascript:void(0)">store location</a></li>
+                            <li><a href="javascript:void(0)">my account</a></li>
+                            <li><a href="javascript:void(0)">orders traking</a></li>
+                            <li><a href="javascript:void(0)">terms of service</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- footer-bottom -->
+    <section class="footer-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="border-area">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 col-md-6">
+                                <p>Copyright 2022-2099, All Rights By <a href="#">MALL</a>.
+                                </p>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="payment">
+                                    <ul class="d-flex justify-content-end">
+                                        <li><a href="javascript:void(0)"><img src="assets/images/payment/visa.png"
+                                                                              alt="Visa"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img src="assets/images/payment/master.png"
+                                                                              alt="Master"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img src="assets/images/payment/paypal.png"
+                                                                              alt="Paypal"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img src="assets/images/payment/skrill.png"
+                                                                              alt="Skrill"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img
+                                                src="assets/images/payment/maestro.png" alt="Maestro"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img
+                                                src="assets/images/payment/electron.png" alt="Electron"/></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</footer>
+<!-- jquery -->
+<script src="assets/plugins/jquery-3.4.1.min.js"></script>
+<!-- bootstrap -->
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<!-- menu -->
+<script src="assets/plugins/menu.min.js"></script>
+<!-- swiper slider -->
+<script src="assets/plugins/swiper-bundle.min.js"></script>
+<!-- packery -->
+<script src="assets/plugins/packery.pkgd.min.js"></script>
+<!-- countdown -->
+<script src="assets/plugins/jquery.countdown.min.js"></script>
+<!-- venobox -->
+<script src="assets/plugins/venobox.min.js"></script>
+<!-- jquery ui -->
+<script src="assets/plugins/jquery-ui.min.js"></script>
+<!-- select -->
+<script src="assets/plugins/select2.min.js"></script>
+<!-- zoom -->
+<script src="assets/plugins/jquery.elevateZoom-3.0.8.min.js"></script>
+<!-- Google map -->
+<script src="http://ditu.google.cn/maps/api/js?key=AIzaSyCjkssBA3hMeFtClgslO2clWFR6bRraGz0"></script>
+<!-- script -->
+<script src="assets/js/script.js"></script>
+</body>
+
+</html>

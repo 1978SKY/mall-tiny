@@ -1,0 +1,27 @@
+{
+  "groups": [
+    {
+      "name": "mall.thread.pool",
+      "type": "com.deep.product.config.properties.ThreadPoolProperties",
+      "sourceType": "com.deep.product.config.properties.ThreadPoolProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "mall.thread.pool.core-size",
+      "type": "java.lang.Integer",
+      "sourceType": "com.deep.product.config.properties.ThreadPoolProperties"
+    },
+    {
+      "name": "mall.thread.pool.keep-alive-time",
+      "type": "java.lang.Integer",
+      "sourceType": "com.deep.product.config.properties.ThreadPoolProperties"
+    },
+    {
+      "name": "mall.thread.pool.max-size",
+      "type": "java.lang.Integer",
+      "sourceType": "com.deep.product.config.properties.ThreadPoolProperties"
+    }
+  ],
+  "hints": []
+}

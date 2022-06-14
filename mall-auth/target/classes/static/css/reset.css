@@ -1,0 +1,37 @@
+/* 清除浏览器的默认间距 */
+*{
+    margin: 0;padding: 0;
+}
+/* 清除加粗和倾斜的默认样式 */
+i,em{
+    font-style: normal
+}
+b,strong{
+    font-weight: normal
+}
+/* 清除a、u标签默认下划线 */
+a,u,i{
+    text-decoration:none;
+    cursor: default;
+}
+/* 清除列表的默认样式 */
+ul,li{
+    list-style: none
+}
+/* 万能清除法 */
+.clear-fix::after{
+    content:'';
+    width:100%;
+    height:0;
+    display:block;
+    overflow:hidden;
+    clear:both;
+    visibility:hidden
+}
+/* 兼容的 IE */
+.clear-fix{
+    zoom: 1
+}
+li{
+    cursor: pointer;
+}

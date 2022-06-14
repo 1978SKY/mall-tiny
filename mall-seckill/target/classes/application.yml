@@ -1,0 +1,38 @@
+server:
+  port: 14000
+spring:
+  application:
+    name: mall-seckill
+
+  redis:
+    port: 6379
+    host: mall.com
+    password: redisroot
+
+  cloud:
+    nacos:
+      # 注册中心
+      discovery:
+        server-addr: mall.com:8848
+        namespace: 4f3b5226-066e-48e2-b7a6-d71f99290479
+
+  rabbitmq:
+    host: mall.com
+    port: 5672
+    username: admin
+    password: rabbitmqroot
+    virtual-host: /
+    publisher-confirm-type: correlated  # 消息发送到服务器确认
+    publisher-returns: true # 消息抵达队列确认
+    template:
+      mandatory: true # 只要抵达队列就会被异步优先回调
+    listener:
+      simple:
+        acknowledge-mode: manual  # manual手动确认消息
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+
+  # 模板引擎
+  thymeleaf:
+    cache: false  # 关闭thymeleaf缓存（开发期间可以实时看到页面变化，上线后开启缓存可以提高性能）

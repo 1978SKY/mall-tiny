@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <base href="http://mall.com">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Search</title>
+    <link rel="stylesheet" type="text/css" href="/static/mall/search/font/iconfont.css">
+    <link rel="stylesheet" href="/static/mall/search/css/index.css">
+
+    <!-- font-awesome -->
+    <link rel="stylesheet" href="/static/assets/css/all.min.css">
+    <!-- flaticon -->
+    <link rel="stylesheet" href="/static/assets/font/flaticon.css">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="/static/assets/css/bootstrap.min.css">
+    <!-- menu -->
+    <link rel="stylesheet" href="/static/assets/css/menu.css">
+    <!-- swiper slider -->
+    <link rel="stylesheet" href="/static/assets/css/swiper-bundle.min.css">
+    <!-- venobox -->
+    <link rel="stylesheet" href="/static/assets/css/venobox.css">
+    <!-- select -->
+    <link rel="stylesheet" href="/static/assets/css/select2.min.css">
+    <!-- jquery ui -->
+    <link rel="stylesheet" href="/static/assets/css/jquery-ui.min.css">
+    <!-- style -->
+    <link rel="stylesheet" href="/static/assets/css/style.css">
+    <!-- responsive -->
+    <link rel="stylesheet" href="/static/assets/css/responsive.css">
+
+    <script src="/static/search/js/jquery-1.12.4.js"></script>
+</head>
+<body>
+<!--头部-->
+<div class="header_head">
+    <div class="header_head_box">
+        <b class="header_head_p">
+            <div style="overflow: hidden">
+                <a href="http://mall.com/api/product/" class="header_head_p_a1" style="width:73px;">商城首页</a>
+            </div>
+        </b>
+        <ul>
+            <li>
+                <a th:if="${session.loginUser == null}" href="http://auth.amll.com/api/auth/login.html"
+                   class="li_2">你好，请登录</a>
+                <a th:if="${session.loginUser != null}">欢迎, [[${session.loginUser.nickname}]]</a>
+            </li>
+            <li>
+                <a th:if="${session.loginUser == null}" href="http://auth.mall.com/api/auth/reg.html"
+                   style="color: red;">免费注册</a>
+            </li>
+            <span>|</span>
+            <li><a href="/static/search/#">我的订单</a></li>
+        </ul>
+    </div>
+</div>
+
+<!--搜索导航-->
+<div class="header_sous">
+    <div class="logo">
+        <a href="http://mall.com/api/product/">
+            <img src="/static/assets/images/home1/logo.png" alt="Logo"/>
+            <!--            <img src="/static/search/image/logo1.jpg" alt="">-->
+        </a>
+    </div>
+    <div class="header_form">
+        <input id="keyword_input" type="text" placeholder="手机" th:value="${param.keyword}"/>
+        <a href="javascript:searchByKeyword()">搜索</a>
+    </div>
+    <div class="header_ico">
+        <div class="header_gw">
+            <span><a href="http://cart.mall.com/api/cart/cart.html">购物车</a></span>
+        </div>
+        <div class="header_ko">
+            <p>购物车中还没有商品，赶紧选购吧！</p>
+        </div>
+    </div>
+    <nav>
+        <ul>
+            <li class="nav_li1"><a href="/static/search/#">全部商品分类</a></li>
+            <li class="nav_li"><a href="/static/search/#">服装城</a></li>
+            <li class="nav_li"><a href="/static/search/#">没装馆</a></li>
+            <li class="nav_li"><a href="/static/search/#">超市</a></li>
+            <li class="nav_li"><a href="/static/search/#">生鲜</a></li>
+        </ul>
+        <div class="spacer">|</div>
+        <ul>
+            <li class="nav_li"><a href="/static/search/#">全球购</a></li>
+            <li class="nav_li"><a href="/static/search/#">闪购</a></li>
+            <li class="nav_li"><a href="/static/search/#">拍卖</a></li>
+        </ul>
+        <div class="spacer">|</div>
+        <ul>
+            <li class="nav_li"><a href="/static/search/#">金融</a></li>
+        </ul>
+    </nav>
+</div>
+
+<!--商品筛选和排序-->
+<div class="JD_banner w">
+    <div class="JD_nav">
+        <div class="JD_selector">
+            <!--手机商品筛选-->
+            <div class="title">
+                <h3><b>手机</b><em>商品筛选</em></h3>
+                <div class="st-ext">共&nbsp;<span>10135</span>个商品</div>
+            </div>
+            <div class="JD_nav_logo" th:with="brandId=${param.brandId}">
+                <!--品牌-->
+                <div th:if="${#strings.isEmpty(brandId)}" class="JD_nav_wrap">
+                    <div class="sl_key">
+                        <span><b>品牌：</b></span>
+                    </div>
+                    <div class="sl_value">
+                        <div class="sl_value_logo">
+                            <ul>
+                                <li th:each="brand : ${result.brands}">
+                                    <a href="#"
+                                       th:href="${'javascript:searchProducts(&quot;brandId&quot;,'+brand.brandId+')'}">
+                                        <img th:src="${brand.brandImg}" th:width="116px" th:height="28px">
+                                        <div th:text="${brand.brandName}">
+                                            华为(HUAWEI)
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--分类-->
+                <div class="JD_pre">
+                    <div class="sl_key">
+                        <span><b>分类：</b></span>
+                    </div>
+                    <div class="sl_value">
+                        <ul>
+                            <li th:each="catalog : ${result.catalogs}">
+                                <a href="/static/search/#"
+                                   th:href="${'javascript:searchProducts(&quot;catId&quot;,'+catalog.catalogId+')'}"
+                                   th:text="${catalog.catalogName}">5.56英寸及以上
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!--其它的所有需要展示的属性-->
+                <div class="JD_pre" th:each="attr:${result.attrs}">
+                    <!--                     th:if="${!#lists.contains(result.attrIds, attr.attrId)}">-->
+                    <div class="sl_key">
+                        <span th:text="${attr.attrName}">屏幕尺寸：</span>
+                    </div>
+                    <div class="sl_value">
+                        <ul>
+                            <li th:each="attrValue : ${attr.attrValue}">
+                                <a href="/static/search/#"
+                                   th:href="${'javascript:searchProducts(&quot;attrs&quot;,&quot;'+attr.attrId+'_'+attrValue+'&quot;)'}"
+                                   th:text="${attrValue}">5.56英寸及以上
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 主体 -->
+    <!-- 主体 -->
+    <section class="home1 blog-page blog p-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-xxl-10 offset-xxl-1">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-6 col-md-6" th:each="product : ${result.products}">
+                            <div class="single">
+                                <div class="image item-animation2">
+                                    <a href="blog-detail-left.html">
+                                        <img th:src="${product.skuImg}" alt="Blog">
+                                        <!--<img src="assets/images/home1/blog/blog1.jpg" alt="Blog">-->
+                                    </a>
+                                </div>
+                                <div class="content">
+                                    <a href="#!">
+                                        <p th:text="${product.skuPrice}"></p>
+                                    </a>
+                                    <a href="blog-detail-left.html">
+                                        <h6 th:text="${product.skuTitle}"></h6>
+                                    </a>
+                                    <a href="blog-detail-left.html" class="button-style1">read more</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="pages">
+                                <ul class="d-flex justify-content-center">
+                                    <li><a href="javascript:void(0)"><i class="flaticon-chevron-1"></i></a></li>
+                                    <li><a href="javascript:void(0)" class="active">1</a></li>
+                                    <li><a href="javascript:void(0)">2</a></li>
+                                    <li><a href="javascript:void(0)">3</a></li>
+                                    <li><a href="javascript:void(0)">4</a></li>
+                                    <li><a href="javascript:void(0)"><i class="flaticon-chevron"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<!-- overview -->
+<section class="home1 overview">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="bg">
+                    <div class="bg-inner">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6">
+                                <div class="item d-flex align-items-center justify-content-center">
+                                    <div class="icon">
+                                        <i class="flaticon-fire-truck"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h5>free shipping</h5>
+                                        <h6>Orders over $250</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="item d-flex align-items-center justify-content-center">
+                                    <div class="icon">
+                                        <i class="flaticon-cards"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h5>quick payment</h5>
+                                        <h6>100% secure payment</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="item d-flex align-items-center justify-content-center">
+                                    <div class="icon">
+                                        <i class="flaticon-gift-box"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h5>gift certificate</h5>
+                                        <h6>Buy now $500</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="item d-flex align-items-center justify-content-center last-item">
+                                    <div class="icon">
+                                        <i class="flaticon-customer-service"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h5>24/7 support</h5>
+                                        <h6>Quick Support</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- footer -->
+<footer class="footer">
+    <!-- footer-top -->
+    <section class="footer-top pb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>about us</h5>
+                        </div>
+                        <p>Can only be used for learning
+                        </p>
+                        <div class="follow">
+                            <h6>follow us</h6>
+                            <ul class="d-flex social">
+                                <li><a href="javascript:void(0)"><i class="fab fa-facebook-f"></i></a></li>
+                                <li><a href="javascript:void(0)"><i class="fab fa-twitter"></i></a></li>
+                                <li><a href="javascript:void(0)"><i class="fab fa-skype"></i></a></li>
+                                <li><a href="javascript:void(0)"><i class="fab fa-instagram"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>my account</h5>
+                        </div>
+                        <ul>
+                            <li><a href="javascript:void(0)">my account</a></li>
+                            <li><a href="javascript:void(0)">wishlist</a></li>
+                            <li><a href="javascript:void(0)">login</a></li>
+                            <li><a href="javascript:void(0)">address</a></li>
+                            <li><a href="javascript:void(0)">new products</a></li>
+                            <li><a href="javascript:void(0)">faq</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>support</h5>
+                        </div>
+                        <ul>
+                            <li><a href="javascript:void(0)">help</a></li>
+                            <li><a href="javascript:void(0)">contact us</a></li>
+                            <li><a href="javascript:void(0)">feedback</a></li>
+                            <li><a href="javascript:void(0)">customer service</a></li>
+                            <li><a href="javascript:void(0)">reservation</a></li>
+                            <li><a href="javascript:void(0)">store locations</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>contact us</h5>
+                        </div>
+                        <ul class="address">
+                            <li class="d-flex align-items-center">
+                                <div class="icon">
+                                    <i class="flaticon-phone"></i>
+                                </div>
+                                <div class="text">
+                                    <h6>phone</h6>
+                                    <p>1852433xxxx</p>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <div class="icon">
+                                    <i class="flaticon-mail"></i>
+                                </div>
+                                <div class="text">
+                                    <h6>email</h6>
+                                    <p>187075xxxx@qq.com</p>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <div class="icon">
+                                    <i class="flaticon-placeholder"></i>
+                                </div>
+                                <div class="text">
+                                    <h6>address</h6>
+                                    <p>Western Road, Melbourne</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>useful links</h5>
+                        </div>
+                        <ul>
+                            <li><a href="javascript:void(0)">policy privacy</a></li>
+                            <li><a href="javascript:void(0)">site map</a></li>
+                            <li><a href="javascript:void(0)">store location</a></li>
+                            <li><a href="javascript:void(0)">my account</a></li>
+                            <li><a href="javascript:void(0)">orders traking</a></li>
+                            <li><a href="javascript:void(0)">terms of service</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- footer-bottom -->
+    <section class="footer-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="border-area">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 col-md-6">
+                                <p>Copyright 2022-2099, All Rights By <a href="#">MALL</a>.
+                                </p>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="payment">
+                                    <ul class="d-flex justify-content-end">
+                                        <li><a href="javascript:void(0)"><img
+                                                src="assets/images/payment/visa.png" alt="Visa"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img
+                                                src="assets/images/payment/master.png" alt="Master"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img
+                                                src="assets/images/payment/paypal.png" alt="Paypal"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img
+                                                src="assets/images/payment/skrill.png" alt="Skrill"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img
+                                                src="assets/images/payment/maestro.png" alt="Maestro"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img
+                                                src="assets/images/payment/electron.png"
+                                                alt="Electron"/></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</footer>
+
+<script>
+    $(".sl_ext a:nth-child(1)").hover(function () {
+        $(this).children("b").stop(true).animate({top: "3px"}, 50);
+        $(this).children("i").stop(true).animate({top: "-23px"}, 50)
+    }, function () {
+        $(this).children("b").stop(true).animate({top: "24px"}, 50);
+        $(this).children("i").stop(true).animate({top: "3px"}, 50)
+    });
+    $(".sl_ext a:nth-child(2)").hover(function () {
+        $(this).children("span").stop(true).animate({top: "-1px"}, 100);
+        $(this).children("i").stop(true).animate({top: "-14px"}, 100).css({display: "none"})
+    }, function () {
+        $(this).children("span").stop(true).animate({top: "14px"}, 100);
+        $(this).children("i").stop(true).animate({top: "-1px"}, 100).css({display: "block"})
+    });
+    $('.tab_im img').hover(function () {
+        var a = $(this).prop('src');
+        var index = $(this).parents('li').index();
+        $(this).parents('li').css('border', '2px solid red').siblings('li').css('border', '1px solid #ccc');
+        $(this).parents('ul').prev().find('img').prop('src', a);
+        $(this).parents('ul').siblings('.tab_JE').find('a').eq(list).css('display', 'block').siblings('a').css('display', 'none');
+        $(this).parents('ul').siblings('.tab_R').find('span').eq(list).css('display', 'block').siblings('span').css('display', 'none')
+    });
+
+    $(".JD_ipone_one").hover(function () {
+        $(this).children("div").css({display: "block"})
+    }, function () {
+        $(this).children("div").css({display: "none"})
+    });
+
+    $("#tab>li").click(function () {
+        var i = $(this).index();
+        $("#container>div").hide().eq(i).show()
+    });
+    $(".dizhi_show").hover(function () {
+        $(".dizhi_con").css({display: "block"})
+    }, function () {
+        $(".dizhi_con").css({display: "none"})
+    });
+    $(".dizhi_con").hover(function () {
+        $(this).css({display: "block"})
+    }, function () {
+        $(this).css({display: "none"})
+    });
+    //显示隐藏
+    var $li = $(".JD_nav_logo>div:gt(3)").hide();
+    $('.JD_show span').click(function () {
+        if ($li.is(':hidden')) {
+            $li.show();
+            $(this).css({width: "86px"}).text('收起 ^');
+        } else {
+            $li.hide();
+            $('.JD_show span').css({width: "291px"}).text('更多选项（ CPU核数、网络、机身颜色 等）');
+        }
+        return false;
+    });
+
+
+    $(".rig_tab>div").hover(function () {
+        var i = $(this).index();
+        $(this).find('.ico').css({display: 'block'}).stop(true).animate({top: "190px"}, 300)
+    }, function () {
+        var i = $(this).index();
+        $(this).find('.ico').css({display: 'none'}).stop(true).animate({top: "230px"})
+    });
+
+    $('.header_main_left>ul>li').hover(function () {
+        $(this).css({
+            background: "#f0f0f0"
+        }).find('.header_main_left_main').stop(true).fadeIn(300)
+    }, function () {
+        $(this).css({
+            background: "#fff"
+        }).find(".header_main_left_a").css({
+            color: "#000"
+        });
+        $(this).find('.header_main_left_main').stop(true).fadeOut(100)
+    });
+    $(".header_sj a").hover(function () {
+        $(this).css({
+            background: "#444"
+        })
+    }, function () {
+        $(this).css({
+            background: "#6e6568"
+        })
+    });
+
+
+    $(".nav_li1 a").hover(function () {
+        $(".header_main_left").stop(true).fadeIn()
+    }, function () {
+        $(".header_main_left").stop(true).fadeOut()
+    });
+    $(".header_main_left").hover(function () {
+        $(this).stop(true).fadeIn()
+    }, function () {
+        $(this).stop(true).fadeOut()
+    });
+
+
+    //右侧侧边栏
+    $(".header_bar_box ul li").hover(function () {
+        $(this).css({
+            background: "#7A6E6E"
+        }).children(".div").css({
+            display: "block"
+        }).stop(true).animate({
+            left: "-60px"
+        }, 300)
+    }, function () {
+        $(this).css({
+            background: "#7A6E6E"
+        }).children(".div").css({
+            display: "none"
+        }).stop(true).animate({
+            left: "0"
+        }, 300)
+    });
+
+
+    //底部
+    $(".footer_foot .p1 a").hover(function () {
+        $(this).css("color", "#D70B1C")
+    }, function () {
+        $(this).css("color", "#727272")
+    });
+
+    $(".footer .footer_center ol li a").hover(function () {
+        $(this).css("color", "#D70B1C")
+    }, function () {
+        $(this).css("color", "#727272")
+    })
+
+
+    function searchProducts(name, value, bool) {
+        //原來的页面
+        location.href = replaceParamVal(location.href, name, value, true)
+    }
+
+
+    function searchByKeyword() {
+        location.href = replaceParamVal(location.href, "keyword", $("#keyword_input").val(), false)
+    }
+
+    $(".page_a").click(function () {
+        var pn = $(this).attr("pn");
+        var href = location.href;
+        location.href = replaceParamVal(href, "pageNum", pn, false);
+
+        return false;
+    })
+
+    function replaceParamVal(url, paramName, replaceVal, forceAdd) {
+        var oUrl = url.toString();
+        var nUrl;
+        if (oUrl.indexOf(paramName) != -1) {
+            if (forceAdd) {
+                if (oUrl.indexOf("?") != -1) {
+                    nUrl = oUrl + "&" + paramName + "=" + replaceVal;
+                } else {
+                    nUrl = oUrl + "?" + paramName + "=" + replaceVal;
+                }
+            } else {
+                var re = eval('/(' + paramName + '=)([^&]*)/gi');
+                nUrl = oUrl.replace(re, paramName + '=' + replaceVal);
+            }
+        } else {
+            if (oUrl.indexOf("?") != -1) {
+                nUrl = oUrl + "&" + paramName + "=" + replaceVal;
+            } else {
+                nUrl = oUrl + "?" + paramName + "=" + replaceVal;
+            }
+        }
+        return nUrl;
+    };
+
+    $(".sort_a").click(function () {
+        changeStyle(this);
+        let sort = $(this).attr("sort");
+        sort = $(this).hasClass("desc") ? sort + "_desc" : sort + "_asc";
+        location.href = replaceParamVal(location.href, "sort", sort, false);
+
+        return false;
+    });
+
+    function changeStyle(ele) {
+        // location.href = replaceParamVal(href, "pageNum", pn,flase);
+        // color: #333; border-color: #ccc; background: #fff
+        // color: #fff; border-color: #e4393c; background: #e4393c
+        $(".sort_a").css({"color": "#333", "border-color": "#ccc", "background": "#fff"});
+        $(".sort_a").each(function () {
+            let text = $(this).text().replace("↓", "").replace("↑", "");
+            $(this).text(text);
+        })
+
+        $(ele).css({"color": "#FFF", "border-color": "#e4393c", "background": "#e4393c"});
+        $(ele).toggleClass("desc");
+
+        if ($(ele).hasClass("desc")) {
+            let text = $(ele).text().replace("↓", "").replace("↑", "");
+            text = text + "↓";
+            $(ele).text(text);
+        } else {
+            let text = $(ele).text().replace("↓", "").replace("↑", "");
+            text = text + "↑";
+            $(ele).text(text);
+        }
+    };
+
+
+    $("#skuPriceSearchBtn").click(function () {
+        let from = $(`#skuPriceFrom`).val();
+        let to = $(`#skuPriceTo`).val();
+
+        let query = from + "_" + to;
+        location.href = replaceParamVal(location.href, "skuPrice", query, false);
+    });
+
+
+    $("#showHasStock").change(function () {
+        alert($(this).prop("checked"));
+        if ($(this).prop("checked")) {
+            location.href = replaceParamVal(location.href, "hasStock", 1, false);
+        } else {
+            let re = eval('/(hasStock=)([^&]*)/gi');
+            location.href = (location.href + "").replace(re, "");
+        }
+        return false;
+    });
+</script>
+</body>
+</html>

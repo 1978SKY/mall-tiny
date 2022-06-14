@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.deep.product.dao.AttrAttrgroupRelationDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.deep.product.model.entity.AttrAttrgroupRelationEntity" id="attrAttrgroupRelationMap">
+        <result property="id" column="id"/>
+        <result property="attrId" column="attr_id"/>
+        <result property="attrGroupId" column="attr_group_id"/>
+        <result property="attrSort" column="attr_sort"/>
+    </resultMap>
+
+    <delete id="deleteRelations">
+        delete
+        from `pms_attr_attrgroup_relation`
+        where
+        <foreach collection="params" item="item" separator="or">
+            attr_id = #{item.attrId} and attr_group_id = #{item.attrGroupId}
+        </foreach>
+    </delete>
+    <delete id="deleteByAttrIds">
+        delete
+        from `pms_attr_attrgroup_relation`
+        where
+        <foreach collection="attrIds" item="item" separator="or">
+            attr_id = #{item}
+        </foreach>
+    </delete>
+
+    <select id="getGroupNameByAttrId" resultType="java.lang.String">
+        select attr_group_name
+        from `pms_attr_group`
+        where attr_group_id = (
+            select attr_group_id
+            from `pms_attr_attrgroup_relation`
+            where attr_id = 9
+        )
+    </select>
+
+    <select id="getAttrByGroupId" resultType="com.deep.product.model.vo.AttrVO">
+        select attr_id, attr_name, value_select
+        from `pms_attr`
+        where enable = 1
+          and attr_id in (
+            select attr_id
+            from `pms_attr_attrgroup_relation`
+            where attr_group_id = #{groupId}
+        )
+    </select>
+
+</mapper>

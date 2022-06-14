@@ -1,0 +1,24 @@
+server:
+  port: 15000
+
+spring:
+  application:
+    name: mall-cart
+
+  redis:
+    port: 6379
+    host: mall.com
+    password: redisroot
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: mall.com:8848
+        namespace: 4f3b5226-066e-48e2-b7a6-d71f99290479
+
+  thymeleaf:
+    cache: false
+
+logging:
+  level:
+    com.deep.cart: info

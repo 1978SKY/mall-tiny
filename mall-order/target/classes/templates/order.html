@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="utf-8"/>
+    <title>订单</title>
+    <base href="http://mall.com">
+    <link rel="stylesheet" type="text/css" href="../static/mall/common/css/public.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/mall/order/css/myorder.css"/>
+    </head>
+<body>
+<!------------------------------head------------------------------>
+<div class="head ding">
+    <div class="wrapper clearfix">
+        <div class="clearfix" id="top">
+            <h1 class="fl"><a href="index.html"><img src="../static/mall/common/img/logo.png"/></a></h1>
+            <div class="fr clearfix" id="top1">
+                <form action="#" method="get" class="fl">
+                    <input type="text" placeholder="搜索"/>
+                    <input type="button"/>
+                </form>
+            </div>
+        </div>
+        <ul class="clearfix" id="bott" style="margin-left: 30%;">
+            <li><a href="http://localhost:88/api/product/">首页</a></li>
+            <li>
+                <a href="javascript:void(0)">所有商品</a>
+            </li>
+            <li>
+                <a href="javascript:void(0)">秒杀</a>
+            </li>
+            <li>
+                <a href="javascript:void(0)">金融</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!------------------------------idea------------------------------>
+<div class="address mt">
+    <div class="wrapper clearfix">
+        <a href="http://localhost:88/api/product/" class="fl">首页</a>
+        <span>/</span>
+        <a href="javascript:void(0)">个人中心</a>
+        <span>/</span>
+        <a href="javascript:void(0)" class="on">我的订单</a>
+    </div>
+</div>
+
+<!------------------------------Bott------------------------------>
+<div class="Bott">
+    <div class="wrapper clearfix">
+        <div class="zuo fl">
+            <h3>
+                <a href="#"><img src="../static/mall/common/img/tx.png"/></a>
+                <p class="clearfix"><span class="fl" th:text="${session.loginUser.nickname}"></span>
+                    <span class="fr"><a href="http://localhost:8000/api/auth/login/logout">退出登录</a></span></p>
+            </h3>
+            <div>
+                <h4>我的交易</h4>
+                <ul>
+                    <li><a href="http://localhost:88/api/cart/">我的购物车</a></li>
+                    <li class="on"><a href="http://localhost:88/api/order/index/">我的订单</a></li>
+                    <li><a href="javascript:void(0)">评价晒单</a></li>
+                </ul>
+                <h4>个人中心</h4>
+                <ul>
+                    <li><a href="javascript:void(0)">我的中心</a></li>
+                    <li><a href="http://localhost:88/api/auth/user/address">地址管理</a></li>
+                </ul>
+                <h4>账户管理</h4>
+                <ul>
+                    <li><a href="http://localhost:88/api/auth/user/center">个人信息</a></li>
+                    <li><a href="http://localhost:88/api/auth/user/repassword">修改密码</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="you fl">
+            <div class="my clearfix">
+                <h2 class="fl">我的订单</h2>
+                <a href="javascript:void(0)" class="fl">请谨防钓鱼链接或诈骗电话，了解更多&gt;</a>
+            </div>
+            <div class="dlist clearfix">
+                <ul class="fl clearfix" id="wa">
+                    <li class="on"><a href="#2">全部订单</a></li>
+                    <li><a href="javascript:void(0)">待支付</a></li>
+                    <li><a href="javascript:void(0)">待收货</a></li>
+                    <li><a href="javascript:void(0)">已关闭</a></li>
+                </ul>
+                <form action="#" method="get" class="fr clearfix">
+                    <input type="text" placeholder="请输入商品名称、订单号"/>
+                    <input type="button" value="搜索" style="color: #747373"/>
+                </form>
+            </div>
+
+            <div class="dkuang" th:each="order : ${orders}">
+                <p class="one" th:text="${order.status}"></p>
+                <div class="word clearfix">
+                    <ul class="fl clearfix">
+                        <li th:text="${#dates.format(order.createTime,'dd-MM-yyyy HH:mm')}"></li>
+                        <li th:text="${order.receiverName}"></li>
+                        <li th:text="'订单号:'+${order.orderSn}"></li>
+                        <li>在线支付</li>
+                    </ul>
+                    <p class="fr">订单金额：<span th:text="${order.payAmount}"></span>元</p>
+                </div>
+                <div class="shohou clearfix" th:each="item : ${order.items}">
+                    <a href="javascript:void(0)" class="fl"><img th:src="${item.skuPic}"/></a>
+                    <p class="fl">
+                        <a href="javascript:void(0)" th:text="${item.title}"></a>
+                        <a th:text="'¥'+${item.skuPrice}+'×'+${item.skuQuantity}"></a>
+                    </p>
+                    <p class="fr">
+                        <a href="javascript:void(0)">订单详情</a>
+                        <a th:data-icon="${order.orderSn}"
+                           th:onclick="pay(this.getAttribute('data-icon'))"
+                           th:if="${order.status.equals('待付款')}"
+                           style="background: #A10000;color: white;">立即支付</a>
+                        <a href="javascript:void(0)" th:if="${order.status.equals('已付款')}">已付款</a>
+                        <a href="javascript:void(0)" th:if="${order.status.equals('已取消')}">已取消</a>
+                        <a href="javascript:void(0)" th:if="${order.status.equals('已完成')}"
+                           style="background: #A10000;color: white;">确认收获</a>
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="fenye clearfix">
+                <a href="#"><img src="../static/mall/common/img/zuo.jpg"/></a>
+                <a href="#">1</a>
+                <a href="#"><img src="../static/mall/common/img/you.jpg"/></a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--返回顶部-->
+<div class="gotop">
+    <a href="http://localhost:88/api/cart/">
+        <dl>
+            <dt><img src="../static/mall/common/img/gt1.png"/></dt>
+            <dd>去购<br/>物车</dd>
+        </dl>
+    </a>
+    <a href="javascript:void(0)" class="dh">
+        <dl>
+            <dt><img src="../static/mall/common/img/gt2.png"/></dt>
+            <dd>联系<br/>客服</dd>
+        </dl>
+    </a>
+    <a href="javascript:void(0)">
+        <dl>
+            <dt><img src="../static/mall/common/img/gt3.png"/></dt>
+            <dd>个人<br/>中心</dd>
+        </dl>
+    </a>
+    <a class="toptop" style="display: none">
+        <dl>
+            <dt><img src="../static/mall/common/img/gt4.png"/></dt>
+            <dd>返回<br/>顶部</dd>
+        </dl>
+    </a>
+    <p>400-800-8200</p>
+</div>
+<!--footer-->
+<div class="footer">
+    <div class="top">
+        <div class="wrapper">
+            <div class="clearfix">
+                <a href="javascript:void(0)" class="fl"><img src="../static/mall/common/img/foot1.png"/></a>
+                <span class="fl">7天无理由退货</span>
+            </div>
+            <div class="clearfix">
+                <a href="javascript:void(0)" class="fl"><img src="../static/mall/common/img/foot2.png"/></a>
+                <span class="fl">15天免费换货</span>
+            </div>
+            <div class="clearfix">
+                <a href="javascript:void(0)" class="fl"><img src="../static/mall/common/img/foot3.png"/></a>
+                <span class="fl">满599包邮</span>
+            </div>
+            <div class="clearfix">
+                <a href="javascript:void(0)" class="fl"><img src="../static/mall/common/img/foot4.png"/></a>
+                <span class="fl">手机特色服务</span>
+            </div>
+        </div>
+    </div>
+    <p class="dibu">最家家居&copy;2022-2099公司版权所有 京ICP备080100-44备0000111000号<br/>
+        违法和不良信息举报电话：400-800-8200，本网站所列数据，除特殊说明，所有数据均出自我司实验室测试</p>
+</div>
+</body>
+<script src="../static/mall/common/js/public.js" type="text/javascript" charset="utf-8"></script>
+<script src="../static/mall/common/js/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+<script>
+
+    function pay(orderSn) {
+        window.location.href = "http://localhost:88/api/order/pay/" + orderSn;
+    }
+</script>
+</html>

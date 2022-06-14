@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <base href="http://mall.com/static/">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--==== favicon css ====-->
+    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon"/>
+    <!-- josefin font -->
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+    <title>秒杀</title>
+    <!-- font-awesome -->
+    <link rel="stylesheet" href="assets/css/all.min.css">
+    <!-- flaticon -->
+    <link rel="stylesheet" href="assets/font/flaticon.css">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!-- menu -->
+    <link rel="stylesheet" href="assets/css/menu.css">
+    <!-- swiper slider -->
+    <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
+    <!-- venobox -->
+    <link rel="stylesheet" href="assets/css/venobox.css">
+    <!-- select -->
+    <link rel="stylesheet" href="assets/css/select2.min.css">
+    <!-- jquery ui -->
+    <link rel="stylesheet" href="assets/css/jquery-ui.min.css">
+    <!-- style -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- responsive -->
+    <link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+
+<body>
+<!-- 启动预加载器区域 -->
+<div class="preloader">
+    <div class="preloader-orbit-loading">
+        <div class="cssload-inner cssload-one"></div>
+        <div class="cssload-inner cssload-two"></div>
+        <div class="cssload-inner cssload-three"></div>
+    </div>
+</div>
+<!-- 开始滚动顶部按钮 -->
+<div class="scroll-top">
+    <button class="top-to-btn">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+</div>
+<!-- banner -->
+<section class="inner-page banner" data-img="assets/images/inner/banner-bg.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>秒杀</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="seckill.html">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">seckill</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- header -->
+<header>
+    <!-- 开始菜单栏区域 -->
+    <section class="inner-page menubar">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row align-items-center">
+                        <!-- logo -->
+                        <div class="col-lg-2 col-md-4 col-sm-5 col-6">
+                            <div class="logo">
+                                <a href="index.html">
+                                    <img src="assets/images/home1/logo.png" alt="Logo"/>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- 主菜单 -->
+                        <div class="col-lg-8 col-md-4 col-sm-2 col-6">
+                            <!-- desktop-menu -->
+                            <nav class="navbar position-static justify-content-center desktop-menu p-0">
+                                <div class="main-menu">
+                                    <ul class="menu">
+                                        <li>
+                                            <a href="http://localhost:88/api/product/index.html">Home</a>
+                                        </li>
+                                        <li><a href="http://localhost:88/api/seckill/seckill.html">seckill</a></li>
+                                        <li><a href="http://localhost:88/api/search/search.html">search</a></li>
+                                        <li><a href="about/mall.html">About</a></li>
+                                        <li><a href="about.html">Gitee</a></li>
+                                        <li><a href="about.html">AboutMe</a></li>
+                                    </ul>
+                                </div>
+                            </nav>
+                        </div>
+                        <!-- 通知 -->
+                        <div class="col-lg-2 col-md-4 col-sm-5 right-col">
+                            <div class="notification">
+                                <ul class="d-flex justify-content-end">
+                                    <li>
+                                        <a th:if="${session.loginUser==null}"
+                                           href="http://localhost:88/api/auth/login.html">
+                                            <i class="flaticon-user-1"></i>
+                                        </a>
+                                        <a th:if="${session.loginUser!=null}"
+                                           href="http://localhost:88/api/auth/account/account.html">
+                                            <i class="flaticon-user-1"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a th:if="${session.loginUser==null}"
+                                           href="http://localhost:88/api/auth/login.html">
+                                            <i class="flaticon-shopping-cart-1"></i>
+                                        </a>
+                                        <a th:if="${session.loginUser!=null}"
+                                           href="http://localhost:88/api/cart/cart.html">
+                                            <i class="flaticon-shopping-cart-1"></i>
+                                            <span class="quantity" style="background: white;color: red">02</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</header>
+<!-- category -->
+<section class="shop-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-xxl-10 offset-xxl-1">
+                <div class="title d-flex justify-content-between align-items-center">
+                    <p>Showing 1–8 of 20 Results</p>
+                    <div class="sort d-flex align-items-center">
+                        <p>Sort by</p>
+                        <label>
+                            <select class="select">
+                                <option value="1">综合</option>
+                                <option value="2">销量</option>
+                                <option value="3">最新</option>
+                                <option value="4">趋势</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-10 offset-xxl-1 home1 trending">
+                <div class="row">
+                    <!--商品-->
+                    <div class="col-lg-3 col-md-6 col-sm-6" th:each="seckillSku:${seckillSkus}">
+                        <div class="single">
+                            <span class="offer">-29%</span>
+                            <div class="image">
+                                <a th:href="@{'http://localhost:88/api/seckill/item.html?sessionId='+${seckillSku.sessionId}+'&skuId='+${seckillSku.skuId}}">
+                                    <img th:src="${seckillSku.skuDefaultImg}" class="img-main" alt="Product">
+                                </a>
+                                <a th:href="@{'http://localhost:88/api/seckill/item.html?sessionId='+${seckillSku.sessionId}+'&skuId='+${seckillSku.skuId}}">
+                                    <img th:src="${seckillSku.skuDefaultImg}" class="img-hover" alt="Product">
+                                </a>
+                            </div>
+                            <div class="content">
+                                <a href="shop-detail-left.html">
+                                    <h6 th:text="${seckillSku.skuTitle}"></h6>
+                                </a>
+                                <p>
+                                    <span th:text="'￥' + ${seckillSku.price}"></span>
+                                    <a th:text="'￥' + ${seckillSku.seckillPrice}"></a>
+                                </p>
+                                <ul class="rating d-flex">
+                                    <li><i class="fas fa-star"></i></li>
+                                    <li><i class="fas fa-star"></i></li>
+                                    <li><i class="fas fa-star"></i></li>
+                                    <li><i class="fas fa-star"></i></li>
+                                    <li><i class="fas fa-star"></i></li>
+                                </ul>
+                                <div class="action">
+                                    <ul class="d-flex">
+                                        <li>
+                                            <a href="cart.html">
+                                                <i class="flaticon-shopping-cart-1"></i>
+                                                <p class="my-tooltip">
+                                                    add to cart
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)" data-bs-toggle="modal"
+                                               data-bs-target="#exampleModal">
+                                                <i class="flaticon-visibility"></i>
+                                                <p class="my-tooltip">
+                                                    quick view
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)">
+                                                <i class="flaticon-refresh"></i>
+                                                <p class="my-tooltip">
+                                                    compare
+                                                </p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 分页 -->
+                    <div class="col-lg-12">
+                        <div class="pages">
+                            <ul class="d-flex justify-content-center">
+                                <li><a href="javascript:void(0)"><i class="flaticon-chevron-1"></i></a></li>
+                                <li><a href="javascript:void(0)" class="active">1</a></li>
+                                <li><a href="javascript:void(0)">2</a></li>
+                                <li><a href="javascript:void(0)">3</a></li>
+                                <li><a href="javascript:void(0)">4</a></li>
+                                <li><a href="javascript:void(0)"><i class="flaticon-chevron"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- overview -->
+<section class="home1 overview">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="bg">
+                    <div class="bg-inner">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6">
+                                <div class="item d-flex align-items-center justify-content-center">
+                                    <div class="icon">
+                                        <i class="flaticon-fire-truck"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h5>free shipping</h5>
+                                        <h6>Orders over $250</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="item d-flex align-items-center justify-content-center">
+                                    <div class="icon">
+                                        <i class="flaticon-cards"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h5>quick payment</h5>
+                                        <h6>100% secure payment</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="item d-flex align-items-center justify-content-center">
+                                    <div class="icon">
+                                        <i class="flaticon-gift-box"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h5>gift certificate</h5>
+                                        <h6>Buy now $500</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="item d-flex align-items-center justify-content-center last-item">
+                                    <div class="icon">
+                                        <i class="flaticon-customer-service"></i>
+                                    </div>
+                                    <div class="text">
+                                        <h5>24/7 support</h5>
+                                        <h6>Quick Support</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- footer -->
+<footer class="footer">
+    <!-- footer-top -->
+    <section class="footer-top pb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>about us</h5>
+                        </div>
+                        <p>Can only be used for learning
+                        </p>
+                        <div class="follow">
+                            <h6>follow us</h6>
+                            <ul class="d-flex social">
+                                <li><a href="javascript:void(0)"><i class="fab fa-facebook-f"></i></a></li>
+                                <li><a href="javascript:void(0)"><i class="fab fa-twitter"></i></a></li>
+                                <li><a href="javascript:void(0)"><i class="fab fa-skype"></i></a></li>
+                                <li><a href="javascript:void(0)"><i class="fab fa-instagram"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>my account</h5>
+                        </div>
+                        <ul>
+                            <li><a href="javascript:void(0)">my account</a></li>
+                            <li><a href="javascript:void(0)">wishlist</a></li>
+                            <li><a href="javascript:void(0)">login</a></li>
+                            <li><a href="javascript:void(0)">address</a></li>
+                            <li><a href="javascript:void(0)">new products</a></li>
+                            <li><a href="javascript:void(0)">faq</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>support</h5>
+                        </div>
+                        <ul>
+                            <li><a href="javascript:void(0)">help</a></li>
+                            <li><a href="javascript:void(0)">contact us</a></li>
+                            <li><a href="javascript:void(0)">feedback</a></li>
+                            <li><a href="javascript:void(0)">customer service</a></li>
+                            <li><a href="javascript:void(0)">reservation</a></li>
+                            <li><a href="javascript:void(0)">store locations</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>contact us</h5>
+                        </div>
+                        <ul class="address">
+                            <li class="d-flex align-items-center">
+                                <div class="icon">
+                                    <i class="flaticon-phone"></i>
+                                </div>
+                                <div class="text">
+                                    <h6>phone</h6>
+                                    <p>1852433xxxx</p>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <div class="icon">
+                                    <i class="flaticon-mail"></i>
+                                </div>
+                                <div class="text">
+                                    <h6>email</h6>
+                                    <p>187075xxxx@qq.com</p>
+                                </div>
+                            </li>
+                            <li class="d-flex align-items-center">
+                                <div class="icon">
+                                    <i class="flaticon-placeholder"></i>
+                                </div>
+                                <div class="text">
+                                    <h6>address</h6>
+                                    <p>Western Road, Melbourne</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="content">
+                        <div class="title">
+                            <h5>useful links</h5>
+                        </div>
+                        <ul>
+                            <li><a href="javascript:void(0)">policy privacy</a></li>
+                            <li><a href="javascript:void(0)">site map</a></li>
+                            <li><a href="javascript:void(0)">store location</a></li>
+                            <li><a href="javascript:void(0)">my account</a></li>
+                            <li><a href="javascript:void(0)">orders traking</a></li>
+                            <li><a href="javascript:void(0)">terms of service</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- footer-bottom -->
+    <section class="footer-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="border-area">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 col-md-6">
+                                <p>Copyright 2022-2099, All Rights By <a href="#">MALL</a>.
+                                </p>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="payment">
+                                    <ul class="d-flex justify-content-end">
+                                        <li><a href="javascript:void(0)"><img src="assets/images/payment/visa.png"
+                                                                              alt="Visa"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img src="assets/images/payment/master.png"
+                                                                              alt="Master"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img src="assets/images/payment/paypal.png"
+                                                                              alt="Paypal"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img src="assets/images/payment/skrill.png"
+                                                                              alt="Skrill"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img
+                                                src="assets/images/payment/maestro.png" alt="Maestro"/></a>
+                                        </li>
+                                        <li><a href="javascript:void(0)"><img
+                                                src="assets/images/payment/electron.png" alt="Electron"/></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</footer>
+<!-- jquery -->
+<script src="assets/plugins/jquery-3.4.1.min.js"></script>
+<!-- bootstrap -->
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<!-- menu -->
+<script src="assets/plugins/menu.min.js"></script>
+<!-- swiper slider -->
+<script src="assets/plugins/swiper-bundle.min.js"></script>
+<!-- packery -->
+<script src="assets/plugins/packery.pkgd.min.js"></script>
+<!-- countdown -->
+<script src="assets/plugins/jquery.countdown.min.js"></script>
+<!-- venobox -->
+<script src="assets/plugins/venobox.min.js"></script>
+<!-- jquery ui -->
+<script src="assets/plugins/jquery-ui.min.js"></script>
+<!-- select -->
+<script src="assets/plugins/select2.min.js"></script>
+<!-- zoom -->
+<script src="assets/plugins/jquery.elevateZoom-3.0.8.min.js"></script>
+<!-- Google map -->
+<script src="http://ditu.google.cn/maps/api/js?key=AIzaSyCjkssBA3hMeFtClgslO2clWFR6bRraGz0"></script>
+<!-- script -->
+<script src="assets/js/script.js"></script>
+
+</body>
+
+</html>

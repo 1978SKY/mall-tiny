@@ -40,7 +40,7 @@
 ├── mall-search	 	检索服务
 ├── mall-seckill	秒杀服务
 ├── mall-ware 		库存服务
-└──  renren-fast 	后台管理服务
+└── renren-fast 	后台管理服务
 ```
 
 ## 商品演示
